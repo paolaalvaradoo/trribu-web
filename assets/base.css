@@ -246,9 +246,13 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--i
   -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
 }
-.nav { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 20px 26px; }
-.nav__logo { flex: none; display: flex; color: var(--ink); }
-.nav__links { display: flex; gap: 12px; min-width: 0; flex-wrap: wrap; justify-content: center; }
+.nav {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center; gap: 24px; padding: 20px 26px;
+}
+.nav__left { display: flex; align-items: center; min-width: 0; }
+.nav__logo { justify-self: center; display: flex; color: var(--ink); }
+.nav__links { display: flex; gap: 20px; min-width: 0; flex-wrap: nowrap; }
 .nav-link {
   position: relative; text-decoration: none; color: var(--ink);
   font-size: 13px; letter-spacing: .02em; white-space: nowrap;
@@ -259,7 +263,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--i
 }
 .nav-link:hover::after, .nav-link[aria-current="page"]::after { width: 100%; }
 .nav-link[aria-current="page"] { color: var(--ac-ink); }
-.nav__tools { display: flex; align-items: center; gap: 16px; flex: none; }
+.nav__tools { justify-self: end; display: flex; align-items: center; gap: 16px; }
 .icon-btn {
   position: relative; display: inline-flex; align-items: center; justify-content: center;
   width: 32px; height: 32px; padding: 0; background: none; border: 0; cursor: pointer; color: var(--ink);
@@ -273,7 +277,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--i
 .cart-count:empty, .cart-count[data-count="0"] { display: none; }
 .mm-btn {
   display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px;
-  width: 44px; height: 44px; margin-right: -10px; background: none; border: 0; padding: 0; cursor: pointer;
+  width: 44px; height: 44px; margin-left: -10px; background: none; border: 0; padding: 0; cursor: pointer;
 }
 .mm-btn span { display: block; width: 22px; height: 1.5px; background: var(--ink); transition: transform .25s ease, opacity .2s ease; }
 .site-header.mm-open .mm-btn span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
@@ -415,6 +419,29 @@ summary.faq-q:hover { color: var(--ac-ink); }
 .empty-cart { padding: 48px 0; text-align: center; }
 
 /* --------------------------------------------------------------------------
+   Header: menú compacto y hamburguesa (☰ izquierda · logo centro · carrito derecha)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1320px) {
+  .nav__links { gap: 14px; }
+  .nav-link { font-size: 12.5px; }
+}
+@media (max-width: 1200px) {
+  .nav { padding: 12px 18px; gap: 12px; }
+  .nav__tools .btn { display: none; }
+  .mm-btn { display: flex; }
+  .nav__links {
+    position: absolute; left: 0; right: 0; top: 100%;
+    display: none; flex-direction: column; gap: 0;
+    background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    padding: 0 18px; max-height: calc(100vh - 100px); overflow-y: auto;
+  }
+  .site-header.mm-open .nav__links { display: flex; }
+  .nav-link { display: block; padding: 15px 2px; font-size: 15px; border-bottom: 1px solid var(--line); white-space: normal; }
+  .nav-link:last-child { border-bottom: 0; }
+  .nav-link::after { display: none; }
+}
+
+/* --------------------------------------------------------------------------
    Móvil (≤ 900 px) — equivale a las reglas responsive del prototipo
    -------------------------------------------------------------------------- */
 @media (max-width: 900px) {
@@ -424,19 +451,6 @@ summary.faq-q:hover { color: var(--ac-ink); }
   .h2, .h3 { font-size: 27px; line-height: 1.18; }
   .h4 { font-size: 24px; line-height: 1.22; }
   .lede-serif { font-size: 24px; line-height: 1.22; }
-
-  /* Menú hamburguesa */
-  .nav { flex-wrap: wrap; gap: 0 14px; padding: 12px 18px; }
-  .nav__tools { margin-left: auto; }
-  .nav__tools .btn { display: none; }
-  .mm-btn { display: flex; order: 8; }
-  .nav__links {
-    order: 9; flex: 1 1 100%; display: none; flex-direction: column; flex-wrap: nowrap; gap: 0;
-    margin-top: 10px; border-top: 1px solid var(--line);
-  }
-  .site-header.mm-open .nav__links { display: flex; }
-  .nav-link { display: block; padding: 15px 2px; font-size: 15px; border-bottom: 1px solid var(--line); white-space: normal; }
-  .nav-link::after { display: none; }
 
   .footer__grid { grid-template-columns: minmax(0, 1fr); gap: 32px; padding-top: 52px; }
   .pgrid, .tgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }

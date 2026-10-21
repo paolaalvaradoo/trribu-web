@@ -5,16 +5,19 @@
 {%- endcomment -%}
 <header class="site-header" data-header>
   <nav class="nav" aria-label="Principal">
-    <a href="{{ routes.root_url }}" class="nav__logo" aria-label="{{ shop.name }} · inicio">{% render 'wordmark', height: section.settings.logo_height %}</a>
-
     {%- assign menu = linklists[section.settings.menu] -%}
-    {%- if menu.links.size > 0 -%}
-      <div class="nav__links" id="NavLinks">
-        {%- for link in menu.links -%}
-          <a href="{{ link.url }}" class="nav-link"{% if link.current or link.child_active %} aria-current="page"{% endif %}>{{ link.title }}</a>
-        {%- endfor -%}
-      </div>
-    {%- endif -%}
+    <div class="nav__left">
+      {%- if menu.links.size > 0 -%}
+        <button type="button" class="mm-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="NavLinks"><span></span><span></span><span></span></button>
+        <div class="nav__links" id="NavLinks">
+          {%- for link in menu.links -%}
+            <a href="{{ link.url }}" class="nav-link"{% if link.current or link.child_active %} aria-current="page"{% endif %}>{{ link.title }}</a>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <a href="{{ routes.root_url }}" class="nav__logo" aria-label="{{ shop.name }} · inicio">{% render 'wordmark', height: section.settings.logo_height %}</a>
 
     <div class="nav__tools">
       <a href="{{ routes.search_url }}" class="icon-btn" data-search-toggle aria-label="Buscar" aria-controls="SearchBar">{% render 'icon', name: 'search' %}</a>
@@ -26,9 +29,6 @@
         <a href="{{ section.settings.cta_link | default: routes.all_products_collection_url }}" class="btn btn--solid btn--sm">{{ section.settings.cta_label }}</a>
       {%- endif -%}
     </div>
-    {%- if menu.links.size > 0 -%}
-      <button type="button" class="mm-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="NavLinks"><span></span><span></span><span></span></button>
-    {%- endif -%}
   </nav>
   <div class="search-bar" id="SearchBar" hidden>
     <form action="{{ routes.search_url }}" method="get" role="search">
@@ -44,8 +44,8 @@
   "name": "Header",
   "settings": [
     { "type": "link_list", "id": "menu", "label": "Menú", "default": "main-menu", "info": "Prototipo: El Sistema · Síntomas · Quiz · Productos · Kits · Transparencia · Herramientas · Nosotros" },
-    { "type": "range", "id": "logo_height", "label": "Alto del logo", "min": 16, "max": 34, "step": 1, "unit": "px", "default": 22 },
-    { "type": "text", "id": "cta_label", "label": "Botón", "default": "Comprar" },
+    { "type": "range", "id": "logo_height", "label": "Alto del logo", "min": 16, "max": 40, "step": 1, "unit": "px", "default": 26 },
+    { "type": "text", "id": "cta_label", "label": "Botón (opcional)", "info": "Vacío = sin botón, como en las referencias." },
     { "type": "url", "id": "cta_link", "label": "Enlace del botón" }
   ]
 }
