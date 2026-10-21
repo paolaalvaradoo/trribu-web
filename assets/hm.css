@@ -53,6 +53,26 @@ a.hm-seal:hover { transform: translateY(-3px); color: inherit; }
 .hm-seal__txt { font-size: 12.5px; line-height: 1.5; color: var(--muted); margin-top: 14px; text-align: center; }
 .hm-seal__txt--rr6 { font-size: 13px; color: var(--ink); }
 
+/* Marquesina: la fila se duplica y se desplaza −50 % en bucle */
+.hm-seals--marquee .hm-seals__inner { padding-top: 34px; padding-bottom: 28px; }
+.hm-seals--marquee .hm-seals__viewport {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+.hm-seals--marquee .hm-seals__grid {
+  display: flex; flex-wrap: nowrap; gap: 0; width: max-content; justify-items: initial;
+  animation: hm-marquee var(--hm-marquee-dur, 40s) linear infinite;
+}
+.hm-seals--marquee .hm-seals__viewport:hover .hm-seals__grid,
+.hm-seals--marquee .hm-seals__viewport:focus-within .hm-seals__grid { animation-play-state: paused; }
+.hm-seals--marquee .hm-seal { flex: none; width: 190px; max-width: none; padding: 4px 20px; }
+@keyframes hm-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .hm-seals--marquee .hm-seals__viewport { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  .hm-seals--marquee .hm-seal[aria-hidden="true"] { display: none; }
+}
+
 /* Split imagen / texto (El Sistema, Nosotros) ---------------------------- */
 .hm-split { display: grid; grid-template-columns: 1.05fr .95fr; min-height: 640px; }
 .hm-split--founder { grid-template-columns: .95fr 1.05fr; min-height: 660px; border-top: 1px solid var(--line); }
@@ -162,7 +182,8 @@ a.hm-seal:hover { transform: translateY(-3px); color: inherit; }
   .hm-bleed { height: auto; min-height: 0; display: flex; flex-direction: column; justify-content: flex-end; }
   .hm-hero__content, .hm-bleed__center { position: relative; inset: auto; padding: 280px 20px 44px; }
 
-  .hm-seals__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .hm-seals:not(.hm-seals--marquee) .hm-seals__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .hm-seals--marquee .hm-seal { width: 150px; padding: 4px 12px; }
 
   .hm-split, .hm-split--founder { grid-template-columns: minmax(0, 1fr); min-height: 0; }
   .hm-split__media { height: 300px; }

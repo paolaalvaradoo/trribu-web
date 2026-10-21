@@ -1,27 +1,38 @@
 {{ 'hm.css' | asset_url | stylesheet_tag }}
-<div class="hm-seals">
-  <div class="wrap wrap--1520 hm-seals__inner">
-    <div class="hm-seals__grid">
-      {%- for block in section.blocks -%}
-        {%- liquid
-          assign is_rr6 = false
-          if block.settings.icon == 'rr6'
-            assign is_rr6 = true
-          endif
-          assign tag = 'div'
-          if block.settings.url != blank
-            assign tag = 'a'
-          endif
-        -%}
-        <{{ tag }}{% if tag == 'a' %} href="{{ block.settings.url }}"{% endif %} class="hm-seal" {{ block.shopify_attributes }}>
-          {%- if is_rr6 -%}
-            <div class="hm-seal__ring hm-seal__ring--rr6"><span class="hm-seal__rr6">RR<sup>6</sup></span></div>
-          {%- else -%}
-            <div class="hm-seal__ring{% if block.settings.accent %} hm-seal__ring--accent{% endif %}">{% render 'icon', name: block.settings.icon %}</div>
-          {%- endif -%}
-          <div class="hm-seal__txt{% if is_rr6 %} hm-seal__txt--rr6{% endif %}">{{ block.settings.text }}</div>
-        </{{ tag }}>
-      {%- endfor -%}
+{%- liquid
+  assign marquee = section.settings.marquee
+  assign copies = 1
+  if marquee
+    assign copies = 2
+  endif
+-%}
+<div class="hm-seals{% if marquee %} hm-seals--marquee{% endif %}"{% if marquee %} style="--hm-marquee-dur: {{ section.settings.speed }}s"{% endif %}>
+  <div class="{% unless marquee %}wrap wrap--1520 {% endunless %}hm-seals__inner">
+    <div class="hm-seals__viewport">
+      <div class="hm-seals__grid">
+        {%- for copy in (1..copies) -%}
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign is_rr6 = false
+              if block.settings.icon == 'rr6'
+                assign is_rr6 = true
+              endif
+              assign tag = 'div'
+              if block.settings.url != blank
+                assign tag = 'a'
+              endif
+            -%}
+            <{{ tag }}{% if tag == 'a' %} href="{{ block.settings.url }}"{% if copy > 1 %} tabindex="-1"{% endif %}{% endif %} class="hm-seal"{% if copy > 1 %} aria-hidden="true"{% else %} {{ block.shopify_attributes }}{% endif %}>
+              {%- if is_rr6 -%}
+                <div class="hm-seal__ring hm-seal__ring--rr6"><span class="hm-seal__rr6">RR<sup>6</sup></span></div>
+              {%- else -%}
+                <div class="hm-seal__ring{% if block.settings.accent %} hm-seal__ring--accent{% endif %}">{% render 'icon', name: block.settings.icon %}</div>
+              {%- endif -%}
+              <div class="hm-seal__txt{% if is_rr6 %} hm-seal__txt--rr6{% endif %}">{{ block.settings.text }}</div>
+            </{{ tag }}>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
     </div>
   </div>
 </div>
@@ -31,6 +42,10 @@
   "name": "Sello · franja de claims",
   "tag": "section",
   "max_blocks": 12,
+  "settings": [
+    { "type": "checkbox", "id": "marquee", "label": "Franja en movimiento (marquesina)", "default": true, "info": "Los claims se deslizan solos de derecha a izquierda y se detienen al pasar el cursor. Desactívalo para verlos fijos en una fila." },
+    { "type": "range", "id": "speed", "label": "Duración de una vuelta", "min": 15, "max": 90, "step": 5, "unit": "s", "default": 40, "info": "Más segundos = más lento." }
+  ],
   "blocks": [
     {
       "type": "item",

@@ -14,7 +14,10 @@
     },
     "seals": {
       "type": "hm-seals",
-      "settings": {},
+      "settings": {
+        "marquee": true,
+        "speed": 40
+      },
       "blocks": {
         "item_1": {
           "type": "item",
