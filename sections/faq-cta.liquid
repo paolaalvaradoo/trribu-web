@@ -1,0 +1,27 @@
+{{ 'faq.css' | asset_url | stylesheet_tag }}
+<section class="faq-cta">
+  <h2 class="faq-cta__title">{{ section.settings.title }}</h2>
+  <div class="faq-cta__btns">
+    {%- if section.settings.btn1_label != blank -%}
+      <a href="{{ section.settings.btn1_link | default: '/pages/transparencia' }}" class="faq-cta__btn faq-cta__btn--solid">{{ section.settings.btn1_label }}</a>
+    {%- endif -%}
+    {%- if section.settings.btn2_label != blank -%}
+      <a href="{{ section.settings.btn2_link | default: '/pages/estudio' }}" class="faq-cta__btn faq-cta__btn--line">{{ section.settings.btn2_label }}</a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ · cierre",
+  "tag": "div",
+  "settings": [
+    { "type": "inline_richtext", "id": "title", "label": "Título", "default": "¿Otra duda? Escríbenos y te <strong>contamos con transparencia.</strong>" },
+    { "type": "text", "id": "btn1_label", "label": "Botón principal", "default": "Ver Transparencia" },
+    { "type": "url", "id": "btn1_link", "label": "Enlace botón principal", "info": "Prototipo: /pages/transparencia" },
+    { "type": "text", "id": "btn2_label", "label": "Botón secundario", "default": "Conoce el estudio" },
+    { "type": "url", "id": "btn2_link", "label": "Enlace botón secundario", "info": "Prototipo: /pages/estudio" }
+  ],
+  "presets": [{ "name": "FAQ · cierre" }]
+}
+{% endschema %}

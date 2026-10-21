@@ -1,0 +1,21 @@
+{{ 'sob.css' | asset_url | stylesheet_tag }}
+<section class="sob-promise">
+  <div class="sob-promise__in">
+    {%- if section.settings.eyebrow != blank -%}<p class="sob-eyebrow sob-eyebrow--ink">{{ section.settings.eyebrow }}</p>{%- endif -%}
+    <p class="sob-promise__quote">{{ section.settings.quote }}</p>
+    {%- if section.settings.text != blank -%}<p class="sob-promise__text">{{ section.settings.text }}</p>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Nosotros · promesa",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Nuestra promesa" },
+    { "type": "inline_richtext", "id": "quote", "label": "Cita", "default": "\"Lo que pongo en tu pelo es lo que pondría en el de mi mamá.\"" },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Cada filtro que aplicamos, cada ingrediente que dejamos fuera, cada cosa que le exigimos a nuestras fórmulas nace de esa misma vara. El estándar con el que la cuidé es el mismo con el que formulamos para ti." }
+  ],
+  "presets": [{ "name": "Nosotros · promesa" }]
+}
+{% endschema %}

@@ -1,0 +1,26 @@
+{{ 'sis.css' | asset_url | stylesheet_tag }}
+<section class="sis-cta">
+  {% render 'media', image: section.settings.image, label: section.settings.label, sizes: '100vw' %}
+  <div class="sis-cta__veil"></div>
+  <div class="sis-cta__content">
+    <h2 class="sis-h2 sis-cta__title">{{ section.settings.title }}</h2>
+    {%- if section.settings.sub != blank -%}<p class="sis-cta__sub">{{ section.settings.sub }}</p>{%- endif -%}
+    {%- if section.settings.btn_label != blank -%}
+      <a href="{{ section.settings.btn_link | default: settings.quiz_url }}" class="btn btn--white sis-cta__btn">{{ section.settings.btn_label }}</a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sistema · CTA final",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Foto de fondo" },
+    { "type": "text", "id": "label", "label": "Indicación de la foto (solo editor)", "default": "Foto a sangre · el cuarteto o lifestyle" },
+    { "type": "text", "id": "title", "label": "Título", "default": "¿Reconoces tres o más señales?" },
+    { "type": "text", "id": "sub", "label": "Frase en cursiva", "default": "El test te dice por dónde empezar." },
+    { "type": "text", "id": "btn_label", "label": "Botón · texto", "default": "HAZ EL TEST · 1 MIN" },
+    { "type": "url", "id": "btn_link", "label": "Botón · enlace", "info": "Vacío = página del quiz (Configuración del tema)" }
+  ]
+}
+{% endschema %}

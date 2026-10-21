@@ -1,0 +1,16 @@
+{%- comment -%}
+  Una pieza del contenido de un kit: envase dibujado (cuarteto) o ficha (herramienta).
+  Uso: {% render 'kit-piece', product: p %}
+{%- endcomment -%}
+{%- capture num -%}{%- render 'product-field', product: product, field: 'number' -%}{%- endcapture -%}
+{%- if num != blank -%}
+  {% render 'bottle', product: product, size: 'sm' %}
+{%- else -%}
+  <div class="kit-tool" aria-hidden="true">
+    {%- if product.featured_media -%}
+      {{ product.featured_media | image_url: width: 200 | image_tag: loading: 'lazy', alt: '' }}
+    {%- else -%}
+      {{ product.title }}
+    {%- endif -%}
+  </div>
+{%- endif -%}

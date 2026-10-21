@@ -1,0 +1,51 @@
+{{ 'pdp.css' | asset_url | stylesheet_tag }}
+<section class="pdp-study">
+  <div class="pdp-study__wrap">
+    <div class="pdp-study__head">
+      <div class="pdp-eyebrow pdp-eyebrow--dark">{{ section.settings.eyebrow }}</div>
+      <h2 class="pdp-study__title">{{ section.settings.heading }} <span>{{ section.settings.heading_em }}</span></h2>
+    </div>
+    <div class="pdp-study__grid">
+      {%- for block in section.blocks -%}
+        <div class="pdp-study__card" {{ block.shopify_attributes }}>
+          <div class="pdp-study__when">{{ block.settings.when }}</div>
+          <div class="pdp-study__num">{{ block.settings.value }}</div>
+          <div class="pdp-study__txt">{{ block.settings.text }}</div>
+        </div>
+      {%- endfor -%}
+    </div>
+    {%- if section.settings.link_label != blank -%}
+      <div class="pdp-study__cta"><a href="{{ section.settings.link_url | default: '/pages/estudio' }}">{{ section.settings.link_label }}</a></div>
+    {%- endif -%}
+    {%- if section.settings.note != blank -%}<p class="pdp-study__note">{{ section.settings.note }}</p>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ficha · percepción",
+  "tag": "div",
+  "class": "pdp-sec",
+  "settings": [
+    { "type": "paragraph", "content": "En el prototipo esta sección está oculta hasta tener las cifras del panel. Actívala desde el ojo de la barra lateral." },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "PERCEPCIÓN DE CONSUMIDORAS" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Lo que ellas" },
+    { "type": "text", "id": "heading_em", "label": "Título · palabra destacada", "default": "notaron" },
+    { "type": "text", "id": "link_label", "label": "Enlace · texto", "default": "Ver el estudio →" },
+    { "type": "text", "id": "link_url", "label": "Enlace · URL", "default": "/pages/estudio" },
+    { "type": "textarea", "id": "note", "label": "Nota metodológica", "default": "Estudio de autopercepción, N mujeres 40+, tras X semanas de uso del sistema TRRIBÚ. Cifras pendientes de panel." }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Cifra",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "when", "label": "Momento", "default": "DESDE EL PRIMER USO" },
+        { "type": "text", "id": "value", "label": "Cifra", "default": "—%" },
+        { "type": "text", "id": "text", "label": "Texto", "default": "notó su pelo más suave" }
+      ]
+    }
+  ]
+}
+{% endschema %}

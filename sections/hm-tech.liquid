@@ -1,0 +1,66 @@
+{{ 'hm.css' | asset_url | stylesheet_tag }}
+<div class="hm-tech bt">
+  <div class="wrap hm-tech__grid">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}<div class="eyebrow">{{ section.settings.eyebrow }}</div>{%- endif -%}
+      <h2 class="h2 hm-tech__title">
+        {{- section.settings.heading_1 -}}
+        {%- if section.settings.heading_accent != blank -%}<br><span class="hm-tech__accent">{{ section.settings.heading_accent }}</span>{%- endif -%}
+        {{- section.settings.heading_2 -}}
+      </h2>
+      {%- if section.settings.body != blank -%}<div class="hm-tech__body rte">{{ section.settings.body }}</div>{%- endif -%}
+      {%- if section.blocks.size > 0 -%}
+        <div class="hm-tech__rows">
+          {%- for block in section.blocks -%}
+            <div class="hm-tech__row" {{ block.shopify_attributes }}>
+              <span class="hm-tech__num">{{ block.settings.number }}</span>
+              <span class="hm-tech__txt">{{ block.settings.text }}</span>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.link_label != blank -%}<a href="{{ section.settings.link_url | default: '/pages/sistema' }}" class="txt-link hm-tech__link">{{ section.settings.link_label }}</a>{%- endif -%}
+    </div>
+    <div class="hm-tech__media">
+      {% render 'media', image: section.settings.image, label: 'Foto de textura · pelo · ingredientes', sizes: '(max-width: 900px) 100vw, 50vw', class: 'hm-fill' %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "La Tecnología",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "La Tecnología" },
+    { "type": "text", "id": "heading_1", "label": "Título · línea 1", "default": "Una tecnología," },
+    { "type": "text", "id": "heading_accent", "label": "Título · palabra en acento", "default": "TRRIBOND" },
+    { "type": "text", "id": "heading_2", "label": "Título · final", "default": ", en cada gota." },
+    { "type": "richtext", "id": "body", "label": "Texto", "default": "<p>Combinamos <strong>moléculas bond de glucosa</strong> con péptidos vegetales de quinua, arveja y kiwicha, y romero, para reparar la fibra desde adentro. Reparación real, sin fitoestrógenos añadidos y sin ingredientes que pesen tu pelo.</p>" },
+    { "type": "text", "id": "link_label", "label": "Enlace · texto", "default": "Ver el sistema completo" },
+    { "type": "url", "id": "link_url", "label": "Enlace · URL" },
+    { "type": "image_picker", "id": "image", "label": "Foto", "info": "Textura · pelo · ingredientes. Cuadrada." }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Fila",
+      "settings": [
+        { "type": "text", "id": "number", "label": "Número", "default": "01" },
+        { "type": "text", "id": "text", "label": "Texto", "default": "El romero protege como antioxidante" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "La Tecnología",
+      "blocks": [
+        { "type": "row", "settings": { "number": "01", "text": "Las moléculas bond refuerzan la fibra desde adentro y reducen la caída por quiebre" } },
+        { "type": "row", "settings": { "number": "02", "text": "Los péptidos de quinua y arveja hidratan y controlan el frizz" } },
+        { "type": "row", "settings": { "number": "03", "text": "Los péptidos de kiwicha devuelven cuerpo a la fibra" } },
+        { "type": "row", "settings": { "number": "04", "text": "El romero protege como antioxidante" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

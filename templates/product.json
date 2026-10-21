@@ -1,0 +1,324 @@
+{
+  "sections": {
+    "main": {
+      "type": "pdp-main",
+      "settings": {
+        "show_switcher": true,
+        "switcher_label": "Productos del sistema",
+        "stage_tag": "SISTEMA REPARADOR",
+        "tech_title": "Tecnología que repara.",
+        "tech_title_2": "Fórmula que cuida.",
+        "tech_sub": "Para el pelo que está cambiando.",
+        "pill": "CON TRRIBOND",
+        "add_label": "Añadir al ritual",
+        "group1_title": "COMPLETA EL SISTEMA",
+        "group1_sub": "Funciona mejor con los otros pasos del ritual",
+        "group1_why": "Completa el sistema",
+        "group2_title": "SUMA TUS HERRAMIENTAS",
+        "group2_sub": "La fórmula es la mitad · la otra es cómo lo tratas",
+        "rec_label": "RECOMENDADA CON",
+        "bundle_empty": "Suma otros pasos o herramientas",
+        "bundle_count": "[n] productos en tu ritual",
+        "save_label": "Ahorras [monto] · −[pct] %",
+        "add_all_label": "AÑADIR TODO",
+        "trust_1": "Sin fitoestrógenos añadidos",
+        "trust_2": "Vegano · color-safe"
+      },
+      "blocks": {
+        "tech_1": {
+          "type": "tech",
+          "settings": {
+            "icon": "rr6",
+            "title": "RR6 · El Sello TRRIBÚ",
+            "text": "Formulado siempre sin sulfatos, siliconas, parabenos, ftalatos, fenoxietanol, PEG ni etoxilados, fragancias sintéticas, derivados del petróleo (petrolato, aceite mineral, parafina) ni disruptores endocrinos.",
+            "accent": false
+          }
+        },
+        "tech_2": {
+          "type": "tech",
+          "settings": {
+            "icon": "no",
+            "title": "Sin fitoestrógenos añadidos",
+            "text": "Ni soya activa, trébol rojo, lúpulo o linaza. Para que lo uses con tranquilidad.",
+            "accent": true
+          }
+        },
+        "tech_3": {
+          "type": "tech",
+          "settings": {
+            "icon": "vegan",
+            "title": "Vegano y cruelty-free",
+            "text": "Sin ingredientes de origen animal. Sin pruebas en animales.",
+            "accent": false
+          }
+        },
+        "tech_4": {
+          "type": "tech",
+          "settings": {
+            "icon": "bond",
+            "title": "Con TRRIBOND en los 4 productos",
+            "text": "Moléculas bond de glucosa, péptidos de kiwicha, quinua y arveja, y romero. En cada paso del sistema.",
+            "accent": false
+          }
+        }
+      },
+      "block_order": [
+        "tech_1",
+        "tech_2",
+        "tech_3",
+        "tech_4"
+      ]
+    },
+    "loves": {
+      "type": "pdp-loves",
+      "settings": {
+        "eyebrow": "POR QUÉ LA AMAMOS"
+      }
+    },
+    "signals": {
+      "type": "pdp-signals",
+      "settings": {
+        "eyebrow": "QUÉ SEÑALES TRABAJA",
+        "heading": "De las 9 señales, [producto] se enfoca en estas",
+        "hero_label": "SEÑAL HÉROE",
+        "legend_hi": "Alto",
+        "legend_mid": "Medio",
+        "legend_low": "Leve",
+        "legend_other": "Lo trabaja otro paso"
+      },
+      "blocks": {
+        "signal_1": {
+          "type": "signal",
+          "settings": {
+            "label": "Se esponja (frizz)",
+            "key": "frizz"
+          }
+        },
+        "signal_2": {
+          "type": "signal",
+          "settings": {
+            "label": "Sequedad",
+            "key": "sequedad"
+          }
+        },
+        "signal_3": {
+          "type": "signal",
+          "settings": {
+            "label": "Menos brillo",
+            "key": "brillo"
+          }
+        },
+        "signal_4": {
+          "type": "signal",
+          "settings": {
+            "label": "Menos cuerpo",
+            "key": "cuerpo"
+          }
+        },
+        "signal_5": {
+          "type": "signal",
+          "settings": {
+            "label": "Fragilidad y quiebre",
+            "key": "quiebre"
+          }
+        },
+        "signal_6": {
+          "type": "signal",
+          "settings": {
+            "label": "Difícil de desenredar",
+            "key": "desenredar"
+          }
+        },
+        "signal_7": {
+          "type": "signal",
+          "settings": {
+            "label": "Áspero y poroso",
+            "key": "poroso"
+          }
+        },
+        "signal_8": {
+          "type": "signal",
+          "settings": {
+            "label": "Canas y color que se apaga",
+            "key": "color"
+          }
+        },
+        "signal_9": {
+          "type": "signal",
+          "settings": {
+            "label": "Cambió de textura",
+            "key": "textura"
+          }
+        }
+      },
+      "block_order": [
+        "signal_1",
+        "signal_2",
+        "signal_3",
+        "signal_4",
+        "signal_5",
+        "signal_6",
+        "signal_7",
+        "signal_8",
+        "signal_9"
+      ]
+    },
+    "details": {
+      "type": "pdp-details",
+      "settings": {
+        "inside_eyebrow": "TRRIBOND A LA VISTA",
+        "inside_title": "Qué hay dentro",
+        "inci_label": "Ver todos los ingredientes (INCI)",
+        "use_eyebrow": "CÓMO USARLO",
+        "free_label": "FÓRMULA SIEMPRE LIBRE DE",
+        "caution_label": "PRECAUCIONES",
+        "caution": "Uso externo. Evita el contacto con los ojos; si ocurre, enjuaga con agua. Si aparece irritación, suspende su uso. Mantén fuera del alcance de los niños."
+      },
+      "blocks": {
+        "free_1": {
+          "type": "free",
+          "settings": {
+            "text": "sulfatos"
+          }
+        },
+        "free_2": {
+          "type": "free",
+          "settings": {
+            "text": "siliconas"
+          }
+        },
+        "free_3": {
+          "type": "free",
+          "settings": {
+            "text": "parabenos"
+          }
+        },
+        "free_4": {
+          "type": "free",
+          "settings": {
+            "text": "ftalatos"
+          }
+        },
+        "free_5": {
+          "type": "free",
+          "settings": {
+            "text": "fenoxietanol"
+          }
+        },
+        "free_6": {
+          "type": "free",
+          "settings": {
+            "text": "PEG y etoxilados"
+          }
+        },
+        "free_7": {
+          "type": "free",
+          "settings": {
+            "text": "fragancias sintéticas"
+          }
+        },
+        "free_8": {
+          "type": "free",
+          "settings": {
+            "text": "derivados del petróleo (petrolato, aceite mineral, parafina)"
+          }
+        },
+        "free_9": {
+          "type": "free",
+          "settings": {
+            "text": "disruptores endocrinos"
+          }
+        },
+        "free_10": {
+          "type": "free",
+          "settings": {
+            "text": "fitoestrógenos añadidos"
+          }
+        }
+      },
+      "block_order": [
+        "free_1",
+        "free_2",
+        "free_3",
+        "free_4",
+        "free_5",
+        "free_6",
+        "free_7",
+        "free_8",
+        "free_9",
+        "free_10"
+      ]
+    },
+    "study": {
+      "type": "pdp-study",
+      "disabled": true,
+      "settings": {
+        "eyebrow": "PERCEPCIÓN DE CONSUMIDORAS",
+        "heading": "Lo que ellas",
+        "heading_em": "notaron",
+        "link_label": "Ver el estudio →",
+        "link_url": "/pages/estudio",
+        "note": "Estudio de autopercepción, N mujeres 40+, tras X semanas de uso del sistema TRRIBÚ. Cifras pendientes de panel."
+      },
+      "blocks": {
+        "stat_1": {
+          "type": "stat",
+          "settings": {
+            "when": "DESDE EL PRIMER USO",
+            "value": "—%",
+            "text": "notó su pelo más suave"
+          }
+        },
+        "stat_2": {
+          "type": "stat",
+          "settings": {
+            "when": "A LA SEMANA",
+            "value": "—%",
+            "text": "lo sintió más manejable"
+          }
+        },
+        "stat_3": {
+          "type": "stat",
+          "settings": {
+            "when": "A LAS 4 SEMANAS",
+            "value": "—%",
+            "text": "notó menos quiebre"
+          }
+        }
+      },
+      "block_order": [
+        "stat_1",
+        "stat_2",
+        "stat_3"
+      ]
+    },
+    "faq": {
+      "type": "pdp-faq",
+      "settings": {
+        "eyebrow": "PREGUNTAS FRECUENTES",
+        "heading": "Sobre [producto]",
+        "open_first": true
+      }
+    },
+    "related": {
+      "type": "pdp-related",
+      "settings": {
+        "eyebrow": "COMPLETA TU RITUAL",
+        "heading": "Funciona mejor en",
+        "heading_em": "sistema",
+        "show_images": false,
+        "button_label": "Llévalo en kit",
+        "button_url": "/pages/kits"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "loves",
+    "signals",
+    "details",
+    "study",
+    "faq",
+    "related"
+  ]
+}

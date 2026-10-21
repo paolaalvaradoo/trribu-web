@@ -1,0 +1,210 @@
+{%- comment -%}
+  Configuración por defecto del quiz (JSON). Es la del prototipo, 1:1:
+  preguntas, opciones, puntajes, umbrales, textos del diagnóstico,
+  señales y herramientas. La sección "Quiz" puede reemplazarla entera con
+  su ajuste "config_override" (mismo formato).
+
+  Condiciones ("when"):
+    {"q":"signos","v":"quiebre"}   la respuesta incluye / es ese valor (v puede ser lista = cualquiera)
+    {"product":"masc"}             ese producto quedó recomendado
+    {"any":[…]} {"all":[…]} {"not":{…}}   combinaciones; sin "when" = siempre
+  scoring: cada regla suma "pts" al producto; el producto entra si llega a "threshold".
+  diagnosis / signals.rules: capas; en cada capa gana la primera opción que cumple.
+{%- endcomment -%}
+{
+  "version": 1,
+  "products": {
+    "shampoo": "el-shampoo",
+    "acond": "el-acondicionador",
+    "masc": "la-mascarilla",
+    "leavein": "el-acondicionador-sin-enjuague"
+  },
+  "tools_handles": {
+    "peine": "el-peine",
+    "toalla": "la-toalla",
+    "gorro": "el-gorro",
+    "pinzas": "las-pinzas"
+  },
+  "kits": {
+    "duo": { "handle": "el-duo", "contains": ["shampoo", "acond"] },
+    "esencial": { "handle": "kit-esencial", "contains": ["shampoo", "acond", "masc"] },
+    "completo": { "handle": "el-kit-completo", "contains": ["shampoo", "acond", "masc", "leavein", "toalla", "peine"] }
+  },
+  "questions": [
+    { "id": "signos", "multi": true, "cols": 2,
+      "title": "¿Cómo está tu pelo en este momento?", "help": "Elige todo lo que aplique — pueden ser varios.",
+      "options": [
+        { "v": "quiebre", "label": "Quebradizo o con puntas abiertas", "sub": "Se rompe a media hebra, daño visible" },
+        { "v": "frizz", "label": "Con frizz", "sub": "Se esponja o vuela con la humedad" },
+        { "v": "seco", "label": "Seco o sin flexibilidad", "sub": "Áspero, rígido, sin movimiento" },
+        { "v": "opaco", "label": "Opaco o sin brillo", "sub": "Se ve apagado, sin luminosidad" },
+        { "v": "cuerpo", "label": "Sin cuerpo", "sub": "La hebra se siente más fina que antes" },
+        { "v": "enredo", "label": "Difícil de desenredar", "sub": "Se enreda más, cuesta peinar y controlar" },
+        { "v": "caida", "label": "Con caída visible", "sub": "Más pelo del que me parece normal" },
+        { "v": "ninguno", "label": "Está bastante bien", "sub": "Quiero cuidarlo y prevenir", "solo": true }
+      ] },
+    { "id": "porosidad", "multi": false, "cols": 3,
+      "title": "Si solo usaras shampoo y nada más, ¿cómo quedaría tu pelo?", "help": "Sin acondicionador ni ningún otro producto.",
+      "options": [
+        { "v": "alta", "label": "Muy reseco y áspero", "sub": "Casi imposible de peinar" },
+        { "v": "media", "label": "Algo seco pero manejable", "sub": "Necesita acondicionador" },
+        { "v": "baja", "label": "Bastante bien", "sub": "Suave, no le hace falta mucho" }
+      ] },
+    { "id": "tratamientos", "multi": true, "cols": 2,
+      "title": "¿Te tiñes o tratas tu pelo?", "help": "Elige todo lo que aplique actualmente.",
+      "options": [
+        { "v": "virgen", "label": "Nada", "sub": "Pelo virgen, sin tratar", "solo": true },
+        { "v": "tinteRaices", "label": "Tinte en raíces", "sub": "Para cubrir canas" },
+        { "v": "tinteTodo", "label": "Tinte en todo el largo", "sub": "Color parejo de raíz a puntas" },
+        { "v": "mechas", "label": "Mechas, balayage o decoloración", "sub": "Técnicas de aclarado" },
+        { "v": "keratina", "label": "Keratina o alisado", "sub": "Tratamiento vigente" },
+        { "v": "canas", "label": "Canas al natural", "sub": "Dejé el color" }
+      ] },
+    { "id": "tipo", "multi": false, "cols": 3,
+      "title": "¿Cómo es tu pelo de forma natural?", "help": "Si tienes keratina o alisado, piensa en cómo era antes.",
+      "options": [
+        { "v": "lacio", "label": "Lacio", "sub": "Cae liso, sin movimiento propio" },
+        { "v": "ondas", "label": "Ondas suaves", "sub": "Algo de movimiento, ondas abiertas" },
+        { "v": "rizado", "label": "Rizado", "sub": "Rizos definidos en espiral" },
+        { "v": "crespo", "label": "Crespo", "sub": "Rizo muy cerrado, textura densa" }
+      ] },
+    { "id": "grosor", "multi": false, "cols": 3,
+      "title": "¿Cómo es el grosor de tu pelo?", "help": "Piensa en una sola hebra, no en cuánto pelo tienes.",
+      "options": [
+        { "v": "fino", "label": "Fino", "sub": "Casi no lo siento — liviano, se enreda solo" },
+        { "v": "medio", "label": "Medio", "sub": "Lo siento entre los dedos" },
+        { "v": "grueso", "label": "Grueso", "sub": "Con peso propio, difícil de ignorar" }
+      ] },
+    { "id": "cuero", "multi": false, "cols": 2,
+      "title": "Al día siguiente de lavarlo, ¿cómo sientes tu cuero?", "help": "Sin hacer ejercicio ni en un día muy húmedo.",
+      "options": [
+        { "v": "graso", "label": "Ya con grasa", "sub": "Necesito lavarlo casi a diario" },
+        { "v": "equilibrado", "label": "Equilibrado", "sub": "Aguanta dos o tres días bien" },
+        { "v": "seco", "label": "Seco o tirante", "sub": "A veces pica o se siente sensible" },
+        { "v": "calor", "label": "Uso calor casi a diario", "sub": "Plancha o secador la mayoría de días" }
+      ] },
+    { "id": "futuros", "multi": true, "cols": 2,
+      "title": "¿Algo de esto te está pasando también?",
+      "help": "Marca lo que reconozcas. No cambia tu ritual — nos dice qué formular después.",
+      "options": [
+        { "v": "cejas", "label": "Mis pestañas y cejas están más ralas", "sub": "Se ven más cortas, más finas o con menos pelo que antes" },
+        { "v": "densidad", "label": "Veo menos densidad en la coronilla o las entradas", "sub": "Se marca más el cuero cuando me peino o me da la luz" },
+        { "v": "pelitos", "label": "Se me paran los pelitos nuevos de la raíz", "sub": "Esos cortitos que crecen y no se dejan peinar" },
+        { "v": "puntas", "label": "Al final del día mis puntas se ven secas", "sub": "Y no quiero lavarme otra vez para recuperar el brillo" },
+        { "v": "rizos", "label": "Mi rizo ya no se arma como antes", "sub": "Se abre, se desdefine o se comporta distinto en cada zona" },
+        { "v": "cueroPica", "label": "Me pica o se me descama el cuero", "sub": "Molestia, tirantez o escamas cada cierto tiempo" },
+        { "v": "nada", "label": "Nada de esto por ahora", "sub": "", "solo": true }
+      ] },
+    { "id": "momento", "multi": false, "cols": 2,
+      "title": "¿Estás pasando por alguna de estas etapas?", "help": "Afectan directamente al pelo. Es opcional.",
+      "options": [
+        { "v": "peri", "label": "Perimenopausia", "sub": "Ciclos irregulares, primeros cambios" },
+        { "v": "meno", "label": "Menopausia", "sub": "Ya pasé por la transición" },
+        { "v": "nosegura", "label": "No estoy segura", "sub": "Tengo señales, pero nadie me lo ha confirmado" },
+        { "v": "sensible", "label": "Vengo de un tratamiento médico", "sub": "Quiero evitar ciertos ingredientes" },
+        { "v": "nose", "label": "Ninguna / prefiero no decir", "sub": "Solo quiero cuidar mi pelo" }
+      ] }
+  ],
+  "core": ["shampoo", "acond"],
+  "scoring": [
+    { "product": "masc", "threshold": 6, "rules": [
+      { "when": { "q": "signos", "v": "quiebre" }, "pts": 6, "decisive": true },
+      { "when": { "q": "signos", "v": "caida" }, "pts": 6, "decisive": true },
+      { "when": { "q": "tratamientos", "v": "mechas" }, "pts": 6, "decisive": true },
+      { "when": { "q": "porosidad", "v": "alta" }, "pts": 6, "decisive": true },
+      { "when": { "q": "signos", "v": "seco" }, "pts": 4 },
+      { "when": { "q": "tipo", "v": "crespo" }, "pts": 4 },
+      { "when": { "q": "tipo", "v": "rizado" }, "pts": 2 },
+      { "when": { "q": "signos", "v": "opaco" }, "pts": 3 },
+      { "when": { "q": "tratamientos", "v": "tinteTodo" }, "pts": 3 },
+      { "when": { "q": "tratamientos", "v": "tinteRaices" }, "pts": 2 },
+      { "when": { "q": "tratamientos", "v": "keratina" }, "pts": 2 },
+      { "when": { "q": "tratamientos", "v": "canas" }, "pts": 2 },
+      { "when": { "q": "signos", "v": "enredo" }, "pts": 1 }
+    ] },
+    { "product": "leavein", "threshold": 6, "rules": [
+      { "when": { "q": "signos", "v": "frizz" }, "pts": 6, "decisive": true },
+      { "when": { "q": "cuero", "v": "calor" }, "pts": 6, "decisive": true },
+      { "when": { "q": "signos", "v": "enredo" }, "pts": 4 },
+      { "when": { "q": "porosidad", "v": "alta" }, "pts": 3 },
+      { "when": { "q": "signos", "v": "cuerpo" }, "pts": 3 },
+      { "when": { "q": "grosor", "v": "fino" }, "pts": 3 },
+      { "when": { "q": "tipo", "v": ["rizado", "crespo"] }, "pts": 3 },
+      { "when": { "q": "tratamientos", "v": "keratina" }, "pts": 1 }
+    ] }
+  ],
+  "titles": {
+    "2": { "title": "El Dúo", "sub": "Donde empieza toda reparación." },
+    "3": { "title": "Kit Esencial", "sub": "El trío base para tu pelo." },
+    "4": { "title": "El Ritual Completo", "sub": "Todo el sistema, de día y de noche." },
+    "default": { "title": "Tu ritual", "sub": "A tu medida." }
+  },
+  "product_tags": { "masc": "1 VEZ POR SEMANA", "leavein": "SIN ENJUAGUE", "default": "CADA LAVADO" },
+  "diagnosis": [
+    { "id": "dominante", "options": [
+      { "tag": "quiebre", "when": { "q": "signos", "v": "quiebre" }, "text": "Lo tuyo empieza en el quiebre: la fibra cede antes de tiempo. Trabajamos los enlaces internos en cada paso, con la mayor concentración donde más se necesita." },
+      { "tag": "caida", "when": { "q": "signos", "v": "caida" }, "text": "Ves más pelo del que te parece normal. Lo más probable es que buena parte no se esté cayendo desde la raíz: se está rompiendo a media hebra. Ahí sí podemos trabajar — reforzando los enlaces internos." },
+      { "tag": "frizz", "when": { "q": "signos", "v": "frizz" }, "text": "El frizz aparece cuando la cutícula se levanta. Cerramos la fibra en el enjuague y la protegemos después, para que el resultado dure entre lavados." },
+      { "tag": "seco", "when": { "q": "signos", "v": "seco" }, "text": "La sequedad manda en tu caso: menos sebo, menos agua retenida. Sumamos nutrición profunda, sin siliconas que solo aparenten suavidad." },
+      { "tag": "cuerpo", "when": { "q": "signos", "v": "cuerpo" }, "text": "Tu hebra está más fina que antes. Los péptidos de kiwicha, quinua y arveja aportan cuerpo al tacto para que la cola de caballo vuelva a sentirse llena." },
+      { "tag": "enredo", "when": { "q": "signos", "v": "enredo" }, "text": "El enredo es fricción, y la fricción termina en quiebre: cada vez que peinas a la fuerza, pierdes hebra. Bajamos el roce en cada paso para que desenredar deje de castigarte." },
+      { "tag": "opaco", "when": { "q": "signos", "v": "opaco" }, "text": "La opacidad viene de una cutícula irregular: la luz se dispersa en vez de rebotar. Al cerrarla, el brillo vuelve solo." },
+      { "tag": "prevencion", "text": "Tu pelo está en el mejor momento para intervenir: las señales recién empiezan. Cuidar la fibra ahora es mucho más fácil que repararla después, cuando el daño ya se acumuló." }
+    ] },
+    { "id": "porosidad", "options": [
+      { "when": { "q": "porosidad", "v": "alta" }, "text": "Tu respuesta sobre el shampoo solo nos dice mucho: esa aspereza es porosidad alta — la cutícula quedó abierta y el pelo pierde agua tan rápido como la absorbe. Por eso no basta con hidratar: hay que sellar." },
+      { "when": { "q": "porosidad", "v": "baja" }, "text": "Tu fibra retiene bien la hidratación, así que trabajamos en mantenerla y prevenir — sin sobrecargarla con producto que no necesita." }
+    ] },
+    { "id": "quimico", "options": [
+      { "when": { "q": "tratamientos", "v": "mechas" }, "text": "Y hay una capa que pesa más que el resto: las mechas. La decoloración abre la cutícula y rompe enlaces internos — sobre todo en el tercio superior, donde el pelo ya viene debilitado por la transición. Es daño químico acumulado: por eso tu ritual lleva sí o sí el paso de reparación profunda, y todo es color-safe para que el tono no se apague antes de tiempo." },
+      { "when": { "q": "tratamientos", "v": "tinteTodo" }, "text": "Al teñir todo el largo sumas daño químico y porosidad en cada aplicación. Tu ritual es color-safe: limpia y repara sin arrastrar el tono, para que el retoque te dure más." },
+      { "when": { "q": "tratamientos", "v": "tinteRaices" }, "text": "El retoque de raíces castiga menos que el color completo, pero se acumula. Todo lo que te damos es color-safe: cuida el tono mientras repara la fibra." },
+      { "when": { "q": "tratamientos", "v": "canas" }, "text": "El pelo con canas es naturalmente más poroso y áspero: absorbe distinto y se enreda más. Tu ritual trabaja esa porosidad para devolverle suavidad y luz, sin cubrir nada." }
+    ] },
+    { "id": "textura", "options": [
+      { "when": { "q": "tipo", "v": "crespo" }, "text": "Tu textura crespa además necesita más agua y más lípidos que cualquier otra: el rizo cerrado hace que el sebo natural no baje por la hebra. Por eso la nutrición pesa más en tu ritual." },
+      { "when": { "q": "tipo", "v": "rizado" }, "text": "En pelo rizado la cutícula está naturalmente más abierta en las curvas, así que pierde agua más rápido y el rizo se desdefine. Trabajamos en cerrar y sellar para que el rizo aguante." }
+    ] },
+    { "id": "keratina", "options": [
+      { "when": { "q": "tratamientos", "v": "keratina" }, "text": "Y como tienes keratina o alisado vigente, formulamos sin sulfatos: son los que arrastran el tratamiento y te acortan su duración." }
+    ] },
+    { "id": "cuero", "options": [
+      { "when": { "q": "cuero", "v": "calor" }, "text": "Con calor casi a diario, la protección térmica no es opcional — es lo que evita que el daño se acumule cada mañana." },
+      { "when": { "q": "cuero", "v": "graso" }, "text": "Tu cuero produce grasa rápido, así que la limpieza tiene que ser suave pero efectiva: sin sulfatos que resequen y disparen aún más la producción de sebo." },
+      { "when": { "q": "cuero", "v": "seco" }, "text": "Tu cuero se siente seco o sensible — algo muy común en la transición. La niacinamida y el romero dan confort sin cargar la raíz." }
+    ] },
+    { "id": "etapa", "options": [
+      { "when": { "q": "momento", "v": "sensible" }, "text": "Y como vienes de un tratamiento, todo lo que te recomendamos pasa nuestros filtros: sin disruptores endocrinos ni fitoestrógenos." }
+    ] }
+  ],
+  "signals": {
+    "from_answer": { "q": "signos", "labels": { "quiebre": "quiebre", "frizz": "frizz", "seco": "sequedad", "cuerpo": "menos cuerpo", "enredo": "difícil de desenredar", "caida": "caída por quiebre", "opaco": "sin brillo" } },
+    "rules": [
+      { "options": [ { "when": { "q": "porosidad", "v": "alta" }, "add": ["porosidad alta"] } ] },
+      { "options": [
+        { "when": { "q": "tratamientos", "v": "mechas" }, "add": ["daño químico por mechas", "color que se apaga"] },
+        { "when": { "q": "tratamientos", "v": ["tinteTodo", "tinteRaices"] }, "add": ["daño químico", "color que se apaga"] }
+      ] },
+      { "options": [ { "when": { "q": "tratamientos", "v": "keratina" }, "add": ["alisado que se acorta"] } ] },
+      { "options": [ { "when": { "q": "tratamientos", "v": "canas" }, "add": ["porosidad de canas"] } ] },
+      { "options": [ { "when": { "q": "cuero", "v": "calor" }, "add": ["daño por calor"] } ] },
+      { "options": [ { "when": { "q": "cuero", "v": "seco" }, "add": ["cuero sensible"] } ] },
+      { "options": [ { "when": { "all": [ { "q": "grosor", "v": "fino" }, { "not": { "q": "signos", "v": "cuerpo" } } ] }, "add": ["hebra fina"] } ] },
+      { "options": [
+        { "when": { "q": "tipo", "v": "crespo" }, "add": ["textura crespa"] },
+        { "when": { "q": "tipo", "v": "rizado" }, "add": ["rizo que se abre"] }
+      ] }
+    ],
+    "fallback": ["prevención", "fibra en transición"]
+  },
+  "tools": {
+    "max": 3,
+    "items": [
+      { "key": "peine", "bg": "#F4EFE9", "when": { "q": "signos", "v": "enredo" }, "why": "Se te enreda: el acetato desliza sin tirar ni cargar estática, incluso en mojado." },
+      { "key": "toalla", "bg": "#ECEFEA", "when": { "any": [ { "q": "signos", "v": "frizz" }, { "q": "cuero", "v": "calor" } ] }, "why": "El algodón raspa la cutícula y dispara el frizz. La microfibra waffle absorbe con menos fricción." },
+      { "key": "gorro", "bg": "#EDEFEC", "when": { "any": [ { "product": "masc" }, { "q": "signos", "v": "seco" }, { "q": "porosidad", "v": "alta" } ] }, "why": "Potencia el tiempo de acción de La Mascarilla y cuida tu peinado entre lavados." },
+      { "key": "pinzas", "bg": "#F4EFE9", "when": { "any": [ { "q": "signos", "v": "quiebre" }, { "q": "grosor", "v": "fino" } ] }, "why": "El metal y el plástico duro doblan y parten la hebra frágil. El acetato sujeta firme, sin marca." }
+    ],
+    "fallback": { "key": "peine", "bg": "#F4EFE9", "why": "Desenreda sin romper — la herramienta base de cualquier ritual." }
+  }
+}

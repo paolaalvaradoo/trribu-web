@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "gen-search",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

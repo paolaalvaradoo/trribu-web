@@ -1,0 +1,406 @@
+{
+  "sections": {
+    "hero": {
+      "type": "sis-hero",
+      "settings": {
+        "eyebrow": "EL SISTEMA",
+        "title": "No es tu imaginación.",
+        "serif": "Es hormonal.",
+        "text": "Cuando bajan los estrógenos, el pelo cambia con ellos. Se quiebra donde antes no se quebraba, se encrespa con una humedad que antes no lo afectaba, y pierde el cuerpo que tenía. No es que estés usando mal el shampoo: el pelo que tienes hoy no es el mismo que tenías hace cinco años, y por eso lo de siempre dejó de funcionar."
+      }
+    },
+    "photo": {
+      "type": "sis-photo",
+      "settings": {
+        "label": "Foto a sangre · detalle de pelo en luz natural · sin rostro"
+      }
+    },
+    "signals": {
+      "type": "sis-signals",
+      "settings": {
+        "title": "El pelo no cambia en una sola cosa.",
+        "text": "Cambia en varias a la vez, y por eso las soluciones sueltas se quedan cortas. Estas son las señales que aparecen — no todas juntas, no en el mismo orden, no en todas igual.",
+        "link_label": "HAZ EL TEST · 1 MIN",
+        "link": "/pages/quiz"
+      },
+      "blocks": {
+        "signal_1": {
+          "type": "signal",
+          "settings": {
+            "text": "Frizz que antes no tenías"
+          }
+        },
+        "signal_2": {
+          "type": "signal",
+          "settings": {
+            "text": "Sequedad que no cede con acondicionador"
+          }
+        },
+        "signal_3": {
+          "type": "signal",
+          "settings": {
+            "text": "Pérdida de cuerpo — la melena ocupa menos espacio"
+          }
+        },
+        "signal_4": {
+          "type": "signal",
+          "settings": {
+            "text": "Fragilidad: el pelo se siente más delgado"
+          }
+        },
+        "signal_5": {
+          "type": "signal",
+          "settings": {
+            "text": "Quiebre — puntas y medios que se parten"
+          }
+        },
+        "signal_6": {
+          "type": "signal",
+          "settings": {
+            "text": "Pérdida de brillo"
+          }
+        },
+        "signal_7": {
+          "type": "signal",
+          "settings": {
+            "text": "Se enreda más y cuesta desenredarlo"
+          }
+        },
+        "signal_8": {
+          "type": "signal",
+          "settings": {
+            "text": "Canas, o el color que ya no agarra igual"
+          }
+        },
+        "signal_9": {
+          "type": "signal",
+          "settings": {
+            "text": "Porosidad: absorbe agua rápido y la pierde igual de rápido"
+          }
+        },
+        "signal_10": {
+          "type": "signal",
+          "settings": {
+            "text": "Cuero cabelludo más sensible o reactivo"
+          }
+        }
+      },
+      "block_order": [
+        "signal_1",
+        "signal_2",
+        "signal_3",
+        "signal_4",
+        "signal_5",
+        "signal_6",
+        "signal_7",
+        "signal_8",
+        "signal_9",
+        "signal_10"
+      ]
+    },
+    "fronts": {
+      "type": "sis-fronts",
+      "settings": {
+        "eyebrow": "QUÉ TRABAJAMOS",
+        "title": "Diez señales.",
+        "title_serif": "Cuatro frentes.",
+        "text": "Las diez señales del pelo que está cambiando no son diez problemas: son una causa que sale por cuatro lados.",
+        "label_prefix": "FRENTE",
+        "note": "<p>Trabajamos la fibra del pelo. No el folículo, no tus hormonas — no prometemos crecimiento. <a href=\"/pages/transparencia\">Cómo lo formulamos</a></p>"
+      },
+      "blocks": {
+        "front_1": {
+          "type": "front",
+          "settings": {
+            "title": "Refuerzo interno",
+            "color": "#8E524B",
+            "text": "Las moléculas bond y los péptidos trabajan dentro del córtex: enlaces más firmes, hebra más resistente.",
+            "tags": "Fragilidad, Quiebre, Menos cuerpo"
+          }
+        },
+        "front_2": {
+          "type": "front",
+          "settings": {
+            "title": "Sellado de la cutícula",
+            "color": "#7A5F3F",
+            "text": "Los aceites vegetales y los insaponificables de oliva cierran la superficie: menos porosidad, menos encrespado, y la luz vuelve a rebotar.",
+            "tags": "Frizz, Menos brillo, Porosidad y aspereza"
+          }
+        },
+        "front_3": {
+          "type": "front",
+          "settings": {
+            "title": "Hidratación y deslizamiento",
+            "color": "#7A2230",
+            "text": "Glicerina, aloe y péptidos retienen el agua; los lípidos vegetales bajan la fricción. Peinar deja de castigar.",
+            "tags": "Sequedad, Difícil de desenredar"
+          }
+        },
+        "front_4": {
+          "type": "front",
+          "settings": {
+            "title": "Cuero y color",
+            "color": "#795448",
+            "text": "Niacinamida, aloe y romero dan confort al cuero cabelludo en El Shampoo. Y las cuatro fórmulas son color-safe: no destiñen tu color ni tus mechas.",
+            "tags": "Cuero sensible, Canas y color"
+          }
+        }
+      },
+      "block_order": [
+        "front_1",
+        "front_2",
+        "front_3",
+        "front_4"
+      ]
+    },
+    "tech": {
+      "type": "sis-tech",
+      "settings": {
+        "eyebrow": "LA TECNOLOGÍA",
+        "title_before": "Una tecnología,",
+        "title_accent": "TRRIBOND",
+        "title_after": ", en cada gota.",
+        "text": "TRRIBOND es el grupo de ingredientes que trabaja la estructura de la fibra, y está en los cuatro productos. No es toda la fórmula: es la parte que repara y protege.",
+        "label": "Foto de textura · pelo · ingredientes"
+      },
+      "blocks": {
+        "row_1": {
+          "type": "row",
+          "settings": {
+            "title": "Moléculas bond de glucosa",
+            "text": "Refuerzan la fibra desde adentro, donde se debilitó. Es el corazón de TRRIBOND."
+          }
+        },
+        "row_2": {
+          "type": "row",
+          "settings": {
+            "title": "Péptidos de quinua y arveja",
+            "text": "Aportan hidratación y flexibilidad a la fibra, y ayudan a controlar el frizz."
+          }
+        },
+        "row_3": {
+          "type": "row",
+          "settings": {
+            "title": "Péptidos de kiwicha",
+            "text": "De los Andes. Trabajan sobre la fibra que se adelgazó."
+          }
+        },
+        "row_4": {
+          "type": "row",
+          "settings": {
+            "title": "Extracto de romero",
+            "text": "Antioxidante. Protege del daño diario — sol, contaminación y el calor de la plancha o el secador."
+          }
+        }
+      },
+      "block_order": [
+        "row_1",
+        "row_2",
+        "row_3",
+        "row_4"
+      ]
+    },
+    "together": {
+      "type": "sis-together",
+      "settings": {
+        "eyebrow": "Y ADEMÁS, EN CADA FÓRMULA",
+        "title": "Lo que trabaja junto a TRRIBOND.",
+        "text": "TRRIBOND es una parte del sistema. El resto de la fórmula hace el trabajo que no le corresponde a la estructura: hidratar, nutrir, sellar, proteger del calor y mantener el cuero cabelludo en calma.",
+        "columns": 3
+      },
+      "blocks": {
+        "ing_1": {
+          "type": "ingredient",
+          "settings": {
+            "tag": "EN LOS 4",
+            "title": "Glicerina",
+            "text": "Hidratación inmediata. Es lo que hace que el pelo se sienta distinto desde el primer contacto con el producto."
+          }
+        },
+        "ing_2": {
+          "type": "ingredient",
+          "settings": {
+            "tag": "AMAZONÍA",
+            "title": "Manteca de copoazú",
+            "text": "Nutrición profunda y suavidad. Es una de las mantecas con mayor capacidad de retener agua en la fibra."
+          }
+        },
+        "ing_3": {
+          "type": "ingredient",
+          "settings": {
+            "tag": "OLIVA",
+            "title": "Insaponificables de oliva",
+            "text": "Sensorial sedoso y deslizamiento real. Es lo que hace que un producto limpio no se sienta castigador."
+          }
+        },
+        "ing_4": {
+          "type": "ingredient",
+          "settings": {
+            "tag": "EN LOS 4",
+            "title": "Niacinamida",
+            "text": "Confort y equilibrio. En El Shampoo trabaja el cuero cabelludo, que en la transición se vuelve más reactivo."
+          }
+        },
+        "ing_5": {
+          "type": "ingredient",
+          "settings": {
+            "tag": "PERÚ",
+            "title": "Aceite de maracuyá",
+            "text": "Ligero y de rápida absorción. Aporta brillo sin dejar sensación pesada."
+          }
+        },
+        "ing_6": {
+          "type": "ingredient",
+          "settings": {
+            "tag": "SOLO EN EL SIN ENJUAGUE",
+            "title": "Protección térmica",
+            "text": "Un filmógeno vegetal que protege ante el calor de la secadora y la plancha."
+          }
+        },
+        "ing_7": {
+          "type": "ingredient",
+          "settings": {
+            "tag": "SELVA",
+            "title": "Aceite de sacha inchi",
+            "text": "Omega 3, 6 y 9. Se funde en la fibra para nutrir y sellar. En El Acondicionador y La Mascarilla, que son los pasos de nutrición."
+          }
+        },
+        "ing_8": {
+          "type": "ingredient",
+          "settings": {
+            "tag": "VEGETAL",
+            "title": "Aceite de brócoli",
+            "text": "La alternativa vegetal al efecto de la silicona: deslizamiento y brillo, sin silicona."
+          }
+        },
+        "ing_9": {
+          "type": "ingredient",
+          "settings": {
+            "tag": "EN 3 DE LOS 4",
+            "title": "Aloe vera",
+            "text": "Calma e hidrata. La dosis más alta está en La Mascarilla."
+          }
+        }
+      },
+      "block_order": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5",
+        "ing_6",
+        "ing_7",
+        "ing_8",
+        "ing_9"
+      ]
+    },
+    "quartet": {
+      "type": "sis-quartet",
+      "settings": {
+        "eyebrow": "EL CUARTETO",
+        "title": "Cuatro pasos. Un solo sistema.",
+        "text": "Cada fórmula está calibrada para su momento. Juntas cubren las señales del pelo que está cambiando.",
+        "btn1_label": "CONOCE LA LÍNEA",
+        "btn1_link": "/collections/all",
+        "btn2_label": "VER LOS KITS",
+        "btn2_link": "/pages/kits"
+      },
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "handle": "el-shampoo",
+            "number": "01",
+            "name": "El Shampoo",
+            "text": "Limpia sin sulfatos y deja el pelo en el pH que el resto del sistema necesita. Es el único paso que trabaja el cuero cabelludo. Casi no lleva aceites, a propósito: un limpiador que nutre deja residuo y apelmaza."
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "handle": "el-acondicionador",
+            "number": "02",
+            "name": "El Acondicionador",
+            "text": "Devuelve deslizamiento y manejabilidad. El desenredo importa más de lo que parece: es donde más se rompe el pelo frágil."
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "handle": "la-mascarilla",
+            "number": "03",
+            "name": "La Mascarilla",
+            "text": "El tratamiento semanal, y el punto más alto de los tres ejes a la vez. Lleva la dosis más alta de moléculas bond del cuarteto. Es el paso que trabaja el daño acumulado."
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "handle": "el-acondicionador-sin-enjuague",
+            "number": "04",
+            "name": "El Acondicionador<br>Sin Enjuague",
+            "text": "Se queda en el pelo durante el día. Controla el frizz, define la onda al aire y lleva protección ante el calor de la secadora y la plancha."
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4"
+      ]
+    },
+    "standard": {
+      "type": "sis-standard",
+      "settings": {
+        "eyebrow": "EL ESTÁNDAR",
+        "title": "Lo que dejamos fuera pesa tanto como lo que pusimos.",
+        "text": "Formular limpio no es el logro de esta marca — es su punto de partida. Lo que sí es una decisión: por qué esa vara existe.",
+        "link_label": "VER TODOS LOS INGREDIENTES",
+        "link": "/pages/transparencia",
+        "label": "Foto · manos o detalle doméstico · luz de ventana"
+      },
+      "blocks": {
+        "row_1": {
+          "type": "row",
+          "settings": {
+            "title": "Origen natural, sin química agresiva",
+            "text": "Sin siliconas, sin derivados del petróleo, sin PEG ni etoxilados, sin fragancias sintéticas, sin sulfatos. Vegano en los cuatro pasos."
+          }
+        },
+        "row_2": {
+          "type": "row",
+          "settings": {
+            "title": "Sin fitoestrógenos añadidos",
+            "text": "Ni soya activa, ni trébol rojo, ni lúpulo, ni linaza. Para que lo uses con tranquilidad."
+          }
+        }
+      },
+      "block_order": [
+        "row_1",
+        "row_2"
+      ]
+    },
+    "cta": {
+      "type": "sis-cta",
+      "settings": {
+        "label": "Foto a sangre · el cuarteto o lifestyle",
+        "title": "¿Reconoces tres o más señales?",
+        "sub": "El test te dice por dónde empezar.",
+        "btn_label": "HAZ EL TEST · 1 MIN",
+        "btn_link": "/pages/quiz"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "photo",
+    "signals",
+    "fronts",
+    "tech",
+    "together",
+    "quartet",
+    "standard",
+    "cta"
+  ]
+}

@@ -1,0 +1,48 @@
+{{ 'sis.css' | asset_url | stylesheet_tag }}
+<section class="sis-bg sis-bt">
+  <div class="wrap sis-w sec sis-split">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}<div class="sis-eyebrow sis-split__eyebrow">{{ section.settings.eyebrow }}</div>{%- endif -%}
+      <h2 class="sis-h2 sis-tech__title">{{ section.settings.title_before }}<br><span class="sis-tech__accent">{{ section.settings.title_accent }}</span>{{ section.settings.title_after }}</h2>
+      {%- if section.settings.text != blank -%}<p class="sis-tech__text">{{ section.settings.text }}</p>{%- endif -%}
+      {%- if section.blocks.size > 0 -%}
+        <div class="sis-rows">
+          {%- for block in section.blocks -%}
+            <div class="sis-rows__row" {{ block.shopify_attributes }}>
+              <div class="sis-rows__name">{{ block.settings.title }}</div>
+              <p class="sis-rows__text">{{ block.settings.text }}</p>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+    <div class="sis-split__media">
+      {% render 'media', image: section.settings.image, label: section.settings.label, sizes: '(max-width: 900px) 100vw, 50vw' %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sistema · TRRIBOND",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "LA TECNOLOGÍA" },
+    { "type": "text", "id": "title_before", "label": "Título · primera línea", "default": "Una tecnología," },
+    { "type": "text", "id": "title_accent", "label": "Título · palabra destacada", "default": "TRRIBOND" },
+    { "type": "text", "id": "title_after", "label": "Título · final", "default": ", en cada gota." },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "TRRIBOND es el grupo de ingredientes que trabaja la estructura de la fibra, y está en los cuatro productos. No es toda la fórmula: es la parte que repara y protege." },
+    { "type": "image_picker", "id": "image", "label": "Foto" },
+    { "type": "text", "id": "label", "label": "Indicación de la foto (solo editor)", "default": "Foto de textura · pelo · ingredientes" }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Ingrediente",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Nombre", "default": "Moléculas bond de glucosa" },
+        { "type": "textarea", "id": "text", "label": "Texto", "default": "Refuerzan la fibra desde adentro, donde se debilitó. Es el corazón de TRRIBOND." }
+      ]
+    }
+  ]
+}
+{% endschema %}

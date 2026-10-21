@@ -1,0 +1,66 @@
+{{ 'gen.css' | asset_url | stylesheet_tag }}
+<article class="sec">
+  <div class="wrap wrap--820">
+    <header class="gen-head">
+      <p class="eyebrow"><a href="{{ blog.url }}" class="txt-link txt-link--soft">{{ blog.title }}</a></p>
+      <h1 class="h2">{{ article.title }}</h1>
+      <p class="gen-art__meta">
+        {{- article.published_at | date: format: 'date' -}}
+        {%- if section.settings.show_author and article.author != blank %} · {{ article.author }}{% endif -%}
+      </p>
+    </header>
+  </div>
+  {%- if article.image -%}
+    <div class="wrap wrap--1120">
+      <div class="gen-art__hero">{% render 'media', image: article.image, label: article.title, sizes: '(max-width: 1120px) 100vw, 1120px', eager: true %}</div>
+    </div>
+  {%- endif -%}
+  <div class="wrap wrap--760">
+    <div class="rte gen-rte">{{ article.content }}</div>
+
+    <footer class="gen-art__foot">
+      <a href="{{ blog.url }}" class="txt-link">← Volver al {{ blog.title | downcase }}</a>
+      {%- if article.tags.size > 0 -%}
+        <div>{% for tag in article.tags %}<a href="{{ blog.url }}/tagged/{{ tag | handleize }}" class="pill">{{ tag }}</a> {% endfor %}</div>
+      {%- endif -%}
+    </footer>
+
+    {%- if blog.comments_enabled? -%}
+      <section class="gen-art__comments" aria-label="Comentarios">
+        <h2 class="h4">Comentarios{% if article.comments_count > 0 %} · {{ article.comments_count }}{% endif %}</h2>
+        {%- paginate article.comments by 20 -%}
+          {%- for comment in article.comments -%}
+            <div class="gen-art__comment">
+              <div class="rte body-sm">{{ comment.content }}</div>
+              <p class="small">{{ comment.author }} · {{ comment.created_at | date: format: 'date' }}</p>
+            </div>
+          {%- endfor -%}
+          {% render 'gen-pagination', paginate: paginate %}
+        {%- endpaginate -%}
+        {%- form 'new_comment', article, class: 'gen-art__form' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="gen-msg">{% if blog.moderated? %}Gracias. Tu comentario se publicará cuando lo revisemos.{% else %}Gracias por comentar.{% endif %}</p>
+          {%- endif -%}
+          {%- if form.errors -%}<div class="gen-msg gen-msg--err">{{ form.errors | default_errors }}</div>{%- endif -%}
+          <label for="CommentAuthor" class="visually-hidden">Nombre</label>
+          <input id="CommentAuthor" class="field" type="text" name="comment[author]" placeholder="Nombre" value="{{ form.author }}" required autocomplete="name">
+          <label for="CommentEmail" class="visually-hidden">Correo</label>
+          <input id="CommentEmail" class="field" type="email" name="comment[email]" placeholder="Correo" value="{{ form.email }}" required autocomplete="email">
+          <label for="CommentBody" class="visually-hidden">Comentario</label>
+          <textarea id="CommentBody" class="field" name="comment[body]" placeholder="Tu comentario" required>{{ form.body }}</textarea>
+          <div><button type="submit" class="btn btn--solid">Publicar comentario</button></div>
+        {%- endform -%}
+      </section>
+    {%- endif -%}
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Artículo",
+  "tag": "div",
+  "settings": [
+    { "type": "checkbox", "id": "show_author", "label": "Mostrar autora", "default": true }
+  ]
+}
+{% endschema %}

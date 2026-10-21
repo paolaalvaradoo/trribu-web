@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "gen-article",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

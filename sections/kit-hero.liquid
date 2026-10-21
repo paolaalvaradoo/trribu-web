@@ -1,0 +1,24 @@
+{{ 'kit.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign t1 = '−' | append: settings.tier1_pct | append: '%'
+  assign t2 = '−' | append: settings.tier2_pct | append: '%'
+  assign lede = section.settings.lede | replace: '[t1_pct]', t1 | replace: '[t2_pct]', t2 | replace: '[t1_min]', settings.tier1_min | replace: '[t2_min]', settings.tier2_min
+-%}
+<header class="kit-hero">
+  {%- if section.settings.eyebrow != blank -%}<div class="kit-eyebrow">{{ section.settings.eyebrow }}</div>{%- endif -%}
+  <h1 class="kit-hero__title">{{ section.settings.title }}{% if section.settings.title_accent != blank %} <span class="kit-strong">{{ section.settings.title_accent }}</span>{% endif %}</h1>
+  {%- if lede != blank -%}<p class="kit-hero__lede">{{ lede }}</p>{%- endif -%}
+</header>
+
+{% schema %}
+{
+  "name": "Kits · Encabezado",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "KITS" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Arma tu ritual," },
+    { "type": "text", "id": "title_accent", "label": "Título · parte destacada", "default": "a tu medida" },
+    { "type": "inline_richtext", "id": "lede", "label": "Bajada", "default": "Kits listos para no pensar — o <a href=\"/pages/arma-tu-ritual\" title=\"Arma tu ritual\">arma el tuyo libre aquí</a>.", "info": "Puedes usar [t1_pct] [t1_min] [t2_pct] [t2_min]: se reemplazan por los tramos de descuento de Configuración del tema." }
+  ]
+}
+{% endschema %}

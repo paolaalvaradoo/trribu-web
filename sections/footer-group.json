@@ -1,0 +1,17 @@
+{
+  "type": "footer",
+  "name": "Grupo footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "cuarteto": { "type": "menu", "settings": { "heading": "El cuarteto", "menu": "footer-cuarteto" } },
+        "marca": { "type": "menu", "settings": { "heading": "La marca", "menu": "footer-marca" } },
+        "siguenos": { "type": "menu", "settings": { "heading": "Síguenos", "menu": "footer-siguenos" } }
+      },
+      "block_order": ["cuarteto", "marca", "siguenos"],
+      "settings": {}
+    }
+  },
+  "order": ["footer"]
+}

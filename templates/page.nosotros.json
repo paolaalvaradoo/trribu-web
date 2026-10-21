@@ -1,0 +1,381 @@
+{
+  "sections": {
+    "hero": {
+      "type": "sob-hero",
+      "settings": {
+        "eyebrow": "Sobre TRRIBÚ",
+        "title": "No soy química.",
+        "title_2": "<strong>Soy la clienta.</strong>",
+        "lede": "No soy química, no soy farmacéutica, no soy ingeniera. Soy administradora con marketing — y soy investigadora desde siempre."
+      }
+    },
+    "manifesto": {
+      "type": "sob-manifesto",
+      "blocks": {
+        "m1": {
+          "type": "lead",
+          "settings": {
+            "text": "No soy química. No soy farmacéutica. No soy ingeniera.",
+            "white": false
+          }
+        },
+        "m2": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>Soy administradora con marketing. Y soy investigadora desde siempre.</p>"
+          }
+        },
+        "m3": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>Cuando mi mamá Isabel se enfermó de cáncer, pasé años investigando todo lo que podía hacer por ella en paralelo a su tratamiento. Foros médicos. Doctores naturópatas. Suplementos. Tintes sin amoniaco. Mascarillas sin formaldehído. Productos veganos. Porque su pelo se ponía muy seco con el tratamiento. Porque ella seguía siendo ella. Seguía siendo coqueta. Seguía queriendo verse bien.</p>"
+          }
+        },
+        "m4": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>No sé si lo que hice ayudó. Pero hice lo mejor que pude, con lo que sabía. <em>Cuando ella se fue, ese conocimiento se quedó conmigo.</em></p>"
+          }
+        },
+        "m5": {
+          "type": "divider",
+          "settings": {}
+        },
+        "m6": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>Hoy tengo más de 40. Mi propio pelo cambió. Más esponjoso. Más débil. <strong>Tengo mis mechas. Y no voy a renunciar a ellas.</strong> Veo a mi alrededor a otras mujeres profesionales pasando por lo mismo. Probamos lo de siempre y ya no nos sirve.</p>"
+          }
+        },
+        "m7": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>También tengo una amiga muy cercana, sobreviviente de cáncer de mama. Cuando le conté de TRRIBÚ, me dijo: <em>\"¿Por qué no me haces uno para mí?\"</em>. Ella es consciente, más que muchas, de que después de un cáncer hay cosas que mejor evitar.</p>"
+          }
+        },
+        "m8": {
+          "type": "divider",
+          "settings": {}
+        },
+        "m9": {
+          "type": "lead",
+          "settings": {
+            "text": "Entonces así nació TRRIBÚ. Una marca para el pelo que está cambiando.",
+            "white": true
+          }
+        },
+        "m10": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>Formulada con derivados naturales. Sin siliconas. Sin ingredientes que no le hubiera dado a mi mamá si estuviera viva. Sin disruptores endocrinos que mi amiga deba evitar.</p>"
+          }
+        },
+        "m11": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>Mi linaje no es de químicos. Es de mujeres que cuidan. De Isabel, que me enseñó a investigar todo lo que entra al cuerpo. De mi amiga, que me recordó que el cuidado se hace con conciencia. De mí misma, que entendí que mi pelo en transición merecía algo que aún no existía.</p>"
+          }
+        },
+        "m12": {
+          "type": "quote",
+          "settings": {
+            "text": "TRRIBÚ no es un seguro contra nada. TRRIBÚ promete que lo que pongo en tu pelo es lo que pondría en el de mi mamá <em>si estuviera viva.</em>"
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4",
+        "m5",
+        "m6",
+        "m7",
+        "m8",
+        "m9",
+        "m10",
+        "m11",
+        "m12"
+      ],
+      "settings": {
+        "eyebrow": "El manifiesto",
+        "name": "Pao",
+        "role": "Fundadora de TRRIBÚ"
+      }
+    },
+    "portrait": {
+      "type": "sob-portrait",
+      "settings": {
+        "position": "50% 30%"
+      }
+    },
+    "origins": {
+      "type": "sob-origins",
+      "blocks": {
+        "c1": {
+          "type": "card",
+          "settings": {
+            "label": "01 · Isabel",
+            "title": "Mi mamá",
+            "text": "Tres años acompañándola durante su cáncer me enseñaron a investigar todo lo que entra al cuerpo. Ese conocimiento es la raíz de TRRIBÚ.",
+            "filter": "Filtro · sin carcinógenos clasificados",
+            "ask": "\"¿Se lo daría a mi mamá si viviera?\""
+          }
+        },
+        "c2": {
+          "type": "card",
+          "settings": {
+            "label": "02 · La amiga",
+            "title": "Sobreviviente",
+            "text": "\"¿Por qué no me haces uno para mí?\". Su pregunta dejó clavado un segundo filtro: cada ingrediente con perfil hormonal debe ser un sí claro para ella.",
+            "filter": "Filtro · consciente del momento hormonal",
+            "ask": "\"¿Mi amiga puede usarlo sin preocupación?\""
+          }
+        },
+        "c3": {
+          "type": "card",
+          "settings": {
+            "label": "03 · Pao",
+            "title": "Yo misma",
+            "text": "Pasé los 40 y mi pelo cambió. Con mechas que no pienso soltar. Lo natural se sentía castigador; lo eficaz, sucio. Ninguna me hablaba a mí. Así que lo hice yo.",
+            "filter": "Filtro · performance real",
+            "ask": "\"¿Funciona en MI pelo?\""
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "settings": {
+        "eyebrow": "El origen",
+        "title": "Tres mujeres. <strong>Un solo cuidado.</strong>",
+        "lede": "TRRIBÚ no nace de una sola historia. Nace de tres capas humanas que se entrelazan · y de tres filtros que aplicamos a cada ingrediente.",
+        "note": "<p>Estas historias explican <em>por qué</em> formulamos como formulamos. No son una promesa médica ni un público objetivo. TRRIBÚ es cosmética capilar.</p>"
+      }
+    },
+    "promise": {
+      "type": "sob-promise",
+      "settings": {
+        "eyebrow": "Nuestra promesa",
+        "quote": "\"Lo que pongo en tu pelo es lo que pondría en el de mi mamá.\"",
+        "text": "Cada filtro que aplicamos, cada ingrediente que dejamos fuera, cada cosa que le exigimos a nuestras fórmulas nace de esa misma vara. El estándar con el que la cuidé es el mismo con el que formulamos para ti."
+      }
+    },
+    "not": {
+      "type": "sob-not",
+      "blocks": {
+        "n1": {
+          "type": "item",
+          "settings": {
+            "title": "No es un anticaída",
+            "text": "No prometemos crecimiento, no tocamos el folículo, no tratamos alopecia. Trabajamos la caída por quiebre — la que nace en la fibra."
+          }
+        },
+        "n2": {
+          "type": "item",
+          "settings": {
+            "title": "No es \"100% natural\"",
+            "text": "Usamos derivados naturales modificados cuando rinden mejor y pasan nuestros filtros. El fundamentalismo no es honestidad."
+          }
+        },
+        "n3": {
+          "type": "item",
+          "settings": {
+            "title": "No es un producto médico",
+            "text": "Nuestros filtros son una decisión de formulación. Si estás en tratamiento, consulta a tu especialista."
+          }
+        },
+        "n4": {
+          "type": "item",
+          "settings": {
+            "title": "No te llama frágil ni dañada",
+            "text": "Tu pelo no está roto. Está cambiando. Es distinto, y el lenguaje importa."
+          }
+        }
+      },
+      "block_order": [
+        "n1",
+        "n2",
+        "n3",
+        "n4"
+      ],
+      "settings": {
+        "eyebrow": "Lo que TRRIBÚ no es",
+        "title": "Una marca se mantiene viva siendo <strong>deliberadamente acotada.</strong>"
+      }
+    },
+    "system": {
+      "type": "sob-system",
+      "blocks": {
+        "s1": {
+          "type": "chip",
+          "settings": {
+            "label": "más frizz"
+          }
+        },
+        "s2": {
+          "type": "chip",
+          "settings": {
+            "label": "más sequedad"
+          }
+        },
+        "s3": {
+          "type": "chip",
+          "settings": {
+            "label": "menos cuerpo"
+          }
+        },
+        "s4": {
+          "type": "chip",
+          "settings": {
+            "label": "más fragilidad"
+          }
+        },
+        "s5": {
+          "type": "chip",
+          "settings": {
+            "label": "menos brillo"
+          }
+        },
+        "s6": {
+          "type": "chip",
+          "settings": {
+            "label": "más quiebre"
+          }
+        },
+        "s7": {
+          "type": "chip",
+          "settings": {
+            "label": "difícil de desenredar"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4",
+        "s5",
+        "s6",
+        "s7"
+      ],
+      "settings": {
+        "eyebrow": "El sistema",
+        "title": "No es un producto.",
+        "title_2": "<strong>Es un sistema.</strong>",
+        "text": "<p>La mayoría de las marcas formulan para un problema aislado. TRRIBÚ no. Formula para el pelo que está cambiando.</p><p>Después de los 40, tu pelo no tiene un solo problema: tiene una causa —la transición hormonal— que aparece en muchos frentes a la vez. Por eso un producto suelto no alcanza. TRRIBÚ es un sistema, con la tecnología <strong>TRRIBOND</strong> en cada paso.</p>"
+      }
+    },
+    "principles": {
+      "type": "sob-principles",
+      "blocks": {
+        "p1": {
+          "type": "principle",
+          "settings": {
+            "number": "01",
+            "title": "Para el momento, no para el problema",
+            "text": "No resolvemos una queja aislada. Acompañamos un momento de la vida: el pelo en transición."
+          }
+        },
+        "p2": {
+          "type": "principle",
+          "settings": {
+            "number": "02",
+            "title": "Honestidad antes que perfección",
+            "text": "No exageramos claims ni prometemos lo que no se cumple. Nunca decimos \"100% libre de químicos\" ni \"cura\" nada."
+          }
+        },
+        "p3": {
+          "type": "principle",
+          "settings": {
+            "number": "03",
+            "title": "Performance es respeto",
+            "text": "Un producto que no funciona bien es una falta de respeto. Ser limpio no basta: tiene que dar resultado real."
+          }
+        },
+        "p4": {
+          "type": "principle",
+          "settings": {
+            "number": "04",
+            "title": "Mujer real, no mujer ideal",
+            "text": "Hablamos a la mujer real: con sus mechas, su rutina, su tiempo escaso y su pelo que cambió. No a una mujer ideal."
+          }
+        },
+        "p5": {
+          "type": "principle",
+          "settings": {
+            "number": "05",
+            "title": "Linaje femenino de cuidado",
+            "text": "\"Tribu\" no es decoración. Quien entra a TRRIBÚ entra a un linaje de mujeres que cuidan, no compra un shampoo."
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "settings": {
+        "eyebrow": "En qué creemos",
+        "title": "Cinco principios <strong>no negociables.</strong>"
+      }
+    },
+    "name": {
+      "type": "sob-split",
+      "settings": {
+        "eyebrow": "El nombre",
+        "title": "De dónde sale TRRIBÚ.",
+        "title_2": "",
+        "ink_last": false,
+        "paper": false,
+        "text": "<p>Empezó en Isabel. Los primeros nombres jugaban con el suyo, escrito con K, Y y Z — de ahí quedó la raíz corporativa del grupo. El origen se quedó en el ADN.</p><p>El giro vino al enfocar el negocio: no una marca sobre la enfermedad, sino sobre la etapa que estoy viviendo. Mi tribu, las mujeres 40+ en transición. Así apareció «tribu».</p><p>Después el refinamiento: la doble R para darle fuerza, y el acento en la Ú para que sonara como lo que es. <strong>TRRIBÚ significa, literalmente, mi tribu.</strong> Del cuidado de una mujer nació el cuidado de muchas.</p>"
+      }
+    },
+    "method": {
+      "type": "sob-split",
+      "settings": {
+        "eyebrow": "El método",
+        "title": "No formulo.",
+        "title_2": "Curo el estándar.",
+        "ink_last": true,
+        "paper": true,
+        "text": "<p>No soy química ni formuladora. Pero cada ingrediente estrella de TRRIBÚ lo elegí yo, uno por uno, leyendo su ficha técnica y su certificado de análisis. No para saber de química: para verificar dos cosas — que hiciera lo que promete, y que pasara mis filtros.</p><p>Lo que dejé en manos del laboratorio fue su terreno: el sistema de tensioactivos, la estabilidad, la factibilidad. Y no acepté lo que me dieron sin más. La primera fórmula que llegó la descarté completa porque no respetaba el brief.</p><p>El reparto es claro: el laboratorio aporta la química y la fabricación. El criterio de qué entra y por qué es mío.</p>"
+      }
+    },
+    "clarify": {
+      "type": "sob-clarify",
+      "settings": {
+        "eyebrow": "Una aclaración",
+        "title": "Por qué TRRIBÚ no es",
+        "title_2": "una marca oncológica.",
+        "text": "<p>La historia de esta marca nace del cáncer, pero TRRIBÚ no es una marca para el cáncer. Hacer eso sería otro proyecto: exige aval de oncólogos, dermatólogos e instituciones, y es mucho más grande de lo que somos hoy.</p><p>Isabel es el corazón y el origen del estándar. <strong>TRRIBÚ es una marca de cuidado capilar para el pelo que está cambiando.</strong> Esa distinción es lo que nos permite honrar la historia sin instrumentalizarla.</p><p>Y también es lo que nos obliga a ser precisas: TRRIBÚ no es un seguro contra nada. Lo que promete es que lo que ponemos en tu pelo es lo que pondríamos en el de nuestra propia madre.</p>"
+      }
+    },
+    "cta": {
+      "type": "sob-cta",
+      "settings": {
+        "title": "Para nosotras. Las que cambiamos. <strong>Pero no renunciamos.</strong>",
+        "btn_label": "Conoce la línea",
+        "btn_link": "/collections/all"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "manifesto",
+    "portrait",
+    "origins",
+    "promise",
+    "not",
+    "system",
+    "principles",
+    "name",
+    "method",
+    "clarify",
+    "cta"
+  ]
+}

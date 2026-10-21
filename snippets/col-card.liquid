@@ -1,0 +1,59 @@
+{%- comment -%}
+  Tarjeta de la página Productos (TRRIBÚ Productos.dc.html).
+  Distinta de snippets/product-card: escenario de 250 px, barra de 2 px,
+  nombre en 19 px y verbos en minúscula.
+  Uso:
+    {% render 'col-card', product: p, cats: 'limpieza', button_label: 'Añadir al carrito', added_label: 'Añadido ✓', sold_out_label: 'Agotado' %}
+  - La foto y el nombre llevan a la ficha; el botón añade al carrito sin salir.
+  - cats: categorías del filtro separadas por espacio (data-cats).
+  - Fondo del escenario: metafield trribu.tint o el del prototipo según el handle.
+{%- endcomment -%}
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign tint = product.metafields.trribu.tint.value
+  if tint == blank
+    case product.handle
+      when 'el-acondicionador', 'acondicionador'
+        assign tint = '#F4F8F8'
+      when 'la-mascarilla', 'mascarilla'
+        assign tint = '#FAF3F6'
+      when 'el-acondicionador-sin-enjuague', 'acondicionador-sin-enjuague', 'sin-enjuague'
+        assign tint = '#F7F8F1'
+      else
+        assign tint = '#FAF7F2'
+    endcase
+  endif
+  assign name = product.title | escape | replace: ' Sin Enjuague', '<br>Sin Enjuague' | replace: ' sin enjuague', '<br>sin enjuague'
+-%}
+{%- capture num -%}{%- render 'product-field', product: product, field: 'number' -%}{%- endcapture -%}
+{%- capture badge -%}{%- render 'product-field', product: product, field: 'badge' -%}{%- endcapture -%}
+{%- capture verbs -%}{%- render 'product-field', product: product, field: 'verbs' -%}{%- endcapture -%}
+{%- capture size -%}{%- render 'product-field', product: product, field: 'size' -%}{%- endcapture -%}
+<div class="col-card" data-cats="{{ cats | strip }}" style="{% render 'product-field', product: product, field: 'style' %}--col-tint:{{ tint }};">
+  <a href="{{ product.url }}" class="col-card__link">
+    <div class="col-card__stage">
+      {%- if product.featured_media -%}
+        <div class="col-card__img">
+          {{ product.featured_media | image_url: width: 900 | image_tag: widths: '360, 540, 720, 900', sizes: '(max-width: 900px) 50vw, 25vw', loading: 'lazy', alt: product.featured_media.alt | default: product.title | escape }}
+        </div>
+      {%- else -%}
+        <div class="col-card__btl">{% render 'bottle', product: product, size: 'sm' %}</div>
+      {%- endif -%}
+      {%- if badge != blank -%}<span class="col-card__badge">{{ badge }}</span>{%- endif -%}
+      {%- if num != blank -%}<span class="col-card__num">{{ num }}</span>{%- endif -%}
+    </div>
+    <div class="col-card__bar"></div>
+    <div class="col-card__name">{{ name }}</div>
+    <div class="col-card__verbs">{{ verbs | downcase }}</div>
+    <div class="col-card__price">
+      <span class="col-card__p">{{ variant.price | money_without_trailing_zeros }}</span>
+      {%- if variant.compare_at_price > variant.price -%}<s class="col-card__was">{{ variant.compare_at_price | money_without_trailing_zeros }}</s>{%- endif -%}
+      {%- if size != blank -%}<span class="col-card__size">{{ size }}</span>{%- endif -%}
+    </div>
+  </a>
+  {%- if variant.available -%}
+    <button type="button" class="col-card__add" data-add-to-cart="{{ variant.id }}" data-added-label="{{ added_label | default: 'Añadido ✓' | escape }}">{{ button_label | default: 'Añadir al carrito' }}</button>
+  {%- else -%}
+    <button type="button" class="col-card__add" disabled>{{ sold_out_label | default: 'Agotado' }}</button>
+  {%- endif -%}
+</div>

@@ -1,0 +1,36 @@
+{{ 'sob.css' | asset_url | stylesheet_tag }}
+<section class="sob-not">
+  <div class="sob-not__head">
+    {%- if section.settings.eyebrow != blank -%}<p class="sob-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+    <h2 class="sob-h2 sob-h2--40">{{ section.settings.title }}</h2>
+  </div>
+  <div class="sob-not__grid">
+    {%- for block in section.blocks -%}
+      <div class="sob-not__card" {{ block.shopify_attributes }}>
+        <h3 class="sob-not__title">{{ block.settings.title }}</h3>
+        <p class="sob-not__text">{{ block.settings.text }}</p>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Nosotros · lo que no es",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Lo que TRRIBÚ no es" },
+    { "type": "inline_richtext", "id": "title", "label": "Título", "default": "Una marca se mantiene viva siendo <strong>deliberadamente acotada.</strong>" }
+  ],
+  "blocks": [
+    {
+      "type": "item", "name": "Tarjeta",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Título", "default": "No es un producto médico" },
+        { "type": "textarea", "id": "text", "label": "Texto" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Nosotros · lo que no es" }]
+}
+{% endschema %}

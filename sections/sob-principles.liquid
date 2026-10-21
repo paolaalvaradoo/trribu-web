@@ -1,0 +1,42 @@
+{{ 'sob.css' | asset_url | stylesheet_tag }}
+<section class="sob-pil">
+  <div class="sob-pil__in">
+    <div class="sob-pil__head">
+      {%- if section.settings.eyebrow != blank -%}<p class="sob-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="sob-h2">{{ section.settings.title }}</h2>
+    </div>
+    <ol class="sob-pil__list">
+      {%- for block in section.blocks -%}
+        <li class="sob-pil__row" {{ block.shopify_attributes }}>
+          <span class="sob-pil__num">{{ block.settings.number | default: forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          <div>
+            <h3 class="sob-pil__title">{{ block.settings.title }}</h3>
+            <p class="sob-pil__text">{{ block.settings.text }}</p>
+          </div>
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Nosotros · principios",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "En qué creemos" },
+    { "type": "inline_richtext", "id": "title", "label": "Título", "default": "Cinco principios <strong>no negociables.</strong>" }
+  ],
+  "blocks": [
+    {
+      "type": "principle", "name": "Principio",
+      "settings": [
+        { "type": "text", "id": "number", "label": "Número", "info": "Vacío = automático (01, 02…)" },
+        { "type": "text", "id": "title", "label": "Título", "default": "Principio" },
+        { "type": "textarea", "id": "text", "label": "Texto" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Nosotros · principios" }]
+}
+{% endschema %}

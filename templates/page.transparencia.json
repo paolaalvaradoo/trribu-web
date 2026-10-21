@@ -1,0 +1,460 @@
+{
+  "sections": {
+    "hero": {
+      "type": "tr-hero",
+      "settings": {
+        "eyebrow": "TRANSPARENCIA TOTAL",
+        "title": "Nada escondido detrás",
+        "subtitle": "de un nombre inventado.",
+        "lede": "Los nombres comerciales y los científicos coinciden. Acá está la lista completa de lo que dejamos fuera, con el nombre técnico de cada cosa y la razón de haberla sacado. No para que nos creas: para que puedas comprobarlo.",
+        "note": "El porcentaje de origen natural de cada producto se publicará cuando la maquila entregue la verificación ISO 16128. Hasta entonces, no damos una cifra."
+      }
+    },
+    "compare": {
+      "type": "tr-compare",
+      "settings": {
+        "eyebrow": "NUESTRO PUNTO DE PARTIDA",
+        "heading": "De dónde salimos, y dónde nos pasamos.",
+        "intro": "<p>«Clean» no tiene definición legal en ningún país. Cuando empezamos, tomamos como referencia el estándar más conocido del mercado —el de Clean at Sephora en Estados Unidos, una lista de más de 50 ingredientes— y desde ahí construimos el nuestro.</p><p>Coincidimos en lo esencial: sin parabenos, sin ftalatos, sin sulfatos, sin formaldehído ni sus liberadores, sin PFAS.</p><p>Y nos pasamos en seis cosas. No porque ese estándar esté mal — es de los mejores que existen. Sino porque nuestra clienta está en una etapa que pide más.</p>",
+        "col_label": "Criterio",
+        "col_ours": "NOSOTRAS",
+        "col_theirs": "ESE ESTÁNDAR",
+        "foot": "No decimos esto para competir con nadie. Lo decimos para que sepas exactamente dónde está nuestra vara — y puedas compararla con la de cualquier otra."
+      },
+      "blocks": {
+        "row_1": {
+          "type": "row",
+          "settings": {
+            "label": "Siliconas",
+            "ours": "Ninguna. Ni cíclicas ni lineales.",
+            "theirs": "Solo restringe las cíclicas. Un acondicionador con Dimethicone puede llevar el sello."
+          }
+        },
+        "row_2": {
+          "type": "row",
+          "settings": {
+            "label": "PEG y etoxilados",
+            "ours": "Toda la familia: PEG, los «-eth», Polysorbate, EDTA.",
+            "theirs": "Restringe los PEG con contaminantes, no la familia completa."
+          }
+        },
+        "row_3": {
+          "type": "row",
+          "settings": {
+            "label": "Derivados del petróleo",
+            "ours": "Ninguno. Sellamos con lípidos vegetales.",
+            "theirs": "Aceite mineral, petrolato y parafina figuran como «uso restringido»: se permiten con condiciones."
+          }
+        },
+        "row_4": {
+          "type": "row",
+          "settings": {
+            "label": "Fragancia sintética",
+            "ours": "Cero. Solo aceites esenciales, declarados uno por uno.",
+            "theirs": "Permite hasta 1 % de fragancia sintética sin desglosar."
+          }
+        },
+        "row_5": {
+          "type": "row",
+          "settings": {
+            "label": "Fenoxietanol",
+            "ours": "Ninguno.",
+            "theirs": "Permitido hasta 1 %. Es el conservante más común de toda la categoría clean."
+          }
+        },
+        "row_6": {
+          "type": "row",
+          "settings": {
+            "label": "Perfil hormonal",
+            "ours": "Sin disruptores endocrinos ni fitoestrógenos añadidos.",
+            "theirs": "No forma parte del estándar. No existe como criterio."
+          }
+        }
+      },
+      "block_order": [
+        "row_1",
+        "row_2",
+        "row_3",
+        "row_4",
+        "row_5",
+        "row_6"
+      ]
+    },
+    "sello": {
+      "type": "tr-sello",
+      "settings": {
+        "heading": "El Sello TRRIBÚ",
+        "lede": "Es el estándar que cumplen las cuatro fórmulas, sin excepción. También es el criterio con el que evaluamos cualquier ingrediente nuevo antes de que entre.",
+        "callout_title": "Seis familias en el envase, diez en esta página",
+        "callout_text": "<p>En la etiqueta comunicamos seis, porque es lo que cabe y lo que se recuerda. Acá está la lista completa. <strong>Toca cada una para ver el detalle.</strong></p>",
+        "seal_tag": "RR⁶",
+        "diff_tag": "EL DIFERENCIAL",
+        "what_label": "QUÉ ES",
+        "why_label": "POR QUÉ LO EXCLUIMOS",
+        "first_open": true
+      },
+      "blocks": {
+        "exclusion_1": {
+          "type": "exclusion",
+          "settings": {
+            "title": "Sin sulfatos",
+            "tag": "seal",
+            "what": "Detergentes fuertes de limpieza: SLS, SLES y similares. Incluye el «sulfato de sodio de coco», que suena natural y sigue siendo un sulfato agresivo.",
+            "why": "Arrancan los aceites naturales del pelo, resecan y destiñen el color. Limpiamos con tensioactivos de coco suaves en su lugar."
+          }
+        },
+        "exclusion_2": {
+          "type": "exclusion",
+          "settings": {
+            "title": "Sin siliconas",
+            "tag": "seal",
+            "what": "Dimethicone, Amodimethicone, Cyclopentasiloxane, Phenyl Trimethicone, Polysilicone-15 y familia.",
+            "why": "Dan brillo instantáneo, pero recubren la fibra, se acumulan y no son biodegradables. Con el tiempo apagan el pelo. Usamos insaponificables de oliva para el mismo deslizamiento, sin ese efecto."
+          }
+        },
+        "exclusion_3": {
+          "type": "exclusion",
+          "settings": {
+            "title": "Sin derivados del petróleo",
+            "tag": "seal",
+            "what": "Petrolato, aceite mineral y parafina.",
+            "why": "Sellan la fibra con una película que aparenta nutrir sin aportar nada. Sellamos con lípidos vegetales que sí alimentan: sacha inchi, copoazú, maracuyá, oliva."
+          }
+        },
+        "exclusion_4": {
+          "type": "exclusion",
+          "settings": {
+            "title": "Sin PEG ni etoxilados",
+            "tag": "seal",
+            "what": "Ingredientes con «PEG-» en el nombre, terminación «-eth-» (Laureth, Trideceth) o «Polysorbate».",
+            "why": "Su proceso de fabricación puede dejar trazas de 1,4-dioxano, clasificado como posible cancerígeno."
+          }
+        },
+        "exclusion_5": {
+          "type": "exclusion",
+          "settings": {
+            "title": "Sin fragancias sintéticas",
+            "tag": "seal",
+            "what": "Cualquier «Parfum» o «Fragrance» genérico que no esté desglosado.",
+            "why": "Puede traer alérgenos y ftalatos ocultos sin que se sepa. Nuestro aroma es solo aceites esenciales puros y declarados: pomelo, petitgrain y cedro."
+          }
+        },
+        "exclusion_6": {
+          "type": "exclusion",
+          "settings": {
+            "title": "Sin disruptores endocrinos",
+            "tag": "seal",
+            "what": "Sustancias que interfieren con el sistema hormonal. Incluye parabenos, ftalatos y fenoxietanol, que además excluimos por separado.",
+            "why": "Para que cualquier mujer en transición hormonal pueda usar TRRIBÚ con tranquilidad, sin tener que revisar el INCI ella misma."
+          }
+        },
+        "exclusion_7": {
+          "type": "exclusion",
+          "settings": {
+            "title": "Sin parabenos",
+            "tag": "none",
+            "what": "La familia completa: Methyl-, Propyl-, Butyl- y Ethylparaben.",
+            "why": "Conservantes con señales de actividad estrogénica. El Butylparaben está prohibido en la Unión Europea para menores de 3 años."
+          }
+        },
+        "exclusion_8": {
+          "type": "exclusion",
+          "settings": {
+            "title": "Sin ftalatos",
+            "tag": "none",
+            "what": "Plastificantes (DBP, DEHP, BBP) que suelen esconderse dentro de la palabra genérica «fragancia».",
+            "why": "Asociados a disrupción endocrina y prohibidos en la Unión Europea. Como nuestro aroma se declara en detalle, no hay dónde esconder uno."
+          }
+        },
+        "exclusion_9": {
+          "type": "exclusion",
+          "settings": {
+            "title": "Sin fenoxietanol",
+            "tag": "none",
+            "what": "El conservante más común de la categoría «clean» del mercado. Aparece en muchísimas marcas que se dicen limpias.",
+            "why": "Es uno de los ingredientes que más vigilamos. Nuestro sistema de conservación es Benzyl Alcohol, Benzoic Acid y Dehydroacetic Acid."
+          }
+        },
+        "exclusion_10": {
+          "type": "exclusion",
+          "settings": {
+            "title": "Sin fitoestrógenos añadidos",
+            "tag": "diff",
+            "what": "Compuestos vegetales que imitan débilmente al estrógeno: soya no purificada, trébol rojo, linaza, lúpulo, aguaje.",
+            "why": "No porque sean malos — no son hormonas ni disruptores. Los dejamos fuera para que TRRIBÚ sea seguro para cada mujer en transición, incluida la que tuvo un cáncer hormonosensible, sin pedirle que revise su historial médico antes de usar el producto. Es una decisión de precaución, no una condena científica.",
+            "fine": "Y acá la letra chica, porque importa. Decimos «añadidos» a propósito. No incorporamos ningún ingrediente por su función fitoestrogénica, pero algunos insumos vegetales pueden traer trazas naturales no cuantificadas — eso pasa con cualquier extracto botánico, en cualquier marca. El filtro es sobre lo que decidimos poner adentro, no sobre lo que la naturaleza trae de forma incidental. Prometer «cero trazas» sería mentir."
+          }
+        }
+      },
+      "block_order": [
+        "exclusion_1",
+        "exclusion_2",
+        "exclusion_3",
+        "exclusion_4",
+        "exclusion_5",
+        "exclusion_6",
+        "exclusion_7",
+        "exclusion_8",
+        "exclusion_9",
+        "exclusion_10"
+      ]
+    },
+    "trribond": {
+      "type": "tr-inci",
+      "settings": {
+        "eyebrow": "TRRIBOND A LA VISTA",
+        "heading": "Qué hay dentro.",
+        "lede": "No escondemos la tecnología detrás de un nombre. Cuando lees TRRIBOND, ves de qué está hecho.",
+        "col_1": "INGREDIENTE · INCI",
+        "col_2": "QUÉ HACE",
+        "col_3": "ORIGEN",
+        "foot": "<p><strong>El INCI completo</strong> de cada producto, en orden de concentración, vive en su ficha. Se publica entero, sin abreviar.</p>"
+      },
+      "blocks": {
+        "ingredient_1": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Moléculas bond de glucosa",
+            "inci": "Hydroxypropyl Gluconamide · Hydroxypropylammonium Gluconate",
+            "does": "Refuerzan la fibra desde adentro y reducen el quiebre.",
+            "origin": "Química de glucosa"
+          }
+        },
+        "ingredient_2": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Péptidos de kiwicha",
+            "inci": "Amaranthus Caudatus Seed Extract",
+            "does": "Trabajan sobre la fibra que se adelgazó.",
+            "origin": "Amaranto · Andes"
+          }
+        },
+        "ingredient_3": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Péptidos de quinua y arveja",
+            "inci": "Hydrolyzed Quinoa · Pisum Sativum (Pea) Seed Extract",
+            "does": "Hidratan la fibra y ayudan a controlar el frizz.",
+            "origin": "Quinua · arveja"
+          }
+        },
+        "ingredient_4": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Romero",
+            "inci": "Rosmarinus Officinalis Leaf Extract",
+            "does": "Antioxidante que protege la fibra del daño diario.",
+            "origin": "Extracto botánico"
+          }
+        },
+        "ingredient_5": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Acondicionamiento botánico",
+            "inci": "Behentrimonium Methosulfate · Behentrimonium Chloride · Guar Hydroxypropyltrimonium Chloride",
+            "does": "Desenredo inmediato y deslizamiento, sin siliconas.",
+            "origin": "Derivado vegetal · colza y guar"
+          }
+        },
+        "ingredient_6": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Insaponificables de oliva",
+            "inci": "Hydrogenated Ethylhexyl Olivate · Hydrogenated Olive Oil Unsaponifiables",
+            "does": "El sensorial sedoso de una silicona, sin silicona.",
+            "origin": "Oliva"
+          }
+        },
+        "ingredient_7": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Niacinamida",
+            "inci": "Niacinamide",
+            "does": "Confort para el cuero cabelludo, más reactivo en la transición.",
+            "origin": "Vitamina B3"
+          }
+        },
+        "ingredient_8": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Sacha inchi",
+            "inci": "Plukenetia Volubilis Seed Oil",
+            "does": "Omegas que nutren y sellan. En El Acondicionador y La Mascarilla.",
+            "origin": "Selva peruana"
+          }
+        },
+        "ingredient_9": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Manteca de copoazú y maracuyá",
+            "inci": "Theobroma Grandiflorum Seed Butter · Passiflora Edulis Seed Oil",
+            "does": "Nutren y sellan la cutícula; suavidad al tacto.",
+            "origin": "Amazonía · Perú"
+          }
+        },
+        "ingredient_10": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Aroma real",
+            "inci": "Citrus Paradisi · Citrus Aurantium Amara · Cedrus Deodara",
+            "does": "Perfume solo de aceites esenciales, sin fragancia sintética.",
+            "origin": "Aceites esenciales puros"
+          }
+        }
+      },
+      "block_order": [
+        "ingredient_1",
+        "ingredient_2",
+        "ingredient_3",
+        "ingredient_4",
+        "ingredient_5",
+        "ingredient_6",
+        "ingredient_7",
+        "ingredient_8",
+        "ingredient_9",
+        "ingredient_10"
+      ]
+    },
+    "filters": {
+      "type": "tr-filters",
+      "settings": {
+        "eyebrow": "CÓMO DECIDIMOS",
+        "heading": "Dos filtros con nombre propio.",
+        "lede": "Cada ingrediente pasa por los dos. Si falla uno, queda fuera — sin importar lo bien que funcione, lo que cueste o lo difícil que sea reemplazarlo."
+      },
+      "blocks": {
+        "filter_1": {
+          "type": "filter",
+          "settings": {
+            "title": "El filtro de mi mamá",
+            "quote": "«¿Se lo daría a ella con tranquilidad?»",
+            "body": "Es el filtro más grande. Cubre el origen de cada ingrediente, la ausencia de carcinógenos clasificados, la exclusión de siliconas y derivados del petróleo, y que todo sea vegano.",
+            "origin": "Viene de acompañar a mi mamá Isabel durante su enfermedad, revisando cada cosa que entraba a su cuerpo."
+          }
+        },
+        "filter_2": {
+          "type": "filter",
+          "settings": {
+            "title": "El filtro de mi amiga",
+            "quote": "«¿Ella puede usarlo sin preocuparse?»",
+            "body": "Es la precaución hormonal: sin disruptores endocrinos documentados y sin fitoestrógenos añadidos como activo.",
+            "origin": "Viene de una amiga sobreviviente de cáncer de mama, que me preguntó por qué no hacía uno para ella."
+          }
+        }
+      },
+      "block_order": [
+        "filter_1",
+        "filter_2"
+      ]
+    },
+    "faq": {
+      "type": "tr-faq",
+      "settings": {
+        "eyebrow": "PREGUNTAS FRECUENTES",
+        "heading": "Lo que más nos preguntan.",
+        "first_open": true
+      },
+      "blocks": {
+        "question_1": {
+          "type": "question",
+          "settings": {
+            "question": "¿Puedo usarlo si estoy o estuve en tratamiento oncológico?",
+            "answer": "<p>Formulamos con criterio de precaución: excluimos ingredientes clasificados como carcinógenos por los organismos de referencia, y las cuatro fórmulas están libres de disruptores endocrinos, fitoestrógenos añadidos, fragancias sintéticas, siliconas, parabenos y fenoxietanol.</p>",
+            "note": "No es una afirmación médica. Si estás en tratamiento activo o en remisión, comparte nuestra lista de ingredientes con tu médico antes de incorporarlo a tu rutina."
+          }
+        },
+        "question_2": {
+          "type": "question",
+          "settings": {
+            "question": "¿Es apto para personas celíacas?",
+            "answer": "<p>Los péptidos que usamos son de kiwicha, quinua y arveja — pseudocereales y legumbres libres de gluten de forma nativa. No usamos proteínas de trigo. La certificación de línea está en proceso con nuestro laboratorio.</p>"
+          }
+        },
+        "question_3": {
+          "type": "question",
+          "settings": {
+            "question": "¿Por qué excluyen los fitoestrógenos si son naturales?",
+            "answer": "<p>No porque sean malos — no son hormonas ni disruptores. Los dejamos fuera para que TRRIBÚ sea seguro para cada mujer en transición, incluida la que tuvo un cáncer hormonosensible, sin pedirle que revise su historial médico. Es una decisión de precaución, no una condena científica.</p>"
+          }
+        },
+        "question_4": {
+          "type": "question",
+          "settings": {
+            "question": "¿Cómo sé que lo que dicen es cierto?",
+            "answer": "<p>Cada producto publica su INCI completo, sin abreviar y en orden de concentración. Puedes tomar esa lista y verificarla contra cualquiera de las exclusiones de esta página. Ese es el punto.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_1",
+        "question_2",
+        "question_3",
+        "question_4"
+      ]
+    },
+    "claims": {
+      "type": "tr-claims",
+      "settings": {
+        "eyebrow": "LO QUE NO DECIMOS",
+        "heading": "Ser transparente también es no exagerar.",
+        "btn1_label": "CONOCE LA LÍNEA",
+        "btn1_url": "/collections/all",
+        "btn2_label": "QUIÉNES SOMOS",
+        "btn2_url": "/pages/nosotros"
+      },
+      "blocks": {
+        "claim_1": {
+          "type": "claim",
+          "settings": {
+            "title": "No decimos «100% natural».",
+            "text": "Varios de nuestros ingredientes son derivados naturales modificados químicamente. Pasan nuestro filtro, pero llamarlos «100% naturales» sería falso. Publicaremos el porcentaje real de origen natural por producto cuando el cálculo esté hecho — no antes, y nunca redondeado hacia arriba."
+          }
+        },
+        "claim_2": {
+          "type": "claim",
+          "settings": {
+            "title": "No decimos «cancer-free».",
+            "text": "Excluimos ingredientes con clasificación de carcinogenicidad, y eso es lo que decimos. Ningún cosmético puede prometer más que eso."
+          }
+        },
+        "claim_3": {
+          "type": "claim",
+          "settings": {
+            "title": "No escondemos la tecnología detrás de un nombre.",
+            "text": "Cuando lees TRRIBOND, ves también de qué está hecho: moléculas bond de glucosa, péptidos de kiwicha, quinua y arveja, y romero. Nunca un complejo propietario sin desglosar."
+          }
+        },
+        "claim_4": {
+          "type": "claim",
+          "settings": {
+            "title": "No comparamos de más.",
+            "text": "Nuestras moléculas bond refuerzan la fibra. No reconstruyen el puente disulfuro, que es lo que hacen otras tecnologías con química sintética. Son cosas distintas y lo decimos."
+          }
+        },
+        "claim_5": {
+          "type": "claim",
+          "settings": {
+            "title": "No prometemos crecimiento.",
+            "text": "Trabajamos la fibra del pelo, no el folículo. Reducimos la caída por quiebre — el pelo que se parte a media hebra — que es distinta de la caída desde la raíz."
+          }
+        }
+      },
+      "block_order": [
+        "claim_1",
+        "claim_2",
+        "claim_3",
+        "claim_4",
+        "claim_5"
+      ]
+    }
+  },
+  "order": [
+    "hero",
+    "compare",
+    "sello",
+    "trribond",
+    "filters",
+    "faq",
+    "claims"
+  ]
+}

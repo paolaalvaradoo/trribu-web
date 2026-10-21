@@ -1,0 +1,109 @@
+{{ 'tools.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  Herramientas de la colección. Textos por herramienta: snippets/tools-data
+  (metafields trribu.* con el texto del prototipo como respaldo).
+{%- endcomment -%}
+<section class="tools-grid-sec">
+  {%- paginate collection.products by 24 -%}
+    <div class="tools-grid">
+      {%- for p in collection.products -%}
+        {%- liquid
+          assign variant = p.selected_or_first_available_variant
+          capture material
+            render 'tools-data', product: p, field: 'material'
+          endcapture
+          capture verbs
+            render 'tools-data', product: p, field: 'verbs'
+          endcapture
+          capture description
+            render 'tools-data', product: p, field: 'description'
+          endcapture
+          capture why
+            render 'tools-data', product: p, field: 'why'
+          endcapture
+          capture tint
+            render 'tools-data', product: p, field: 'tint'
+          endcapture
+          capture label
+            render 'tools-data', product: p, field: 'label'
+          endcapture
+          assign chips = why | strip | split: '|'
+        -%}
+        <div class="tools-card">
+          <a href="{{ p.url }}" class="tools-card__shot" style="background:{{ tint | strip }}" tabindex="-1" aria-hidden="true">
+            {%- if p.featured_media -%}
+              {{ p.featured_media | image_url: width: 1000 | image_tag: widths: '400, 600, 800, 1000', sizes: '(max-width: 900px) 100vw, 33vw', loading: 'lazy', alt: p.featured_media.alt | default: p.title | escape }}
+            {%- else -%}
+              {% render 'media', image: blank, label: label, bg: tint %}
+            {%- endif -%}
+          </a>
+          <div class="tools-card__body">
+            {%- if material != blank -%}<div class="tools-card__material">{{ material }}</div>{%- endif -%}
+            <a href="{{ p.url }}" class="tools-card__name">{{ p.title }}</a>
+            {%- if verbs != blank -%}<div class="tools-card__verbs">{{ verbs }}</div>{%- endif -%}
+            {%- if description != blank -%}<p class="tools-card__desc">{{ description }}</p>{%- endif -%}
+            {%- if chips.size > 0 -%}
+              <div class="tools-card__chips">
+                {%- for c in chips -%}{%- assign cc = c | strip -%}{%- if cc != blank -%}<span class="tools-card__chip">{{ cc }}</span>{%- endif -%}{%- endfor -%}
+              </div>
+            {%- endif -%}
+            <div class="tools-card__foot">
+              {%- if settings.show_tool_prices -%}
+                <span class="tools-card__price">{{ variant.price | money_without_trailing_zeros }}{% if variant.compare_at_price > variant.price %} <s>{{ variant.compare_at_price | money_without_trailing_zeros }}</s>{% endif %}</span>
+              {%- else -%}
+                <span></span>
+              {%- endif -%}
+              {%- if variant.available -%}
+                <button type="button" class="tools-card__btn" data-add-to-cart="{{ variant.id }}" data-added-label="{{ section.settings.added_label | escape }}" aria-label="{{ section.settings.button_label | escape }}: {{ p.title | escape }}">{{ section.settings.button_label }}</button>
+              {%- else -%}
+                <button type="button" class="tools-card__btn" disabled>{{ section.settings.sold_out_label }}</button>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      {%- else -%}
+        <div class="tools-empty">
+          <p class="tools-empty__title">{{ section.settings.empty_heading }}</p>
+          {%- if section.settings.empty_text != blank -%}<p class="tools-empty__text">{{ section.settings.empty_text }}</p>{%- endif -%}
+        </div>
+      {%- endfor -%}
+
+      {%- if section.settings.show_kits_card -%}
+        <div class="tools-card tools-card--dark">
+          {%- if section.settings.kits_eyebrow != blank -%}<div class="tools-kits__eyebrow">{{ section.settings.kits_eyebrow }}</div>{%- endif -%}
+          <div class="tools-kits__title">{{ section.settings.kits_heading | newline_to_br }}</div>
+          {%- if section.settings.kits_text != blank -%}<p class="tools-kits__text">{{ section.settings.kits_text }}</p>{%- endif -%}
+          {%- if section.settings.kits_label != blank -%}
+            <a href="{{ section.settings.kits_link | default: '/pages/kits' }}" class="tools-kits__btn">{{ section.settings.kits_label }}</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if paginate.pages > 1 -%}
+      <nav class="tools-pag" aria-label="Páginas">{{ paginate | default_pagination: previous: '←', next: '→' }}</nav>
+    {%- endif -%}
+  {%- endpaginate -%}
+</section>
+
+{% schema %}
+{
+  "name": "Herramientas · listado",
+  "settings": [
+    { "type": "paragraph", "content": "Material, verbos, descripción y etiquetas de cada herramienta: metafields trribu.material, trribu.verbs, trribu.description, trribu.why y trribu.tint. Sin ellos se usa el texto del prototipo (el-peine, la-toalla, el-gorro, las-pinzas). Los precios se ocultan con Configuración del tema → Comercial." },
+    { "type": "text", "id": "button_label", "label": "Botón añadir", "default": "Añadir al carrito" },
+    { "type": "text", "id": "added_label", "label": "Botón tras añadir", "default": "Añadido ✓" },
+    { "type": "text", "id": "sold_out_label", "label": "Botón sin stock", "default": "Agotado" },
+    { "type": "header", "content": "Tarjeta de kits" },
+    { "type": "checkbox", "id": "show_kits_card", "label": "Mostrar tarjeta de kits", "default": true },
+    { "type": "text", "id": "kits_eyebrow", "label": "Antetítulo", "default": "EL RITUAL COMPLETO" },
+    { "type": "textarea", "id": "kits_heading", "label": "Título", "default": "Producto + herramienta,\nen un solo kit." },
+    { "type": "textarea", "id": "kits_text", "label": "Texto", "default": "Combina el sistema reparador con las herramientas que protegen el resultado." },
+    { "type": "text", "id": "kits_label", "label": "Botón", "default": "Ver los kits" },
+    { "type": "url", "id": "kits_link", "label": "Enlace del botón", "info": "Vacío = /pages/kits" },
+    { "type": "header", "content": "Colección vacía" },
+    { "type": "text", "id": "empty_heading", "label": "Título", "default": "Las herramientas llegan pronto." },
+    { "type": "textarea", "id": "empty_text", "label": "Texto", "default": "Agrega productos a la colección Herramientas para mostrarlos aquí." }
+  ]
+}
+{% endschema %}

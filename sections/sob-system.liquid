@@ -1,0 +1,32 @@
+{{ 'sob.css' | asset_url | stylesheet_tag }}
+<section class="sob-sys">
+  <div class="sob-sys__in">
+    {%- if section.settings.eyebrow != blank -%}<p class="sob-eyebrow sob-eyebrow--ink">{{ section.settings.eyebrow }}</p>{%- endif -%}
+    <h2 class="sob-h2 sob-h2--46">{{ section.settings.title }}{% if section.settings.title_2 != blank %}<br>{{ section.settings.title_2 }}{% endif %}</h2>
+    <div class="sob-sys__text sob-body">{{ section.settings.text }}</div>
+    {%- if section.blocks.size > 0 -%}
+      <ul class="sob-sys__chips">
+        {%- for block in section.blocks -%}
+          <li class="sob-sys__chip" {{ block.shopify_attributes }}>{{ block.settings.label }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Nosotros · el sistema",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "El sistema" },
+    { "type": "inline_richtext", "id": "title", "label": "Título · línea 1", "default": "No es un producto." },
+    { "type": "inline_richtext", "id": "title_2", "label": "Título · línea 2", "default": "<strong>Es un sistema.</strong>" },
+    { "type": "richtext", "id": "text", "label": "Texto", "default": "<p>La mayoría de las marcas formulan para un problema aislado. TRRIBÚ no. Formula para el pelo que está cambiando.</p>" }
+  ],
+  "blocks": [
+    { "type": "chip", "name": "Señal", "settings": [{ "type": "text", "id": "label", "label": "Texto", "default": "más frizz" }] }
+  ],
+  "presets": [{ "name": "Nosotros · el sistema" }]
+}
+{% endschema %}

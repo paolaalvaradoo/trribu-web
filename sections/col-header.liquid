@@ -1,0 +1,38 @@
+{{ 'col.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign heading = section.settings.heading
+  assign heading_italic = section.settings.heading_italic
+  assign text = section.settings.text | newline_to_br
+  if section.settings.use_collection_info and collection.handle != 'all' and collection.title != blank
+    assign heading = collection.title
+    assign heading_italic = ''
+    if collection.description != blank
+      assign text = collection.description | strip_html
+    endif
+  endif
+  assign quiz = section.settings.quiz_link | default: settings.quiz_url | default: '/pages/quiz'
+-%}
+<header class="col-hero">
+  {%- if section.settings.eyebrow != blank -%}<div class="col-hero__eyebrow">{{ section.settings.eyebrow }}</div>{%- endif -%}
+  <h1 class="col-hero__title">{{ heading }}{% if heading_italic != blank %} <span class="col-hero__it">{{ heading_italic }}</span>{% endif %}</h1>
+  {%- if text != blank -%}<p class="col-hero__text">{{ text }}</p>{%- endif -%}
+  {%- if section.settings.quiz_label != blank -%}
+    <p class="col-hero__quiz">{{ section.settings.quiz_prompt }} <a href="{{ quiz }}">{{ section.settings.quiz_label }}</a></p>
+  {%- endif -%}
+</header>
+
+{% schema %}
+{
+  "name": "Productos · cabecera",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "LAS 4 FÓRMULAS" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Cuatro pasos para el pelo" },
+    { "type": "text", "id": "heading_italic", "label": "Título · parte en cursiva", "default": "que está cambiando." },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Después de los 40, los cambios hormonales también se notan en el pelo: más frizz, menos cuerpo, más quiebre. TRRIBÚ es un sistema de cuatro fórmulas que trabajan juntas, y cada una se ocupa de una parte." },
+    { "type": "text", "id": "quiz_prompt", "label": "Pregunta antes del enlace al test", "default": "¿No sabes por dónde empezar?" },
+    { "type": "text", "id": "quiz_label", "label": "Texto del enlace al test", "default": "Haz el test · 1 min" },
+    { "type": "text", "id": "quiz_link", "label": "Enlace al test", "info": "Vacío = página del quiz de Configuración del tema." },
+    { "type": "checkbox", "id": "use_collection_info", "label": "En otras colecciones, usar su título y descripción", "default": false, "info": "En /collections/all siempre se usa el texto de arriba." }
+  ]
+}
+{% endschema %}

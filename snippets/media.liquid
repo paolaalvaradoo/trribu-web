@@ -1,0 +1,30 @@
+{%- comment -%}
+  Espacio de foto. Si hay imagen, la pinta a sangre (object-fit: cover).
+  Si no, deja el fondo del bloque y —solo en el editor de temas— una
+  etiqueta que dice qué foto va ahí (como los image-slot del prototipo).
+
+  Uso:
+    {% render 'media', image: section.settings.image, label: 'Foto editorial · mujer 40+',
+       position: '50% 22%', sizes: '100vw', class: 'hero__media', fallback: 'imagen-92ee8a34.png', eager: true %}
+
+  - fallback: archivo de assets/ con la foto de referencia del prototipo (opcional)
+{%- endcomment -%}
+<div class="media {{ class }}"{% if bg %} style="background:{{ bg }}"{% endif %}>
+  {%- if image != blank -%}
+    {%- liquid
+      assign loading = 'lazy'
+      if eager
+        assign loading = 'eager'
+      endif
+      assign pos = position | default: image.presentation.focal_point | default: '50% 50%'
+      assign img_style = 'object-position: ' | append: pos
+      assign img_alt = image.alt | default: label | escape
+      assign img_sizes = sizes | default: '100vw'
+    -%}
+    {{ image | image_url: width: 2400 | image_tag: widths: '480, 750, 1000, 1400, 1800, 2400', sizes: img_sizes, loading: loading, alt: img_alt, style: img_style }}
+  {%- elsif fallback != blank -%}
+    <img src="{{ fallback | asset_url }}" width="1200" height="800" alt="{{ label | escape }}" loading="{% if eager %}eager{% else %}lazy{% endif %}" style="object-position:{{ position | default: '50% 50%' }}">
+  {%- elsif request.design_mode and label != blank -%}
+    <div class="media__ph media__ph--editor">{{ label }}</div>
+  {%- endif -%}
+</div>

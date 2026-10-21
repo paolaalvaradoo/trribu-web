@@ -1,0 +1,45 @@
+{{ 'hm.css' | asset_url | stylesheet_tag }}
+{%- assign fallback_handles = 'el-gorro,la-toalla,el-peine,las-pinzas' | split: ',' -%}
+{%- capture tiles -%}
+  {%- if section.settings.products != blank and section.settings.products.size > 0 -%}
+    {%- for p in section.settings.products -%}{% render 'hm-tool-tile', product: p %}{%- endfor -%}
+  {%- else -%}
+    {%- for h in fallback_handles -%}
+      {%- assign p = all_products[h] -%}
+      {%- if p.id != blank -%}{% render 'hm-tool-tile', product: p %}{%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endcapture -%}
+<div class="hm-tools">
+  <div class="wrap hm-tools__inner">
+    <div class="sec-head">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<div class="eyebrow">{{ section.settings.eyebrow }}</div>{%- endif -%}
+        <h2 class="h3 hm-head__title">
+          {{- section.settings.heading -}}
+          {%- if section.settings.heading_serif != blank %} <span class="hm-serif">{{ section.settings.heading_serif }}</span>{%- endif -%}
+        </h2>
+      </div>
+      {%- if section.settings.link_label != blank -%}
+        <a href="{{ section.settings.link_url | default: '/collections/herramientas' }}" class="txt-link txt-link--soft">{{ section.settings.link_label }}</a>
+      {%- endif -%}
+    </div>
+    <div class="tgrid">{{ tiles }}</div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Herramientas · tiles",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Herramientas" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "La fórmula es la mitad." },
+    { "type": "text", "id": "heading_serif", "label": "Título · final en cursiva", "default": "La otra es cómo lo tratas." },
+    { "type": "text", "id": "link_label", "label": "Enlace \"ver todo\" · texto", "default": "Ver todo" },
+    { "type": "url", "id": "link_url", "label": "Enlace \"ver todo\" · URL", "info": "Vacío = /collections/herramientas" },
+    { "type": "product_list", "id": "products", "label": "Herramientas", "limit": 8, "info": "Vacío = El Gorro, La Toalla, El Peine y Las Pinzas. Los precios se ocultan desde Configuración del tema → Comercial." }
+  ],
+  "presets": [{ "name": "Herramientas · tiles" }]
+}
+{% endschema %}

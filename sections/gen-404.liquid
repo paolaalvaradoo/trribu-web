@@ -1,0 +1,32 @@
+{{ 'gen.css' | asset_url | stylesheet_tag }}
+<section class="sec sec--lg gen-404">
+  <div class="wrap wrap--760">
+    <p class="gen-404__num" aria-hidden="true">404</p>
+    {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+    <h1 class="h2">{{ section.settings.title }}</h1>
+    {%- if section.settings.text != blank -%}<p class="gen-lede">{{ section.settings.text }}</p>{%- endif -%}
+    <div class="gen-actions">
+      {%- if section.settings.btn1_label != blank -%}
+        <a href="{{ section.settings.btn1_link | default: routes.all_products_collection_url }}" class="btn btn--solid">{{ section.settings.btn1_label }}</a>
+      {%- endif -%}
+      {%- if section.settings.btn2_label != blank -%}
+        <a href="{{ settings.quiz_url | default: '/pages/quiz' }}" class="btn btn--line">{{ section.settings.btn2_label }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Error 404",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Página no encontrada" },
+    { "type": "inline_richtext", "id": "title", "label": "Título", "default": "Esta página <em>cambió de lugar.</em>" },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Puede que el enlace esté viejo o mal escrito. Mientras tanto, te ayudamos a encontrar lo que tu pelo necesita." },
+    { "type": "text", "id": "btn1_label", "label": "Botón principal", "default": "Ver productos" },
+    { "type": "url", "id": "btn1_link", "label": "Enlace botón principal", "default": "/collections/all" },
+    { "type": "text", "id": "btn2_label", "label": "Botón al quiz", "default": "Haz el test · 1 min", "info": "Lleva a la página del quiz (Configuración del tema)." }
+  ]
+}
+{% endschema %}

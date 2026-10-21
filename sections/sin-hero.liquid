@@ -1,0 +1,18 @@
+{{ 'sin.css' | asset_url | stylesheet_tag }}
+<header class="sin-hero wrap wrap--900">
+  {%- if section.settings.eyebrow != blank -%}<div class="sin-eyebrow sin-hero__eyebrow">{{ section.settings.eyebrow }}</div>{%- endif -%}
+  <h1 class="sin-hero__title">{{ section.settings.title }}{% if section.settings.title_strong != blank %}<br><span class="sin-strong">{{ section.settings.title_strong }}</span>{% endif %}</h1>
+  {%- if section.settings.text != blank -%}<p class="sin-hero__text">{{ section.settings.text }}</p>{%- endif -%}
+</header>
+
+{% schema %}
+{
+  "name": "Síntomas · Hero",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "PARA MUJERES DE 40+" },
+    { "type": "text", "id": "title", "label": "Título · primera línea", "default": "Tu pelo está cambiando." },
+    { "type": "text", "id": "title_strong", "label": "Título · segunda línea (destacada)", "default": "Y no es tu imaginación." },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "A partir de los 40, los cambios hormonales transforman la fibra capilar. Si reconoces 3 o más de estas señales, tu pelo necesita un sistema reparador." }
+  ]
+}
+{% endschema %}

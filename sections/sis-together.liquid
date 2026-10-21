@@ -1,0 +1,56 @@
+{{ 'sis.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign cols = section.settings.columns
+  assign per = section.blocks.size | plus: cols | minus: 1 | divided_by: cols
+  if per < 1
+    assign per = 1
+  endif
+-%}
+<section class="sis-bg sis-bb">
+  <div class="wrap sis-w sis-tog__inner">
+    <div class="sis-tog__head">
+      {%- if section.settings.eyebrow != blank -%}<div class="sis-eyebrow">{{ section.settings.eyebrow }}</div>{%- endif -%}
+      <h2 class="sis-h2">{{ section.settings.title }}</h2>
+      {%- if section.settings.text != blank -%}<p class="sis-lead">{{ section.settings.text }}</p>{%- endif -%}
+    </div>
+    <div class="sis-tog__grid" style="--cols:{{ cols }}">
+      {%- for c in (1..cols) -%}
+        {%- assign off = c | minus: 1 | times: per -%}
+        {%- if off < section.blocks.size -%}
+          <div class="sis-tog__col">
+            {%- for block in section.blocks limit: per offset: off -%}
+              <div class="sis-tog__item" {{ block.shopify_attributes }}>
+                {%- if block.settings.tag != blank -%}<div class="sis-tog__tag">{{ block.settings.tag }}</div>{%- endif -%}
+                <div class="sis-tog__name">{{ block.settings.title }}</div>
+                <p class="sis-tog__text">{{ block.settings.text }}</p>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sistema · Ingredientes",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Y ADEMÁS, EN CADA FÓRMULA" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Lo que trabaja junto a TRRIBOND." },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "TRRIBOND es una parte del sistema. El resto de la fórmula hace el trabajo que no le corresponde a la estructura: hidratar, nutrir, sellar, proteger del calor y mantener el cuero cabelludo en calma." },
+    { "type": "range", "id": "columns", "label": "Columnas", "min": 1, "max": 3, "step": 1, "default": 3, "info": "Los ingredientes se reparten en columnas de arriba abajo." }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingrediente",
+      "settings": [
+        { "type": "text", "id": "tag", "label": "Etiqueta", "default": "EN LOS 4" },
+        { "type": "text", "id": "title", "label": "Nombre", "default": "Glicerina" },
+        { "type": "textarea", "id": "text", "label": "Texto", "default": "Hidratación inmediata. Es lo que hace que el pelo se sienta distinto desde el primer contacto con el producto." }
+      ]
+    }
+  ]
+}
+{% endschema %}

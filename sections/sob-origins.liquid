@@ -1,0 +1,46 @@
+{{ 'sob.css' | asset_url | stylesheet_tag }}
+<section class="sob-orig">
+  <div class="sob-orig__head">
+    {%- if section.settings.eyebrow != blank -%}<p class="sob-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+    <h2 class="sob-h2">{{ section.settings.title }}</h2>
+    {%- if section.settings.lede != blank -%}<p class="sob-orig__lede">{{ section.settings.lede }}</p>{%- endif -%}
+  </div>
+  <div class="sob-orig__grid">
+    {%- for block in section.blocks -%}
+      <article class="sob-orig__card" {{ block.shopify_attributes }}>
+        <div class="sob-orig__num">{{ block.settings.label }}</div>
+        <h3 class="sob-orig__title">{{ block.settings.title }}</h3>
+        <p class="sob-orig__text">{{ block.settings.text }}</p>
+        {%- if block.settings.filter != blank -%}<div class="sob-orig__filter">{{ block.settings.filter }}</div>{%- endif -%}
+        {%- if block.settings.ask != blank -%}<p class="sob-orig__ask">{{ block.settings.ask }}</p>{%- endif -%}
+      </article>
+    {%- endfor -%}
+  </div>
+  {%- if section.settings.note != blank -%}<div class="sob-orig__note">{{ section.settings.note }}</div>{%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Nosotros · el origen",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "El origen" },
+    { "type": "inline_richtext", "id": "title", "label": "Título", "default": "Tres mujeres. <strong>Un solo cuidado.</strong>" },
+    { "type": "textarea", "id": "lede", "label": "Bajada", "default": "TRRIBÚ no nace de una sola historia. Nace de tres capas humanas que se entrelazan · y de tres filtros que aplicamos a cada ingrediente." },
+    { "type": "richtext", "id": "note", "label": "Nota al pie", "default": "<p>Estas historias explican <em>por qué</em> formulamos como formulamos. No son una promesa médica ni un público objetivo. TRRIBÚ es cosmética capilar.</p>" }
+  ],
+  "blocks": [
+    {
+      "type": "card", "name": "Historia", "limit": 6,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Número · nombre", "default": "01 · Isabel" },
+        { "type": "text", "id": "title", "label": "Título", "default": "Mi mamá" },
+        { "type": "textarea", "id": "text", "label": "Texto" },
+        { "type": "text", "id": "filter", "label": "Filtro" },
+        { "type": "text", "id": "ask", "label": "Pregunta del filtro" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Nosotros · el origen" }]
+}
+{% endschema %}

@@ -1,0 +1,55 @@
+{{ 'tools.css' | asset_url | stylesheet_tag }}
+<section class="tools-why">
+  <div class="tools-why__grid">
+    {%- for block in section.blocks -%}
+      <div class="tools-why__item" {{ block.shopify_attributes }}>
+        {%- case block.settings.icon -%}
+          {%- when 'drop' -%}
+            <svg class="tools-why__icon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c-3 4-5 6.5-5 9a5 5 0 0 0 10 0c0-2.5-2-5-5-9Z"/></svg>
+          {%- when 'waves' -%}
+            <svg class="tools-why__icon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 18c3-1 4-4 3-7M11 19c2.5-2 3-6 1.5-9M17 18c2-2.5 2-6 0-9"/></svg>
+          {%- when 'palette' -%}
+            <svg class="tools-why__icon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r="2.2"/><circle cx="17.5" cy="11.5" r="2.2"/><circle cx="6" cy="12" r="2.2"/><path d="M11.5 6.5C7 7 4 10 4 14.5a6 6 0 0 0 11 3"/></svg>
+        {%- endcase -%}
+        <div class="tools-why__title">{{ block.settings.title }}</div>
+        <p class="tools-why__text">{{ block.settings.text }}</p>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Herramientas · por qué",
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Beneficio",
+      "settings": [
+        {
+          "type": "select", "id": "icon", "label": "Ícono", "default": "drop",
+          "options": [
+            { "value": "drop", "label": "Gota" },
+            { "value": "waves", "label": "Ondas (frizz)" },
+            { "value": "palette", "label": "Paleta (color)" },
+            { "value": "none", "label": "Sin ícono" }
+          ]
+        },
+        { "type": "text", "id": "title", "label": "Título", "default": "Menos quiebre" },
+        { "type": "textarea", "id": "text", "label": "Texto", "default": "Materiales suaves que no friccionan ni rompen la fibra debilitada." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Herramientas · por qué",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "drop", "title": "Menos quiebre", "text": "Materiales suaves que no friccionan ni rompen la fibra debilitada." } },
+        { "type": "item", "settings": { "icon": "waves", "title": "Menos frizz", "text": "Superficies satinadas que conservan la hidratación y el alisado." } },
+        { "type": "item", "settings": { "icon": "palette", "title": "Color que dura", "text": "Menos roce y calor = el color y las mechas se apagan más lento." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

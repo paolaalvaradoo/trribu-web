@@ -1,0 +1,64 @@
+{{ 'kit.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign s = section.settings
+  assign kp = s.product
+  if kp == blank and s.handle != blank
+    assign kp = all_products[s.handle]
+  endif
+  assign lines = s.items | newline_to_br | split: '<br />'
+-%}
+<section class="kit-sec kit-feat">
+  <div class="kit-feat__card">
+    <div class="kit-feat__shot">
+      {% render 'kit-shot', image: s.image, kit: kp, contents: s.contents, handles: s.contents_handles, label: s.image_label, sizes: '(max-width: 900px) 100vw, 640px' %}
+      {% render 'kit-buy', kit: kp, part: 'badge', badge_prefix: s.badge_prefix, badge_pct: s.badge_pct %}
+    </div>
+    <div class="kit-feat__body">
+      {%- if s.eyebrow != blank -%}<div class="kit-eyebrow">{{ s.eyebrow }}</div>{%- endif -%}
+      <h2 class="kit-feat__title">{{ s.title }}{% if s.title_accent != blank %}<br><span class="kit-strong">{{ s.title_accent }}</span>{% endif %}</h2>
+      {%- if s.text != blank -%}<p class="kit-feat__text">{{ s.text }}</p>{%- endif -%}
+      <ul class="kit-feat__list">
+        {%- for line in lines -%}
+          {%- assign l = line | strip -%}
+          {%- if l != blank -%}
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="#D8CFC4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 6"/></svg><span>{{ l }}</span></li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+      <div class="kit-feat__price">
+        {% render 'kit-buy', kit: kp, part: 'price' %}
+        {% render 'kit-buy', kit: kp, part: 'save', save_label: s.save_label %}
+      </div>
+      {% render 'kit-buy', kit: kp, part: 'button', label: s.button_label, soon: s.soon_label, class: 'kit-feat__btn' %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Kits · Kit destacado",
+  "tag": "div",
+  "settings": [
+    { "type": "header", "content": "Producto" },
+    { "type": "product", "id": "product", "label": "Producto kit", "info": "Crea el kit como producto (puede ser un bundle de Shopify Bundles). Precio y precio 'antes' (precio de comparación) se leen de ahí. Sin producto, el botón dice 'Próximamente'." },
+    { "type": "text", "id": "handle", "label": "Handle de respaldo", "default": "el-kit-completo", "info": "Se usa si no eliges un producto." },
+    { "type": "product_list", "id": "contents", "label": "Contenido del kit", "limit": 8, "info": "Se dibujan como envases cuando no hay foto." },
+    { "type": "text", "id": "contents_handles", "label": "Contenido · handles de respaldo", "default": "el-shampoo, el-acondicionador, la-mascarilla, el-acondicionador-sin-enjuague, la-toalla, el-peine" },
+    { "type": "header", "content": "Foto" },
+    { "type": "image_picker", "id": "image", "label": "Foto del kit" },
+    { "type": "text", "id": "image_label", "label": "Qué foto va acá", "default": "Foto del Kit Completo (cuarteto + toalla + peine)" },
+    { "type": "text", "id": "badge_prefix", "label": "Etiqueta de ahorro", "default": "AHORRA", "info": "El % se calcula con el precio 'antes'. Vacío para ocultar." },
+    { "type": "number", "id": "badge_pct", "label": "% de respaldo", "default": 20, "info": "Solo si el producto no tiene precio 'antes'." },
+    { "type": "header", "content": "Texto" },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "EL RITUAL COMPLETO" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Todo el ritual," },
+    { "type": "text", "id": "title_accent", "label": "Título · segunda línea", "default": "de día y de noche" },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "El sistema reparador completo más las herramientas que protegen el resultado. Reparar y proteger, en una sola caja." },
+    { "type": "textarea", "id": "items", "label": "Qué incluye (una línea por ítem)", "default": "El Shampoo · El Acondicionador · La Mascarilla · El Acondicionador Sin Enjuague\nLa Toalla\nEl Peine" },
+    { "type": "text", "id": "save_label", "label": "Texto de ahorro", "default": "Ahorras" },
+    { "type": "text", "id": "button_label", "label": "Botón", "default": "Añadir el Kit Completo" },
+    { "type": "text", "id": "soon_label", "label": "Botón sin producto", "default": "Próximamente" }
+  ],
+  "presets": [{ "name": "Kits · Kit destacado" }]
+}
+{% endschema %}

@@ -1,0 +1,51 @@
+{{ 'sis.css' | asset_url | stylesheet_tag }}
+<section class="sis-bg sis-bt sis-std">
+  <div class="wrap sis-w sec sis-split">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}<div class="sis-eyebrow sis-split__eyebrow">{{ section.settings.eyebrow }}</div>{%- endif -%}
+      <h2 class="sis-h2 sis-std__title">{{ section.settings.title }}</h2>
+      {%- if section.settings.text != blank -%}<p class="sis-std__text">{{ section.settings.text }}</p>{%- endif -%}
+      {%- if section.blocks.size > 0 -%}
+        <div class="sis-rows">
+          {%- for block in section.blocks -%}
+            <div class="sis-rows__row" {{ block.shopify_attributes }}>
+              <div class="sis-rows__name">{{ block.settings.title }}</div>
+              <p class="sis-rows__text">{{ block.settings.text }}</p>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.link_label != blank -%}
+        <a href="{{ section.settings.link | default: '/pages/transparencia' }}" class="txt-link sis-std__link">{{ section.settings.link_label }}</a>
+      {%- endif -%}
+    </div>
+    <div class="sis-split__media">
+      {% render 'media', image: section.settings.image, label: section.settings.label, sizes: '(max-width: 900px) 100vw, 50vw' %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sistema · El estándar",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "EL ESTÁNDAR" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Lo que dejamos fuera pesa tanto como lo que pusimos." },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Formular limpio no es el logro de esta marca — es su punto de partida. Lo que sí es una decisión: por qué esa vara existe." },
+    { "type": "text", "id": "link_label", "label": "Texto del enlace", "default": "VER TODOS LOS INGREDIENTES" },
+    { "type": "url", "id": "link", "label": "Enlace", "info": "Vacío = /pages/transparencia" },
+    { "type": "image_picker", "id": "image", "label": "Foto" },
+    { "type": "text", "id": "label", "label": "Indicación de la foto (solo editor)", "default": "Foto · manos o detalle doméstico · luz de ventana" }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Punto",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Título", "default": "Origen natural, sin química agresiva" },
+        { "type": "textarea", "id": "text", "label": "Texto", "default": "Sin siliconas, sin derivados del petróleo, sin PEG ni etoxilados, sin fragancias sintéticas, sin sulfatos. Vegano en los cuatro pasos." }
+      ]
+    }
+  ]
+}
+{% endschema %}

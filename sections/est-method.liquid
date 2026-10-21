@@ -1,0 +1,30 @@
+{{ 'est.css' | asset_url | stylesheet_tag }}
+<div class="wrap est-method">
+  <div class="est-pair">
+    <div class="est-card">
+      <div class="est-label">{{ section.settings.method_label }}</div>
+      <div class="est-text">{{ section.settings.method_text }}</div>
+      {%- if section.settings.formula != blank -%}<div class="est-formula">{{ section.settings.formula }}</div>{%- endif -%}
+    </div>
+    <div class="est-card est-card--dark">
+      <div class="est-label">{{ section.settings.note_label }}</div>
+      <div class="est-text">{{ section.settings.note_text }}</div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Estudio · Cómo medimos",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Cómo sacamos el %" },
+    { "type": "text", "id": "method_label", "label": "Rótulo", "default": "CÓMO SACAMOS EL %" },
+    { "type": "richtext", "id": "method_text", "label": "Texto", "default": "<p>Sumamos las respuestas <strong>\"Muy de acuerdo\" + \"De acuerdo\"</strong> y las dividimos entre el total, por cien. Sin redondeos hacia arriba.</p>" },
+    { "type": "text", "id": "formula", "label": "Fórmula", "default": "(Muy de acuerdo + De acuerdo) ÷ total × 100" },
+    { "type": "header", "content": "Nota de honestidad" },
+    { "type": "text", "id": "note_label", "label": "Rótulo", "default": "NUESTRA NOTA DE HONESTIDAD" },
+    { "type": "richtext", "id": "note_text", "label": "Texto", "default": "<p>Percepción, no laboratorio: te decimos lo que las mujeres notaron, no lo que una máquina midió. Cuando tengamos data de laboratorio, también te la mostraremos.</p>" }
+  ]
+}
+{% endschema %}

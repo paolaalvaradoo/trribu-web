@@ -1,0 +1,63 @@
+{{ 'tr.css' | asset_url | stylesheet_tag }}
+<div class="tr-inci">
+  <div class="wrap tr-w1180 tr-inci__inner">
+    <div class="tr-inci__head">
+      {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="tr-h2">{{ section.settings.heading }}</h2>
+      {%- if section.settings.lede != blank -%}<p class="tr-p">{{ section.settings.lede }}</p>{%- endif -%}
+    </div>
+    <div class="tr-scroll">
+      <table class="tr-inci__table">
+        <thead>
+          <tr>
+            <th scope="col">{{ section.settings.col_1 }}</th>
+            <th scope="col">{{ section.settings.col_2 }}</th>
+            <th scope="col">{{ section.settings.col_3 }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for block in section.blocks -%}
+            <tr {{ block.shopify_attributes }}>
+              <td class="tr-inci__c1">
+                <div class="tr-inci__name">{{ block.settings.name }}</div>
+                {%- if block.settings.inci != blank -%}<div class="tr-inci__inci">{{ block.settings.inci }}</div>{%- endif -%}
+              </td>
+              <td class="tr-inci__c2">{{ block.settings.does }}</td>
+              <td class="tr-inci__c3">{{ block.settings.origin }}</td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+    {%- if section.settings.foot != blank -%}<div class="tr-inci__foot">{{ section.settings.foot }}</div>{%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Transparencia · TRRIBOND",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "TRRIBOND A LA VISTA" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Qué hay dentro." },
+    { "type": "textarea", "id": "lede", "label": "Texto", "default": "No escondemos la tecnología detrás de un nombre. Cuando lees TRRIBOND, ves de qué está hecho." },
+    { "type": "header", "content": "Encabezados de la tabla" },
+    { "type": "text", "id": "col_1", "label": "Columna 1", "default": "INGREDIENTE · INCI" },
+    { "type": "text", "id": "col_2", "label": "Columna 2", "default": "QUÉ HACE" },
+    { "type": "text", "id": "col_3", "label": "Columna 3", "default": "ORIGEN" },
+    { "type": "richtext", "id": "foot", "label": "Nota final", "default": "<p><strong>El INCI completo</strong> de cada producto, en orden de concentración, vive en su ficha. Se publica entero, sin abreviar.</p>" }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingrediente",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Nombre", "default": "Romero" },
+        { "type": "textarea", "id": "inci", "label": "Nombre INCI", "default": "Rosmarinus Officinalis Leaf Extract" },
+        { "type": "textarea", "id": "does", "label": "Qué hace", "default": "Antioxidante que protege la fibra del daño diario." },
+        { "type": "text", "id": "origin", "label": "Origen", "default": "Extracto botánico" }
+      ]
+    }
+  ]
+}
+{% endschema %}

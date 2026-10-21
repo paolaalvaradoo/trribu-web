@@ -1,0 +1,122 @@
+{
+  "sections": {
+    "hero": {
+      "type": "sin-hero",
+      "settings": {
+        "eyebrow": "PARA MUJERES DE 40+",
+        "title": "Tu pelo está cambiando.",
+        "title_strong": "Y no es tu imaginación.",
+        "text": "A partir de los 40, los cambios hormonales transforman la fibra capilar. Si reconoces 3 o más de estas señales, tu pelo necesita un sistema reparador."
+      }
+    },
+    "signals": {
+      "type": "sin-signals",
+      "settings": {
+        "cta_title": "¿Te reconoces en",
+        "cta_strong": "3 o más?",
+        "cta_label": "Haz el test · 1 min",
+        "cta_link": "/pages/quiz"
+      },
+      "blocks": {
+        "signal_1": {
+          "type": "signal",
+          "settings": {
+            "title": "Frizz",
+            "text": "La cutícula se levanta y el aire hace el resto."
+          }
+        },
+        "signal_2": {
+          "type": "signal",
+          "settings": {
+            "title": "Sequedad",
+            "text": "Menos sebo, menos agua retenida; se siente seca."
+          }
+        },
+        "signal_3": {
+          "type": "signal",
+          "settings": {
+            "title": "Menos brillo",
+            "text": "Cutícula irregular: la luz ya no rebota igual."
+          }
+        },
+        "signal_4": {
+          "type": "signal",
+          "settings": {
+            "title": "Menos cuerpo · hebra más fina",
+            "text": "Cada hebra crece más fina y pierde cuerpo: se aplasta y se quiebra más fácil."
+          }
+        },
+        "signal_5": {
+          "type": "signal",
+          "settings": {
+            "title": "Fragilidad",
+            "text": "Se pierde proteína estructural; la fibra cede antes."
+          }
+        },
+        "signal_6": {
+          "type": "signal",
+          "settings": {
+            "title": "Quiebre",
+            "text": "Enlaces internos debilitados. Ahí nace la caída por quiebre."
+          }
+        },
+        "signal_7": {
+          "type": "signal",
+          "settings": {
+            "title": "Difícil de desenredar",
+            "text": "Más fricción, más enredo, más quiebre al peinar."
+          }
+        },
+        "signal_8": {
+          "type": "signal",
+          "settings": {
+            "title": "Canas y color",
+            "text": "El pelo con canas es más poroso y el color se va más rápido."
+          }
+        },
+        "signal_9": {
+          "type": "signal",
+          "settings": {
+            "title": "Porosidad y aspereza",
+            "text": "Por mechas, color o calor, la cutícula queda abierta y áspera —sobre todo el tercio superior."
+          }
+        },
+        "signal_10": {
+          "type": "signal",
+          "settings": {
+            "title": "Cuero cabelludo sensible",
+            "text": "En la transición el cuero cabelludo puede sentirse más reactivo. Niacinamida y romero dan confort y calma."
+          }
+        }
+      },
+      "block_order": [
+        "signal_1",
+        "signal_2",
+        "signal_3",
+        "signal_4",
+        "signal_5",
+        "signal_6",
+        "signal_7",
+        "signal_8",
+        "signal_9",
+        "signal_10"
+      ]
+    },
+    "bridge": {
+      "type": "sin-bridge",
+      "settings": {
+        "eyebrow": "NO ES UN SOLO PROBLEMA",
+        "title": "Una causa.",
+        "title_strong": "Muchos frentes.",
+        "text": "Después de los 40 tu pelo no tiene un solo problema: tiene una causa —la transición hormonal— que aparece a la vez en varios frentes. Por eso un producto suelto no alcanza.",
+        "btn_label": "Conoce el sistema",
+        "btn_link": "/pages/sistema"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "signals",
+    "bridge"
+  ]
+}

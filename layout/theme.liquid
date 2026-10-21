@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code | default: 'es' }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="canonical" href="{{ canonical_url }}">
+  {%- if settings.favicon != blank -%}<link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64, height: 64 }}">{%- endif -%}
+  <title>{{ page_title }}{% if current_tags %} · {{ current_tags | join: ', ' }}{% endif %}{% if current_page != 1 %} · Página {{ current_page }}{% endif %}{% unless page_title contains shop.name %} · {{ shop.name }}{% endunless %}</title>
+  {%- if page_description -%}<meta name="description" content="{{ page_description | escape }}">{%- endif -%}
+  {% render 'meta-tags' %}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Hanken+Grotesk:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+  {%- liquid
+    case settings.accent
+      when '#B4603C'
+        assign ac_soft = '#DDB29C'
+        assign ac_ink = '#94481F'
+      when '#7A2230'
+        assign ac_soft = '#DDB6C6'
+        assign ac_ink = '#7A2230'
+      when '#BA9772'
+        assign ac_soft = '#A9CBCE'
+        assign ac_ink = '#7A5F3F'
+      else
+        assign ac_soft = '#E3C6C1'
+        assign ac_ink = '#8E524B'
+    endcase
+    case settings.hero_veil
+      when 'light'
+        assign veil = 'linear-gradient(to top,rgba(20,18,15,.72),rgba(20,18,15,.42) 62%,rgba(20,18,15,.1))'
+      when 'none'
+        assign veil = 'linear-gradient(to top,rgba(20,18,15,.6),rgba(20,18,15,.3) 58%,rgba(20,18,15,.04))'
+      else
+        assign veil = 'linear-gradient(to top,rgba(20,18,15,.82),rgba(20,18,15,.55) 62%,rgba(20,18,15,.2))'
+    endcase
+  -%}
+  <style>
+    :root {
+      --ac: {{ settings.accent | default: '#BB7B73' }};
+      --ac-soft: {{ ac_soft }};
+      --ac-ink: {{ ac_ink }};
+      --c-shampoo: {{ settings.accent | default: '#BB7B73' }};
+      --c-shampoo-ink: {{ ac_ink }};
+      --veil: {{ veil }};
+    }
+    {%- unless settings.show_tool_prices -%}.tile__price{display:none}{%- endunless -%}
+  </style>
+
+  <script>
+    window.TRRIBU_CONFIG = {
+      moneyFormat: {{ shop.money_format | json }},
+      routes: {
+        root: {{ routes.root_url | json }},
+        cart: {{ routes.cart_url | json }},
+        cartAdd: {{ routes.cart_add_url | json }},
+        cartChange: {{ routes.cart_change_url | json }},
+        cartUpdate: {{ routes.cart_update_url | json }}
+      },
+      tiers: [
+        { min: {{ settings.tier1_min | json }}, pct: {{ settings.tier1_pct | json }} },
+        { min: {{ settings.tier2_min | json }}, pct: {{ settings.tier2_pct | json }} }
+      ],
+      freeShipping: {{ settings.free_shipping_threshold | times: 100 | json }},
+      klaviyo: { publicKey: {{ settings.klaviyo_public_key | json }}, listId: {{ settings.klaviyo_list_id | json }}, revision: '2025-10-15' },
+      webhookUrl: {{ settings.analytics_webhook_url | json }}
+    };
+  </script>
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
+  {%- if settings.klaviyo_public_key != blank -%}
+    <script async src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id={{ settings.klaviyo_public_key | escape }}"></script>
+  {%- endif -%}
+
+  {{ content_for_header }}
+</head>
+<body class="template-{{ template.name | handle }}{% if template.suffix %} template-{{ template.suffix | handle }}{% endif %}">
+  <a class="skip-link visually-hidden" href="#MainContent">Ir al contenido</a>
+  {% sections 'header-group' %}
+
+  <main id="MainContent" role="main" tabindex="-1">
+    {{ content_for_layout }}
+  </main>
+
+  {% sections 'footer-group' %}
+
+  <div class="drawer" id="CartDrawer" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="CartDrawerTitle">
+    <div class="drawer__scrim" data-cart-close></div>
+    <div class="drawer__panel">
+      {% section 'cart-drawer' %}
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{{ 'rit.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign t1 = '−' | append: settings.tier1_pct | append: '%'
+  assign t2 = '−' | append: settings.tier2_pct | append: '%'
+  assign lede = section.settings.lede | replace: '[t1_pct]', t1 | replace: '[t2_pct]', t2 | replace: '[t1_min]', settings.tier1_min | replace: '[t2_min]', settings.tier2_min
+-%}
+<header class="rit-hero">
+  {%- if section.settings.eyebrow != blank -%}<div class="rit-hero__eyebrow">{{ section.settings.eyebrow }}</div>{%- endif -%}
+  <h1 class="rit-hero__title">{{ section.settings.title }}{% if section.settings.title_accent != blank %} <span>{{ section.settings.title_accent }}</span>{% endif %}</h1>
+  {%- if lede != blank -%}<p class="rit-hero__lede">{{ lede }}</p>{%- endif -%}
+</header>
+
+{% schema %}
+{
+  "name": "Ritual · Encabezado",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "ARMA TU RITUAL" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Tu set," },
+    { "type": "text", "id": "title_accent", "label": "Título · parte destacada", "default": "a tu medida" },
+    { "type": "inline_richtext", "id": "lede", "label": "Bajada", "default": "¿Prefieres no pensar? Mira nuestros <a href=\"/pages/kits\" title=\"Kits\">kits listos</a>. ¿O ármalo libre aquí: más sumas, más ahorras — <b>[t1_pct]</b> desde [t1_min] ítems · <b>[t2_pct]</b> desde [t2_min].", "info": "[t1_pct] [t1_min] [t2_pct] [t2_min] se reemplazan por los tramos de descuento de Configuración del tema." }
+  ]
+}
+{% endschema %}

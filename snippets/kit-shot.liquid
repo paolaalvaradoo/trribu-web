@@ -1,0 +1,36 @@
+{%- comment -%}
+  Foto de un kit. Orden: imagen elegida en el editor → foto del producto kit →
+  envases dibujados de su contenido (render 'bottle') y fichas de herramientas.
+  Uso: {% render 'kit-shot', image: s.image, kit: kp, contents: s.contents, handles: s.contents_handles, label: s.image_label, sizes: '50vw' %}
+{%- endcomment -%}
+{%- liquid
+  assign list = ''
+  if contents != blank and contents.size > 0
+    assign list = contents
+  endif
+-%}
+{%- if image != blank -%}
+  {% render 'media', image: image, label: label, sizes: sizes, class: 'kit-media' %}
+{%- elsif kit.featured_media -%}
+  <div class="media kit-media">
+    {{ kit.featured_media | image_url: width: 1800 | image_tag: widths: '480, 750, 1000, 1400, 1800', sizes: sizes, loading: 'lazy', alt: kit.title | escape }}
+  </div>
+{%- else -%}
+  {%- capture stage -%}
+    {%- if list != blank -%}
+      {%- for p in list -%}{% render 'kit-piece', product: p %}{%- endfor -%}
+    {%- else -%}
+      {%- assign hs = handles | split: ',' -%}
+      {%- for h in hs -%}
+        {%- assign hh = h | strip -%}
+        {%- assign p = all_products[hh] -%}
+        {%- if p != blank and p.id -%}{% render 'kit-piece', product: p %}{%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endcapture -%}
+  {%- if stage != blank -%}
+    <div class="kit-stage" role="img" aria-label="{{ label | escape }}">{{ stage }}</div>
+  {%- else -%}
+    {% render 'media', label: label, class: 'kit-media' %}
+  {%- endif -%}
+{%- endif -%}

@@ -1,0 +1,162 @@
+{%- comment -%}
+  Página de carrito: mismo contenido que el carrito lateral (envío gratis,
+  descuento por cantidad, Día de despacho) en formato de página.
+  Funciona sin JS: cantidades con enlaces /cart/change y formulario /cart.
+{%- endcomment -%}
+{{ 'gen.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign threshold = settings.free_shipping_threshold | times: 100
+  assign remaining = threshold | minus: cart.total_price
+  assign hair_count = 0
+  assign original_total = 0
+  for item in cart.items
+    assign hair_count = hair_count | plus: item.quantity
+    assign original_total = original_total | plus: item.original_line_price
+  endfor
+-%}
+<section class="sec">
+  <div class="wrap wrap--1240">
+    <header class="gen-head">
+      {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h1 class="h2">{{ section.settings.title }}{% if cart.item_count > 0 %} · {{ cart.item_count }}{% endif %}</h1>
+    </header>
+
+    {%- if cart.item_count == 0 -%}
+      <div class="gen-cart__empty">
+        <p class="h4">{{ section.settings.empty_title }}</p>
+        <p class="body-sm">{{ section.settings.empty_text }}</p>
+        <div class="gen-actions">
+          <a href="{{ settings.quiz_url | default: '/pages/quiz' }}" class="btn btn--solid">Haz el test · 1 min</a>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn--line">Ver productos</a>
+        </div>
+      </div>
+    {%- else -%}
+      <form action="{{ routes.cart_url }}" method="post" class="gen-cart" id="CartPageForm">
+        <div>
+          <div class="gen-cart__lines">
+            {%- for item in cart.items -%}
+              <div class="cline">
+                <a href="{{ item.url }}" class="cline__img" style="{% render 'product-field', product: item.product, field: 'style' %}">
+                  {%- if item.image -%}{{ item.image | image_url: width: 240 | image_tag: loading: 'lazy', alt: item.product.title | escape }}{%- endif -%}
+                </a>
+                <div>
+                  <a href="{{ item.url }}" class="cline__name">{{ item.product.title }}</a>
+                  {%- unless item.product.has_only_default_variant -%}<div class="cline__meta">{{ item.variant.title }}</div>{%- endunless -%}
+                  {%- capture size -%}{%- render 'product-field', product: item.product, field: 'size' -%}{%- endcapture -%}
+                  {%- if size != blank -%}<div class="cline__meta">{{ size }}</div>{%- endif -%}
+                  {%- for p in item.properties -%}
+                    {%- assign first_char = p.first | slice: 0 -%}
+                    {%- if p.last != blank and first_char != '_' -%}<div class="cline__meta">{{ p.first }}: {{ p.last }}</div>{%- endif -%}
+                  {%- endfor -%}
+                  {%- for d in item.line_level_discount_allocations -%}
+                    <div class="cline__meta gen-cart__disc">{{ d.discount_application.title }}</div>
+                  {%- endfor -%}
+                  <div class="qty">
+                    <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&amp;quantity={{ item.quantity | minus: 1 }}" data-cart-qty="{{ item.quantity | minus: 1 }}" data-key="{{ item.key }}" aria-label="Quitar uno de {{ item.product.title | escape }}">−</a>
+                    <span>{{ item.quantity }}</span>
+                    <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&amp;quantity={{ item.quantity | plus: 1 }}" data-cart-qty="{{ item.quantity | plus: 1 }}" data-key="{{ item.key }}" aria-label="Sumar uno de {{ item.product.title | escape }}">+</a>
+                  </div>
+                </div>
+                <div class="cline__price">
+                  {%- if item.original_line_price > item.final_line_price -%}<s>{{ item.original_line_price | money_without_trailing_zeros }}</s>{%- endif -%}
+                  {{ item.final_line_price | money_without_trailing_zeros }}
+                  <a href="{{ item.url_to_remove }}" class="cline__rm" data-cart-qty="0" data-key="{{ item.key }}">Quitar</a>
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+
+          {%- liquid
+            assign next_min = 0
+            assign next_pct = 0
+            if hair_count < settings.tier1_min
+              assign next_min = settings.tier1_min
+              assign next_pct = settings.tier1_pct
+            elsif hair_count < settings.tier2_min
+              assign next_min = settings.tier2_min
+              assign next_pct = settings.tier2_pct
+            endif
+          -%}
+          {%- if settings.show_tier_hint and next_min > 0 -%}
+            {%- assign missing = next_min | minus: hair_count -%}
+            <p class="small gen-cart__hint">
+              Suma {{ missing }} {% if missing == 1 %}producto{% else %}productos{% endif %} más y tu ritual baja <strong>−{{ next_pct }} %</strong>.
+              <a href="{{ settings.ritual_url | default: '/pages/arma-tu-ritual' }}">Arma tu ritual</a>
+            </p>
+          {%- endif -%}
+        </div>
+
+        <aside class="gen-cart__sum" aria-label="Resumen">
+          {%- if settings.free_shipping_threshold > 0 -%}
+            <div class="ship-meter">
+              <div class="ship-meter__txt">
+                {%- if remaining > 0 -%}
+                  Te faltan <strong>{{ remaining | money_without_trailing_zeros }}</strong> para el envío gratis.
+                {%- else -%}
+                  Tu envío es gratis.
+                {%- endif -%}
+              </div>
+              {%- assign pct = cart.total_price | times: 100 | divided_by: threshold | at_most: 100 -%}
+              <div class="ship-meter__bar"><div class="ship-meter__fill" style="width:{{ pct }}%"></div></div>
+            </div>
+          {%- endif -%}
+
+          {%- if settings.dispatch_days != blank -%}
+            {%- assign days = settings.dispatch_days | split: ',' -%}
+            {%- assign current_day = cart.attributes['Día de despacho'] -%}
+            <div class="dispatch">
+              <label for="DispatchDayPage">Día de despacho</label>
+              <select id="DispatchDayPage" name="attributes[Día de despacho]" data-cart-attribute="Día de despacho">
+                <option value="">Lo antes posible</option>
+                {%- for d in days -%}
+                  {%- assign dd = d | strip -%}
+                  <option value="{{ dd | escape }}"{% if current_day == dd %} selected{% endif %}>{{ dd }}</option>
+                {%- endfor -%}
+              </select>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.show_note -%}
+            <div class="gen-cart__note">
+              <label for="CartNote">Nota para el pedido</label>
+              <textarea id="CartNote" name="note">{{ cart.note }}</textarea>
+            </div>
+          {%- endif -%}
+
+          <div class="totals"><span>Subtotal</span><span>{{ original_total | money_without_trailing_zeros }}</span></div>
+          {%- for d in cart.cart_level_discount_applications -%}
+            <div class="totals totals--disc"><span>{{ d.title }}</span><span>−{{ d.total_allocated_amount | money_without_trailing_zeros }}</span></div>
+          {%- endfor -%}
+          {%- if cart.total_discount > 0 -%}
+            <div class="totals totals--disc"><span>Ahorras</span><span>−{{ cart.total_discount | money_without_trailing_zeros }}</span></div>
+          {%- endif -%}
+          <div class="totals totals--main"><span>Total</span><span>{{ cart.total_price | money_without_trailing_zeros }}</span></div>
+          <button type="submit" name="checkout" class="btn btn--solid btn--block">Finalizar compra</button>
+          <p class="gen-cart__fine">{{ section.settings.fine_print }}</p>
+        </aside>
+      </form>
+    {%- endif -%}
+  </div>
+</section>
+
+<script>
+  /* Con JS: las cantidades usan TRRIBU.cart y la página se recarga para reflejar descuentos. */
+  document.addEventListener('trribu:cart', function () {
+    if (document.getElementById('CartPageForm')) window.location.reload();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Carrito",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Carrito" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Tu ritual" },
+    { "type": "text", "id": "empty_title", "label": "Vacío · título", "default": "Tu ritual está vacío." },
+    { "type": "textarea", "id": "empty_text", "label": "Vacío · texto", "default": "¿No sabes por dónde empezar? El test te lo dice en un minuto." },
+    { "type": "checkbox", "id": "show_note", "label": "Mostrar nota para el pedido", "default": false },
+    { "type": "text", "id": "fine_print", "label": "Letra chica", "default": "Impuestos incluidos. El envío se calcula al pagar." }
+  ]
+}
+{% endschema %}

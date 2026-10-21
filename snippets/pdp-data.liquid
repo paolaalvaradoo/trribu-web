@@ -1,0 +1,249 @@
+{%- comment -%}
+  Datos de la ficha de producto (prototipo "TRRIBÚ Producto"), por producto.
+  Lee primero el metafield trribu.<campo>; si está vacío, usa el texto del
+  prototipo según el handle. Las listas salen como texto delimitado
+  (ítems con "~~", campos con "^^") para que las secciones las separen con split.
+
+  Uso:  {%- render 'pdp-data', product: product, field: 'tagline' -%}
+        {%- render 'pdp-data', product: product, field: 'level', signal: 'frizz' -%}
+
+  Metafields (Configuración → Datos personalizados → Productos, namespace trribu):
+    trribu.tagline            Una línea      limpia · equilibra · repara
+    trribu.hero_signal        Una línea      Señal héroe
+    trribu.levels             JSON           {"frizz":"leve","sequedad":"medio","brillo":"medio","cuerpo":"medio",
+                                              "quiebre":"medio","desenredar":"medio","poroso":"otro","color":"alto","textura":"otro"}
+                                             valores: alto | medio | leve | otro (lo trabaja otro paso)
+    trribu.short_description  Multilínea     Párrafo bajo el título (si falta: descripción de Shopify)
+    trribu.benefits           Lista de una línea   Chips de beneficios
+    trribu.loves              JSON           [{"t":"Título","s":"Texto","seal":false}, …]   (seal:true añade el ⁶ de RR⁶)
+    trribu.actives            JSON           [{"n":"01","name":"…","inci":"…","role":"…"}, …]
+    trribu.inci               Multilínea     Lista INCI completa
+    trribu.ritual_title       Una línea      Paso 1 del ritual
+    trribu.how_to             Lista de una línea   Pasos de uso, en orden
+    trribu.tip                Una línea      Nota bajo los pasos
+    trribu.faqs               JSON           [{"q":"Pregunta","a":"Respuesta"}, …]
+    trribu.short_name         Una línea      Shampoo (tarjetas "Completa tu ritual")
+    trribu.stage_bg           Una línea      Fondo CSS del escenario (color o linear-gradient)
+    trribu.soft_bg            Color          Fondo suave (foto editorial, miniaturas)
+    trribu.recommended_tool   Referencia a producto   Herramienta recomendada con este paso
+    trribu.loves_image        Archivo (imagen)        Foto de "Por qué la amamos" (si falta: la de la sección)
+  Herramientas (mismo namespace):
+    trribu.material           Una línea      Acetato de celulosa · púas anchas
+    trribu.why                Una línea      Desenreda sin estática ni tirones
+    trribu.swatch             Color          Fondo de la miniatura
+  También se usan los de snippets/product-field (number, color, ink, size) y trribu.shape (bottle).
+{%- endcomment -%}
+{%- liquid
+  assign h = product.handle
+  assign mf = product.metafields.trribu
+  assign d_key = ''
+  assign d_short = product.title
+  assign d_stage = '#F4EFE9'
+  assign d_soft = '#F4EFE9'
+  assign d_tagline = ''
+  assign d_hero = ''
+  assign d_levels = ''
+  assign d_desc = ''
+  assign d_benefits = ''
+  assign d_loves = ''
+  assign d_actives = ''
+  assign d_inci = ''
+  assign d_ritual = ''
+  assign d_steps = ''
+  assign d_tip = ''
+  assign d_faqs = ''
+  assign d_rec = ''
+  assign d_mat = ''
+  assign d_why = ''
+  assign d_swatch = '#EFE9E1'
+
+  case h
+    when 'el-shampoo', 'shampoo'
+      assign d_key = 'shampoo'
+      assign d_short = 'Shampoo'
+      assign d_stage = 'linear-gradient(150deg,#FBF1EA,#F3E3D8)'
+      assign d_soft = '#F7ECE4'
+      assign d_tagline = 'limpia · equilibra · repara'
+      assign d_hero = 'Color protegido y cuero cabelludo en equilibrio'
+      assign d_levels = ',frizz:leve,sequedad:medio,brillo:medio,cuerpo:medio,quiebre:medio,desenredar:medio,poroso:otro,color:alto,textura:otro,'
+      assign d_desc = 'Shampoo que limpia sin sulfatos, protege el color, equilibra el cuero cabelludo y repara la fibra lavado tras lavado.'
+      assign d_benefits = 'Color protegido~~Cuero cabelludo en equilibrio~~Limpia sin resecar'
+      assign d_loves = 'Tu color, cuidado^^Sin sulfatos, que son los que más arrastran el tono entre retoques. Color-safe para tinte, raíces y mechas.^^0~~Todo empieza en el cuero cabelludo^^Es el único paso del cuarteto que llega a la raíz: con niacinamida, aloe y romero, para un cuero cabelludo en equilibrio.^^0~~Limpia sin castigar^^Sistema de tensioactivos de coco, sin sulfatos. Limpia de verdad sin resecar ni apagar el color.^^0~~Sello TRRIBÚ · RR^^Sin sulfatos, siliconas, parabenos, ftalatos, fenoxietanol, PEG ni etoxilados, fragancias sintéticas, disruptores endocrinos ni fitoestrógenos añadidos. Sin derivados del petróleo: petrolato, aceite mineral, parafina.^^1'
+      assign d_actives = '01^^Moléculas bond de glucosa^^Hydroxypropyl Gluconamide · Hydroxypropylammonium Gluconate^^Refuerzan la fibra desde adentro, donde se debilitó. El corazón de TRRIBOND.~~02^^Péptidos de quinua y arveja^^Hydrolyzed Quinoa · Pisum Sativum Seed Extract^^Hidratan la fibra y ayudan a controlar el frizz.~~03^^Péptidos de kiwicha^^Amaranthus Caudatus Seed Extract^^De los Andes. Dan cuerpo a la hebra más fina, sin peso.~~04^^Romero^^Rosmarinus Officinalis Leaf Extract^^Antioxidante que protege la fibra del daño diario.~~05^^Niacinamida^^Niacinamide^^Confort y equilibrio: todo empieza en el cuero cabelludo.~~06^^Aloe vera^^Aloe Barbadensis Leaf Extract^^Calma e hidrata. Trabaja junto a la niacinamida.~~07^^Base limpiadora suave, sin sulfatos^^Coco-Glucoside · Cocamidopropyl Betaine · Sodium Cocoamphoacetate · Lauryl Glucoside · Sodium Cocoyl Glutamate · Sodium Lauryl Glucose Carboxylate^^Limpia con espuma cremosa, sin resecar.'
+      assign d_inci = 'Water/Aqua, Coco-Glucoside, Cocamidopropyl Betaine, Glycerin, Sodium Cocoamphoacetate, Lauryl Glucoside, Cetyl Alcohol, Glyceryl Stearate, Guar Hydroxypropyltrimonium Chloride, Aloe Barbadensis Leaf Extract, Niacinamide, Benzyl Alcohol, Sodium Cocoyl Glutamate, Sodium Lauryl Glucose Carboxylate, Hydroxypropyl Starch Phosphate, Rosmarinus Officinalis Leaf Extract, Hydroxypropylammonium Gluconate, Hydroxypropyl Gluconamide, Caesalpinia Spinosa Gum, Citrus Paradisi Peel Oil, Benzoic Acid, Hydrolyzed Quinoa, Panthenol, Dehydroacetic Acid, Amaranthus Caudatus Seed Extract, Citric Acid, Pisum Sativum Seed Extract, Citrus Aurantium Amara Leaf Oil, Cedrus Deodara Wood Oil, Caffeine, 1,2-Hexanediol, Sodium Hyaluronate, Sodium Benzoate.'
+      assign d_ritual = 'Paso 1 del ritual'
+      assign d_steps = 'Humedece bien el cuero cabelludo con agua tibia.~~Aplica y masajea con movimientos circulares.~~Enjuaga, y repite si lo deseas.'
+      assign d_tip = 'Continúa el ritual con El Acondicionador.'
+      assign d_faqs = '¿Hace espuma si no tiene sulfatos?^^Sí, aunque distinta: más cremosa y menos abundante. No limpia menos — el sistema de tensioactivos de coco limpia igual, sin resecar.~~¿Sirve si me tiño o tengo mechas?^^Sí. Es color-safe: cuida tu color y tus mechas. La ausencia de sulfatos es lo que más protege el color entre retoques.~~¿Con qué frecuencia lo uso?^^Las veces que laves tu pelo. Al no llevar sulfatos, no reseca aunque lo uses seguido.~~¿Sirve si mi raíz se engrasa rápido?^^Sí. Limpia la raíz de verdad sin resecar las puntas. Con niacinamida, aloe y romero, para un cuero cabelludo cómodo. Si tienes una condición dermatológica diagnosticada, consúltalo con tu dermatóloga.'
+      assign d_rec = 'la-toalla'
+    when 'el-acondicionador', 'acondicionador'
+      assign d_key = 'acond'
+      assign d_short = 'Acondicionador'
+      assign d_stage = 'linear-gradient(150deg,#F6F0E8,#ECE1D2)'
+      assign d_soft = '#F3ECE3'
+      assign d_tagline = 'nutre · repara · desenreda'
+      assign d_hero = 'Suavidad y menos quiebre'
+      assign d_levels = ',frizz:medio,sequedad:medio,brillo:alto,cuerpo:medio,quiebre:alto,desenredar:alto,poroso:alto,color:medio,textura:medio,'
+      assign d_desc = 'Acondicionador que nutre y suaviza la fibra, repara y desenreda en cada lavado, reduciendo la caída por quiebre.'
+      assign d_benefits = 'Suave desde el primer uso~~Menos caída por quiebre~~Desenreda sin pesar'
+      assign d_loves = 'Suave desde el primer uso^^Sacha inchi, copoazú y maracuyá nutren la fibra y la dejan suave sin pesar.^^0~~Menos caída por quiebre^^Las moléculas bond refuerzan la fibra donde se debilitó: se parte menos a media hebra, lavado tras lavado.^^0~~Desenreda sin pesar^^Deslizamiento inmediato, sin siliconas. Desenredar es donde más se rompe el pelo frágil.^^0~~Sello TRRIBÚ · RR^^Sin sulfatos, siliconas, parabenos, ftalatos, fenoxietanol, PEG ni etoxilados, fragancias sintéticas, disruptores endocrinos ni fitoestrógenos añadidos. Sin derivados del petróleo: petrolato, aceite mineral, parafina.^^1'
+      assign d_actives = '01^^Moléculas bond de glucosa^^Hydroxypropyl Gluconamide · Hydroxypropylammonium Gluconate^^Refuerzan la fibra desde adentro, donde se debilitó. El corazón de TRRIBOND.~~02^^Péptidos de quinua y arveja^^Hydrolyzed Quinoa · Pisum Sativum Seed Extract^^Hidratan la fibra y ayudan a controlar el frizz.~~03^^Péptidos de kiwicha^^Amaranthus Caudatus Seed Extract^^De los Andes. Dan cuerpo a la hebra más fina, sin peso.~~04^^Romero^^Rosmarinus Officinalis Leaf Extract^^Antioxidante que protege la fibra del daño diario.~~05^^Aceite de sacha inchi^^Plukenetia Volubilis Seed Oil^^Omega 3, 6 y 9 de la selva peruana. Nutre y sella la cutícula.~~06^^Manteca de copoazú y aceite de maracuyá^^Theobroma Grandiflorum Seed Butter · Passiflora Edulis Seed Oil^^Nutrición profunda y brillo, sin sensación pesada.~~07^^Insaponificables de oliva^^Hydrogenated Ethylhexyl Olivate · Hydrogenated Olive Oil Unsaponifiables^^El deslizamiento sedoso de una silicona, sin silicona.~~08^^Agentes desenredantes^^Behentrimonium Methosulfate · Behentrimonium Chloride^^Desenredo y manejabilidad desde el primer minuto.'
+      assign d_inci = 'Water/Aqua, Cetearyl Alcohol, Glycerin, Hydrogenated Ethylhexyl Olivate, Behentrimonium Chloride, Plukenetia Volubilis Seed Oil, Theobroma Grandiflorum Seed Butter, Aloe Barbadensis Leaf Extract, Guar Hydroxypropyltrimonium Chloride, Hydrogenated Farnesene, Passiflora Edulis Seed Oil, Niacinamide, Behentrimonium Methosulfate, Cetyl Alcohol, Hydroxypropyl Starch Phosphate, Benzyl Alcohol, Glyceryl Stearate, Rosmarinus Officinalis Leaf Extract, Tocopheryl Acetate, Hydroxypropylammonium Gluconate, Hydroxypropyl Gluconamide, Hydrogenated Olive Oil Unsaponifiables, Citric Acid, Brassica Oleracea Italica Seed Oil, Citrus Paradisi Peel Oil, Hydrolyzed Quinoa, Panthenol, Amaranthus Caudatus Seed Extract, Benzoic Acid, Pisum Sativum Seed Extract, Dehydroacetic Acid, Citrus Aurantium Amara Leaf Oil, Cedrus Deodara Wood Oil, 1,2-Hexanediol, Sodium Hyaluronate, Sodium Benzoate.'
+      assign d_ritual = 'Paso 2 del ritual'
+      assign d_steps = 'Después del shampoo, exprime el exceso de agua y aplica de medios a puntas.~~Peina con los dedos o peine ancho. Deja 1–2 minutos, o 5–10 como tratamiento.~~Enjuaga con agua.'
+      assign d_tip = 'Continúa con El Acondicionador Sin Enjuague. Una o dos veces por semana, reemplázalo por La Mascarilla.'
+      assign d_faqs = '¿Lo puedo usar todos los días?^^Sí. Está formulado para uso frecuente, de medios a puntas. No lo apliques en el cuero cabelludo: ahí trabaja El Shampoo.~~¿Sirve si me tiño o mi pelo cambió de textura?^^Sí. Es color-safe y desenreda sin aplanar tu textura natural.~~¿Apelmaza el pelo fino?^^No debería. La fase de nutrición está calibrada para nutrir sin dejar residuo. Si tienes el pelo muy fino, aplica solo de medios a puntas y enjuaga bien.~~¿Cuál es la diferencia con La Mascarilla?^^La dosis y el tiempo. Este es de uso frecuente y actúa en 1–2 minutos. La Mascarilla lleva la concentración más alta de moléculas bond del cuarteto y trabaja el daño acumulado en 5–10 minutos.~~¿Reemplaza al Acondicionador Sin Enjuague?^^No, hacen cosas distintas. Este se enjuaga y trabaja durante el lavado. El Sin Enjuague se queda en el pelo, controla el frizz y realza tu textura.'
+      assign d_rec = 'el-peine'
+    when 'la-mascarilla', 'mascarilla'
+      assign d_key = 'masc'
+      assign d_short = 'Mascarilla'
+      assign d_stage = 'linear-gradient(150deg,#F5E8EA,#E8D2D6)'
+      assign d_soft = '#F2E3E5'
+      assign d_tagline = 'repara · hidrata · fortalece'
+      assign d_hero = 'Reparación profunda'
+      assign d_levels = ',frizz:medio,sequedad:alto,brillo:alto,cuerpo:medio,quiebre:alto,desenredar:leve,poroso:alto,color:medio,textura:otro,'
+      assign d_desc = 'Mascarilla de reparación profunda que fortalece la fibra, hidrata el pelo y le da brillo.'
+      assign d_benefits = 'Reparación profunda~~Nutrición intensa~~Brillo real'
+      assign d_loves = 'El paso más intenso^^Lleva la dosis más alta de moléculas bond del cuarteto, y el tiempo de pausa hace que trabajen más que en cualquier otro paso.^^0~~Nutre de verdad^^Sacha inchi, copoazú y maracuyá reponen los lípidos que el pelo seco, opaco o poroso perdió con el color y el calor.^^0~~Brillo que se nota^^Al sellar la cutícula, la superficie queda más lisa — y una superficie lisa refleja la luz.^^0~~Sello TRRIBÚ · RR^^Sin sulfatos, siliconas, parabenos, ftalatos, fenoxietanol, PEG ni etoxilados, fragancias sintéticas, disruptores endocrinos ni fitoestrógenos añadidos. Sin derivados del petróleo: petrolato, aceite mineral, parafina.^^1'
+      assign d_actives = '01^^Moléculas bond de glucosa^^Hydroxypropyl Gluconamide · Hydroxypropylammonium Gluconate^^La dosis más alta del cuarteto. Refuerzan la fibra desde adentro, donde más se debilitó.~~02^^Péptidos de quinua y arveja^^Hydrolyzed Quinoa · Pisum Sativum Seed Extract^^Hidratan la fibra y ayudan a controlar el frizz.~~03^^Péptidos de kiwicha^^Amaranthus Caudatus Seed Extract^^De los Andes. Dan cuerpo a la hebra más fina, sin peso.~~04^^Romero^^Rosmarinus Officinalis Leaf Extract^^Antioxidante que protege la fibra del daño diario.~~05^^Aceite de sacha inchi^^Plukenetia Volubilis Seed Oil^^Omega 3, 6 y 9 de la selva peruana. Nutre y sella la cutícula.~~06^^Manteca de copoazú y aceite de maracuyá^^Theobroma Grandiflorum Seed Butter · Passiflora Edulis Seed Oil^^Nutrición profunda para pelo seco, opaco o poroso.~~07^^Aloe vera^^Aloe Barbadensis Leaf Extract^^La dosis más alta del cuarteto. Calma e hidrata.~~08^^Insaponificables de oliva^^Hydrogenated Ethylhexyl Olivate · Hydrogenated Olive Oil Unsaponifiables^^Sellan la cutícula: brillo y deslizamiento, sin silicona.'
+      assign d_inci = 'Water/Aqua, Cetearyl Alcohol, Glycerin, Aloe Barbadensis Leaf Extract, Behentrimonium Chloride, Hydrogenated Ethylhexyl Olivate, Theobroma Grandiflorum Seed Butter, Plukenetia Volubilis Seed Oil, Cetyl Alcohol, Glyceryl Stearate, Hydrogenated Farnesene, Guar Hydroxypropyltrimonium Chloride, Passiflora Edulis Seed Oil, Niacinamide, Hydroxypropyl Starch Phosphate, Benzyl Alcohol, Behentrimonium Methosulfate, Hydroxypropylammonium Gluconate, Rosmarinus Officinalis Leaf Extract, Tocopheryl Acetate, Hydroxypropyl Gluconamide, Citric Acid, Hydrogenated Olive Oil Unsaponifiables, Brassica Oleracea Italica Seed Oil, Citrus Paradisi Peel Oil, Amaranthus Caudatus Seed Extract, Hydrolyzed Quinoa, Benzoic Acid, Panthenol, Pisum Sativum Seed Extract, Dehydroacetic Acid, Citrus Aurantium Amara Leaf Oil, Cedrus Deodara Wood Oil, 1,2-Hexanediol, Sodium Hyaluronate, Sodium Benzoate.'
+      assign d_ritual = '1 o 2 veces por semana'
+      assign d_steps = 'Sobre pelo húmedo o recién lavado, aplica de medios a puntas.~~Deja actuar 5–10 minutos.~~Enjuaga bien. Reemplaza al acondicionador ese día.'
+      assign d_tip = 'Usa El Gorro para potenciar el efecto del tratamiento.'
+      assign d_faqs = '¿Cada cuánto la uso?^^Una o dos veces por semana, reemplazando al acondicionador ese día.~~¿Cuánto tiempo la dejo actuar?^^Entre 5 y 10 minutos. Dejarla más tiempo no mejora el resultado.~~¿Sirve para pelo muy poroso?^^Sí. Es el paso pensado para pelo seco, opaco o poroso — el que más lo necesita después de mechas, color o calor.~~¿Es apta para pelo con color?^^Sí, es color-safe: cuida tu color y tus mechas.'
+      assign d_rec = 'el-gorro'
+    when 'el-acondicionador-sin-enjuague', 'acondicionador-sin-enjuague', 'sin-enjuague'
+      assign d_key = 'leavein'
+      assign d_short = 'Sin Enjuague'
+      assign d_stage = 'linear-gradient(150deg,#F2ECE8,#E6DAD3)'
+      assign d_soft = '#EFE7E2'
+      assign d_tagline = 'controla frizz · protege · repara'
+      assign d_hero = 'Frizz y textura natural'
+      assign d_levels = ',frizz:alto,sequedad:medio,brillo:alto,cuerpo:medio,quiebre:alto,desenredar:alto,poroso:alto,color:medio,textura:alto,'
+      assign d_desc = 'Acondicionador sin enjuague que controla el frizz y realza tu textura natural, al aire y sin peso. Repara mientras peinas.'
+      assign d_benefits = 'Frizz bajo control~~Realza tu textura~~Sin peso'
+      assign d_loves = 'Frizz bajo control^^Sella la cutícula con insaponificables de oliva y péptidos, no con silicona. Incluso entre lavados.^^0~~Realza tu textura^^Si tu pelo cambió de forma, no hay que corregirlo: lo deja secar al aire con su textura natural, sin gel y sin efecto acartonado.^^0~~Repara mientras peinas^^Es el único paso que se queda en el pelo: las moléculas bond siguen trabajando hasta el próximo lavado.^^0~~Sello TRRIBÚ · RR^^Sin sulfatos, siliconas, parabenos, ftalatos, fenoxietanol, PEG ni etoxilados, fragancias sintéticas, disruptores endocrinos ni fitoestrógenos añadidos. Sin derivados del petróleo: petrolato, aceite mineral, parafina.^^1'
+      assign d_actives = '01^^Moléculas bond de glucosa^^Hydroxypropyl Gluconamide · Hydroxypropylammonium Gluconate^^Refuerzan la fibra desde adentro, donde se debilitó. El corazón de TRRIBOND.~~02^^Péptidos de quinua y arveja^^Hydrolyzed Quinoa · Pisum Sativum Seed Extract^^Hidratan la fibra y ayudan a controlar el frizz durante el día.~~03^^Péptidos de kiwicha^^Amaranthus Caudatus Seed Extract^^De los Andes. Dan cuerpo a la hebra más fina, sin peso.~~04^^Romero^^Rosmarinus Officinalis Leaf Extract^^Antioxidante que protege la fibra del daño diario.~~05^^Protección térmica vegetal^^Brassica Campestris/Aleurites Fordii Oil Copolymer^^Forma un film de protección ante el calor de la secadora y la plancha.~~06^^Insaponificables de oliva^^Hydrogenated Ethylhexyl Olivate · Hydrogenated Olive Oil Unsaponifiables^^Sellan la cutícula: brillo y deslizamiento, sin silicona.~~07^^Manteca de copoazú^^Theobroma Grandiflorum Seed Butter^^Suavidad y nutrición en una fórmula ligera, sin apelmazar.'
+      assign d_inci = 'Water/Aqua, Hydrogenated Ethylhexyl Olivate, Glycerin, Cetearyl Alcohol, Behentrimonium Chloride, Brassica Campestris/Aleurites Fordii Oil Copolymer, Theobroma Grandiflorum Seed Butter, Hydrogenated Farnesene, Niacinamide, Benzyl Alcohol, Guar Hydroxypropyltrimonium Chloride, Cetyl Alcohol, Rosmarinus Officinalis Leaf Extract, Hydroxypropylammonium Gluconate, Hydroxypropyl Gluconamide, Behentrimonium Methosulfate, Hydroxypropyl Starch Phosphate, Hydrogenated Olive Oil Unsaponifiables, Citrus Paradisi Peel Oil, Citric Acid, Hydrolyzed Quinoa, Panthenol, Amaranthus Caudatus Seed Extract, Benzoic Acid, Pisum Sativum Seed Extract, Dehydroacetic Acid, Citrus Aurantium Amara Leaf Oil, Cedrus Deodara Wood Oil, 1,2-Hexanediol, Sodium Hyaluronate, Sodium Benzoate.'
+      assign d_ritual = 'Paso final del ritual'
+      assign d_steps = 'Sobre pelo húmedo, aplica de medios a puntas.~~Peina con los dedos o, si tienes ondas o rizos, estruja suavemente con las manos. No se enjuaga.~~Deja secar al aire o usa difusor. Si usas secadora o plancha, aplícalo antes.'
+      assign d_tip = 'Déjalo secar al aire: tu pelo toma su forma natural, sin frizz.'
+      assign d_faqs = '¿Sirve para cualquier textura?^^Sí: lacio, ondas, rizos o crespo. Controla el frizz y deja que tu pelo seque con su forma natural, sin fijarlo ni endurecerlo.~~¿Se usa en pelo seco o húmedo?^^En húmedo, después del acondicionador. Puedes retocar puntas en seco si lo necesitas.~~¿Deja el pelo grasoso?^^No debería. Es la fórmula más ligera del cuarteto, justamente porque se queda en el pelo. Aplica de medios a puntas, nunca en la raíz.~~¿Se enjuaga?^^No. Se queda en el pelo y sigue trabajando entre lavados.~~¿Protege del calor?^^Sí, lleva protección ante el calor de la secadora y la plancha. Aplícalo antes de usarlas.'
+      assign d_rec = 'las-pinzas'
+    when 'el-peine', 'peine'
+      assign d_key = 'peine'
+      assign d_short = 'El Peine'
+      assign d_mat = 'Acetato de celulosa · púas anchas'
+      assign d_why = 'Desenreda sin estática ni tirones'
+      assign d_swatch = '#EFE9E1'
+    when 'la-toalla', 'toalla'
+      assign d_key = 'toalla'
+      assign d_short = 'La Toalla'
+      assign d_mat = 'Microfibra waffle'
+      assign d_why = 'Seca sin frotar ni encrespar'
+      assign d_swatch = '#ECEFEA'
+    when 'el-gorro', 'gorro'
+      assign d_key = 'gorro'
+      assign d_short = 'El Gorro'
+      assign d_mat = 'De ducha · interior de satín'
+      assign d_why = 'Potencia el tratamiento'
+      assign d_swatch = '#EDEFEC'
+    when 'las-pinzas', 'pinzas'
+      assign d_key = 'pinzas'
+      assign d_short = 'Las Pinzas'
+      assign d_mat = 'Acetato · set de 2'
+      assign d_why = 'Sujetan sin marcar la fibra'
+      assign d_swatch = '#EFE9E1'
+  endcase
+
+  case field
+    when 'key'
+      echo d_key
+    when 'short'
+      echo mf.short_name.value | default: d_short
+    when 'stage_bg'
+      echo mf.stage_bg.value | default: d_stage
+    when 'soft_bg'
+      echo mf.soft_bg.value | default: d_soft
+    when 'tagline'
+      echo mf.tagline.value | default: d_tagline
+    when 'hero'
+      echo mf.hero_signal.value | default: d_hero
+    when 'level'
+      assign lv = mf.levels.value[signal]
+      if lv == blank
+        assign needle = ',' | append: signal | append: ':'
+        assign parts = d_levels | split: needle
+        if parts.size > 1
+          assign lv = parts[1] | split: ',' | first
+        endif
+      endif
+      echo lv | default: 'otro'
+    when 'desc'
+      echo mf.short_description.value | default: d_desc
+    when 'benefits'
+      if mf.benefits.value != blank
+        echo mf.benefits.value | join: '~~'
+      else
+        echo d_benefits
+      endif
+    when 'loves'
+      if mf.loves.value != blank
+        for l in mf.loves.value
+          unless forloop.first
+            echo '~~'
+          endunless
+          echo l.t | append: '^^' | append: l.s | append: '^^'
+          if l.seal
+            echo '1'
+          else
+            echo '0'
+          endif
+        endfor
+      else
+        echo d_loves
+      endif
+    when 'actives'
+      if mf.actives.value != blank
+        for l in mf.actives.value
+          unless forloop.first
+            echo '~~'
+          endunless
+          echo l.n | append: '^^' | append: l.name | append: '^^' | append: l.inci | append: '^^' | append: l.role
+        endfor
+      else
+        echo d_actives
+      endif
+    when 'inci'
+      echo mf.inci.value | default: d_inci
+    when 'ritual_title'
+      echo mf.ritual_title.value | default: d_ritual
+    when 'steps'
+      if mf.how_to.value != blank
+        echo mf.how_to.value | join: '~~'
+      else
+        echo d_steps
+      endif
+    when 'tip'
+      echo mf.tip.value | default: d_tip
+    when 'faqs'
+      if mf.faqs.value != blank
+        for f in mf.faqs.value
+          unless forloop.first
+            echo '~~'
+          endunless
+          echo f.q | append: '^^' | append: f.a
+        endfor
+      else
+        echo d_faqs
+      endif
+    when 'rec_tool'
+      echo mf.recommended_tool.value.handle | default: d_rec
+    when 'mat'
+      echo mf.material.value | default: d_mat
+    when 'why'
+      echo mf.why.value | default: d_why
+    when 'swatch'
+      echo mf.swatch.value | default: d_swatch
+  endcase
+-%}

@@ -1,0 +1,370 @@
+{{ 'pdp.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'pdp.js' | asset_url }}" defer></script>
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  capture p_num
+    render 'product-field', product: product, field: 'number'
+  endcapture
+  capture stage_bg
+    render 'pdp-data', product: product, field: 'stage_bg'
+  endcapture
+  capture tagline
+    render 'pdp-data', product: product, field: 'tagline'
+  endcapture
+  capture benefits
+    render 'pdp-data', product: product, field: 'benefits'
+  endcapture
+  capture rec_tool
+    render 'pdp-data', product: product, field: 'rec_tool'
+  endcapture
+
+  if section.settings.products != blank
+    assign quartet_handles = section.settings.products | map: 'handle'
+  else
+    assign quartet_handles = 'el-shampoo,el-acondicionador,la-mascarilla,el-acondicionador-sin-enjuague' | split: ','
+  endif
+  if section.settings.tools != blank
+    assign tool_handles = section.settings.tools | map: 'handle'
+  else
+    assign tool_handles = 'el-peine,la-toalla,el-gorro,las-pinzas' | split: ','
+  endif
+  comment
+    Herramienta recomendada primero, luego las demás (como toolsFor() del prototipo).
+  endcomment
+  assign tool_str = ''
+  if tool_handles contains rec_tool
+    assign tool_str = rec_tool | append: ','
+  endif
+  for th in tool_handles
+    if th != rec_tool
+      assign tool_str = tool_str | append: th | append: ','
+    endif
+  endfor
+  assign tool_order = tool_str | split: ','
+
+  assign has_media = false
+  if product.media.size > 0
+    assign has_media = true
+  endif
+  assign rec_label = section.settings.rec_label | append: ' ' | append: product.title | upcase
+-%}
+
+<div class="pdp" data-pdp style="{% render 'product-field', product: product, field: 'style' %}">
+  {%- comment -%} Selector de producto (chips) {%- endcomment -%}
+  {%- if section.settings.show_switcher -%}
+    <nav class="pdp-switch" aria-label="{{ section.settings.switcher_label | escape }}">
+      {%- for h in quartet_handles -%}
+        {%- assign p = all_products[h] -%}
+        {%- if p == blank or p.id == blank -%}{%- continue -%}{%- endif -%}
+        {%- capture c -%}{%- render 'product-field', product: p, field: 'color' -%}{%- endcapture -%}
+        <a href="{{ p.url }}" class="pdp-chip{% if p.id == product.id %} is-on{% endif %}" style="--chip-c:{{ c }}"{% if p.id == product.id %} aria-current="page"{% endif %}>{{ p.title }}</a>
+      {%- endfor -%}
+    </nav>
+  {%- endif -%}
+
+  <section class="pdp-hero">
+    {%- comment -%} Galería {%- endcomment -%}
+    <div class="pdp-gal">
+      {%- if has_media -%}
+        {%- for media in product.media -%}
+          <div class="pdp-stage pdp-stage--media{% if forloop.first %} is-active{% endif %}" data-pdp-view="m{{ forloop.index }}" style="background:{{ stage_bg }}">
+            {%- if forloop.first -%}<div class="pdp-stage__tag">{{ p_num }} · {{ section.settings.stage_tag }}</div>{%- endif -%}
+            {%- assign loading = 'lazy' -%}
+            {%- if forloop.first -%}{%- assign loading = 'eager' -%}{%- endif -%}
+            {{ media.preview_image | image_url: width: 1600 | image_tag: widths: '480, 750, 1000, 1300, 1600', sizes: '(max-width: 900px) 100vw, 600px', loading: loading, class: 'pdp-stage__img', alt: media.alt | default: product.title | escape }}
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        <div class="pdp-stage pdp-stage--bottle is-active" data-pdp-view="bottle" style="background:{{ stage_bg }}">
+          <div class="pdp-stage__tag">{{ p_num }} · {{ section.settings.stage_tag }}</div>
+          <div class="pdp-bottle">{% render 'bottle', product: product, size: 'lg' %}</div>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} 1:1 · Tecnología que repara {%- endcomment -%}
+      <div class="pdp-stage pdp-tech" data-pdp-view="tech">
+        <h3 class="pdp-tech__title">{{ section.settings.tech_title }}<br><span>{{ section.settings.tech_title_2 }}</span></h3>
+        {%- if section.settings.tech_sub != blank -%}<p class="pdp-tech__sub">{{ section.settings.tech_sub }}</p>{%- endif -%}
+        <div class="pdp-tech__rows">
+          {%- for block in section.blocks -%}
+            {%- if block.type != 'tech' -%}{%- continue -%}{%- endif -%}
+            <div class="pdp-tech__row{% if block.settings.accent %} is-accent{% endif %}" {{ block.shopify_attributes }}>
+              {%- case block.settings.icon -%}
+                {%- when 'rr6' -%}
+                  <svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><circle cx="16" cy="16" r="4.4"/><circle cx="16" cy="9.4" r="4.4"/><circle cx="16" cy="22.6" r="4.4"/><circle cx="10.3" cy="12.7" r="4.4"/><circle cx="21.7" cy="12.7" r="4.4"/><circle cx="10.3" cy="19.3" r="4.4"/><circle cx="21.7" cy="19.3" r="4.4"/></svg>
+                {%- when 'no' -%}
+                  <svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><circle cx="16" cy="16" r="11"/><path d="M8.2 23.8 23.8 8.2"/></svg>
+                {%- when 'vegan' -%}
+                  <svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.5 15c-1.6-2.6-2.6-6-1.6-7.2 1-1.2 2.6 1.3 3.4 4.5"/><path d="M20.5 15c1.6-2.6 2.6-6 1.6-7.2-1-1.2-2.6 1.3-3.4 4.5"/><path d="M10.6 15.6c0-2.4 2.4-4 5.4-4s5.4 1.6 5.4 4v4.6c0 2.6-2.4 4.4-5.4 4.4s-5.4-1.8-5.4-4.4Z"/></svg>
+                {%- else -%}
+                  <svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" aria-hidden="true"><path d="M11 6c0 5 10 5 10 10s-10 5-10 10"/><path d="M21 6c0 5-10 5-10 10s10 5 10 10"/><path d="M12.4 11h7.2M12.4 21h7.2"/></svg>
+              {%- endcase -%}
+              <div>
+                <div class="pdp-tech__h">{{ block.settings.title | replace: 'RR6', 'RR<sup>6</sup>' }}</div>
+                <p class="pdp-tech__p">{{ block.settings.text }}</p>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      {%- comment -%} Miniaturas {%- endcomment -%}
+      <div class="pdp-thumbs" role="group" aria-label="Vistas del producto">
+        {%- if has_media -%}
+          {%- for media in product.media -%}
+            <button type="button" class="pdp-thumb{% if forloop.first %} is-active{% endif %}" data-pdp-thumb="m{{ forloop.index }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}" aria-label="Ver foto {{ forloop.index }}" style="background:{{ stage_bg }}">
+              {{ media.preview_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}
+            </button>
+          {%- endfor -%}
+        {%- else -%}
+          <button type="button" class="pdp-thumb is-active" data-pdp-thumb="bottle" aria-pressed="true" aria-label="Ver envase">
+            <span class="pdp-thumb__bottle" style="background:{{ stage_bg }}"><span></span></span>
+          </button>
+        {%- endif -%}
+        <button type="button" class="pdp-thumb" data-pdp-thumb="tech" aria-pressed="false" aria-label="{{ section.settings.tech_title | escape }}">
+          <span class="pdp-thumb__tech"><span></span><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+
+    {%- comment -%} Información y compra {%- endcomment -%}
+    <div class="pdp-buy">
+      {%- if section.settings.pill != blank -%}
+        <div class="pdp-pill"><span class="pdp-pill__dot"></span><span class="pdp-pill__txt">{{ section.settings.pill }}</span></div>
+      {%- endif -%}
+      <h1 class="pdp-title">{{ product.title }}</h1>
+      {%- if tagline != blank -%}<div class="pdp-tagline">{{ tagline }}</div>{%- endif -%}
+      {%- if product.metafields.trribu.short_description.value != blank -%}
+        <p class="pdp-desc">{{ product.metafields.trribu.short_description.value | newline_to_br }}</p>
+      {%- elsif product.description != blank -%}
+        <div class="pdp-desc rte">{{ product.description }}</div>
+      {%- else -%}
+        <p class="pdp-desc">{%- render 'pdp-data', product: product, field: 'desc' -%}</p>
+      {%- endif -%}
+
+      {%- if benefits != blank -%}
+        <div class="pdp-benefits">
+          {%- assign bl = benefits | split: '~~' -%}
+          {%- for b in bl -%}<span>{{ b }}</span>{%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- unless product.has_only_default_variant -%}
+        <div class="pdp-variant">
+          <label for="PdpVariant-{{ section.id }}" class="visually-hidden">{{ product.options | join: ' / ' }}</label>
+          <select id="PdpVariant-{{ section.id }}" class="field" data-pdp-variant>
+            {%- for v in product.variants -%}
+              <option value="{{ v.id }}"{% if v.id == variant.id %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>{{ v.title }}{% unless v.available %} · Agotado{% endunless %}</option>
+            {%- endfor -%}
+          </select>
+        </div>
+      {%- endunless -%}
+
+      <div class="pdp-cartrow">
+        <div class="pdp-price" data-pdp-price>{{ variant.price | money_without_trailing_zeros }}</div>
+        <div class="pdp-qty">
+          <button type="button" data-pdp-qty="-1" aria-label="Quitar uno">−</button>
+          <span data-pdp-qty-val aria-live="polite">1</span>
+          <button type="button" data-pdp-qty="1" aria-label="Añadir uno">+</button>
+        </div>
+        <button type="button" class="pdp-add btn-add" data-pdp-add data-added-label="Añadido ✓"{% unless variant.available %} disabled{% endunless %}>{% if variant.available %}{{ section.settings.add_label }}{% else %}Agotado{% endif %}</button>
+      </div>
+
+      {%- comment -%} Upsell desplegable {%- endcomment -%}
+      <div class="pdp-up">
+        {%- for g in (1..2) -%}
+          {%- liquid
+            if g == 1
+              assign g_handles = quartet_handles
+              assign g_title = section.settings.group1_title
+              assign g_sub = section.settings.group1_sub
+            else
+              assign g_handles = tool_order
+              assign g_title = section.settings.group2_title
+              assign g_sub = section.settings.group2_sub
+            endif
+          -%}
+          <div class="pdp-up__group{% if g == 1 %} is-open{% endif %}">
+            <button type="button" class="pdp-up__head" aria-expanded="{% if g == 1 %}true{% else %}false{% endif %}" aria-controls="PdpUp-{{ section.id }}-{{ g }}" data-pdp-toggle data-pdp-group="up-{{ section.id }}">
+              <span>
+                <span class="pdp-up__title">{{ g_title }}</span>
+                <span class="pdp-up__sub">{{ g_sub }}</span>
+              </span>
+              <span class="pdp-up__icon" aria-hidden="true"></span>
+            </button>
+            <div class="pdp-collapse{% if g == 1 %} is-open{% endif %}" id="PdpUp-{{ section.id }}-{{ g }}">
+              <div class="pdp-collapse__in">
+                {%- for h in g_handles -%}
+                  {%- assign p = all_products[h] -%}
+                  {%- if p == blank or p.id == blank or p.id == product.id -%}{%- continue -%}{%- endif -%}
+                  {%- assign pv = p.selected_or_first_available_variant -%}
+                  {%- liquid
+                    if g == 1
+                      capture swatch
+                        render 'pdp-data', product: p, field: 'soft_bg'
+                      endcapture
+                      capture p_tag
+                        render 'pdp-data', product: p, field: 'tagline'
+                      endcapture
+                      assign why = p_tag | split: '·' | first | strip
+                      assign why = section.settings.group1_why | append: ' · ' | append: why
+                      assign mat = ''
+                    else
+                      capture swatch
+                        render 'pdp-data', product: p, field: 'swatch'
+                      endcapture
+                      capture why
+                        render 'pdp-data', product: p, field: 'why'
+                      endcapture
+                      capture mat
+                        render 'pdp-data', product: p, field: 'mat'
+                      endcapture
+                    endif
+                  -%}
+                  <label class="pdp-up__item">
+                    <input type="checkbox" class="visually-hidden" data-pdp-pick value="{{ pv.id }}" data-price="{{ pv.price }}"{% unless pv.available %} disabled{% endunless %}>
+                    <span class="pdp-up__box" aria-hidden="true">{% render 'icon', name: 'check' %}</span>
+                    <span class="pdp-up__sw" style="background:{{ swatch }}">
+                      {%- if p.featured_media -%}{{ p.featured_media | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}
+                    </span>
+                    <span class="pdp-up__info">
+                      <span class="pdp-up__line">
+                        <span class="pdp-up__name">{{ p.title }}</span>
+                        {%- if g == 2 and h == rec_tool -%}<span class="pdp-up__rec">{{ rec_label }}</span>{%- endif -%}
+                      </span>
+                      {%- if mat != blank -%}<span class="pdp-up__mat">{{ mat }}</span>{%- endif -%}
+                      {%- if why != blank -%}<span class="pdp-up__why">{{ why }}</span>{%- endif -%}
+                    </span>
+                    <span class="pdp-up__price{% if g == 2 and settings.show_tool_prices == false %} visually-hidden{% endif %}">{% if pv.available %}{{ pv.price | money_without_trailing_zeros }}{% else %}Agotado{% endif %}</span>
+                  </label>
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+        <div class="pdp-up__bar" data-pdp-bar>
+          <div>
+            <div class="pdp-up__count" data-pdp-count data-empty="{{ section.settings.bundle_empty | escape }}" data-label="{{ section.settings.bundle_count | escape }}">{{ section.settings.bundle_empty }}</div>
+            <div class="pdp-up__tot">
+              <span class="pdp-up__total" data-pdp-total>{{ variant.price | money_without_trailing_zeros }}</span>
+              <s class="pdp-up__gross" data-pdp-gross hidden></s>
+            </div>
+          </div>
+          <div class="pdp-up__right">
+            <div class="pdp-up__save" data-pdp-save data-label="{{ section.settings.save_label | escape }}" hidden></div>
+            <button type="button" class="pdp-up__all btn-add" data-pdp-addall data-added-label="Añadido ✓"{% unless variant.available %} disabled{% endunless %}>{{ section.settings.add_all_label }}</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pdp-trust">
+        {%- if section.settings.trust_1 != blank -%}
+          <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><path d="M9 3.6 4.5 6.2v5.2L9 14l4.5-2.6V6.2L9 3.6Z"/><path d="M15 9.6 10.5 12.2v5.2L15 20l4.5-2.6v-5.2L15 9.6Z"/></svg><span>{{ section.settings.trust_1 }}</span></div>
+        {%- endif -%}
+        {%- if section.settings.trust_2 != blank -%}
+          <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="15" r="4.2"/><path d="M8.6 12C7.2 8.5 6.6 4.5 7.8 4.2 9 3.9 10 7 10.3 11"/><path d="M15.4 12c1.4-3.5 2-7.5.8-7.8-1.2-.3-2.2 2.8-2.5 6.8"/></svg><span>{{ section.settings.trust_2 }}</span></div>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+
+  <script type="application/json" data-pdp-json>
+    {
+      "variants": [
+        {%- for v in product.variants -%}
+          {"id": {{ v.id }}, "price": {{ v.price }}, "available": {{ v.available | json }}, "price_label": {{ v.price | money_without_trailing_zeros | strip_html | json }}}{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ],
+      "current": {{ variant.id }},
+      "add_label": {{ section.settings.add_label | json }}
+    }
+  </script>
+</div>
+
+{%- comment -%} Datos estructurados {%- endcomment -%}
+{%- capture ld_desc -%}{%- if product.description != blank -%}{{ product.description | strip_html | strip_newlines | truncate: 500 }}{%- else -%}{%- render 'pdp-data', product: product, field: 'desc' -%}{%- endif -%}{%- endcapture -%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": {{ product.title | json }},
+    "url": {{ request.origin | append: product.url | json }},
+    "description": {{ ld_desc | strip | json }},
+    {%- if product.featured_image -%}
+    "image": [{{ product.featured_image | image_url: width: 1600 | prepend: 'https:' | json }}],
+    {%- endif -%}
+    {%- if variant.sku != blank -%}
+    "sku": {{ variant.sku | json }},
+    {%- endif -%}
+    {%- if variant.barcode != blank -%}
+    "gtin": {{ variant.barcode | json }},
+    {%- endif -%}
+    "brand": {"@type": "Brand", "name": {{ product.vendor | default: shop.name | json }}},
+    "offers": [
+      {%- for v in product.variants -%}
+      {
+        "@type": "Offer",
+        {%- if v.sku != blank -%}"sku": {{ v.sku | json }},{%- endif -%}
+        "price": {{ v.price | divided_by: 100.0 | json }},
+        "priceCurrency": {{ cart.currency.iso_code | json }},
+        "availability": "https://schema.org/{% if v.available %}InStock{% else %}OutOfStock{% endif %}",
+        "url": {{ request.origin | append: v.url | json }}
+      }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Ficha · compra",
+  "tag": "div",
+  "class": "pdp-sec pdp-sec--main",
+  "settings": [
+    { "type": "header", "content": "Selector de producto" },
+    { "type": "checkbox", "id": "show_switcher", "label": "Mostrar chips del cuarteto", "default": true },
+    { "type": "product_list", "id": "products", "label": "Cuarteto", "limit": 8, "info": "Vacío: El Shampoo, El Acondicionador, La Mascarilla y El Acondicionador Sin Enjuague." },
+    { "type": "text", "id": "switcher_label", "label": "Etiqueta accesible del selector", "default": "Productos del sistema" },
+    { "type": "header", "content": "Galería" },
+    { "type": "text", "id": "stage_tag", "label": "Etiqueta del escenario (tras el número)", "default": "SISTEMA REPARADOR" },
+    { "type": "text", "id": "tech_title", "label": "Vista 1:1 · título", "default": "Tecnología que repara." },
+    { "type": "text", "id": "tech_title_2", "label": "Vista 1:1 · título (color)", "default": "Fórmula que cuida." },
+    { "type": "text", "id": "tech_sub", "label": "Vista 1:1 · bajada", "default": "Para el pelo que está cambiando." },
+    { "type": "header", "content": "Compra" },
+    { "type": "text", "id": "pill", "label": "Etiqueta superior", "default": "CON TRRIBOND" },
+    { "type": "text", "id": "add_label", "label": "Botón añadir", "default": "Añadir al ritual" },
+    { "type": "header", "content": "Completa tu ritual (desplegable)" },
+    { "type": "text", "id": "group1_title", "label": "Grupo 1 · título", "default": "COMPLETA EL SISTEMA" },
+    { "type": "text", "id": "group1_sub", "label": "Grupo 1 · bajada", "default": "Funciona mejor con los otros pasos del ritual" },
+    { "type": "text", "id": "group1_why", "label": "Grupo 1 · texto de cada producto", "default": "Completa el sistema" },
+    { "type": "text", "id": "group2_title", "label": "Grupo 2 · título", "default": "SUMA TUS HERRAMIENTAS" },
+    { "type": "text", "id": "group2_sub", "label": "Grupo 2 · bajada", "default": "La fórmula es la mitad · la otra es cómo lo tratas" },
+    { "type": "product_list", "id": "tools", "label": "Herramientas", "limit": 8, "info": "Vacío: El Peine, La Toalla, El Gorro y Las Pinzas. La recomendada para cada producto sale primero." },
+    { "type": "text", "id": "rec_label", "label": "Etiqueta de la recomendada (se añade el nombre del producto)", "default": "RECOMENDADA CON" },
+    { "type": "text", "id": "bundle_empty", "label": "Barra · sin selección", "default": "Suma otros pasos o herramientas" },
+    { "type": "text", "id": "bundle_count", "label": "Barra · con selección ([n] = cantidad)", "default": "[n] productos en tu ritual" },
+    { "type": "text", "id": "save_label", "label": "Barra · ahorro ([monto], [pct])", "default": "Ahorras [monto] · −[pct] %" },
+    { "type": "text", "id": "add_all_label", "label": "Botón añadir todo", "default": "AÑADIR TODO" },
+    { "type": "header", "content": "Sellos" },
+    { "type": "text", "id": "trust_1", "label": "Sello 1", "default": "Sin fitoestrógenos añadidos" },
+    { "type": "text", "id": "trust_2", "label": "Sello 2", "default": "Vegano · color-safe" }
+  ],
+  "blocks": [
+    {
+      "type": "tech",
+      "name": "Fila tecnología",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Ícono", "default": "rr6", "options": [
+          { "value": "rr6", "label": "Sello RR6" },
+          { "value": "no", "label": "Prohibido" },
+          { "value": "vegan", "label": "Vegano" },
+          { "value": "bond", "label": "TRRIBOND" }
+        ] },
+        { "type": "text", "id": "title", "label": "Título", "default": "RR6 · El Sello TRRIBÚ" },
+        { "type": "textarea", "id": "text", "label": "Texto" },
+        { "type": "checkbox", "id": "accent", "label": "Destacar en color", "default": false }
+      ]
+    }
+  ]
+}
+{% endschema %}

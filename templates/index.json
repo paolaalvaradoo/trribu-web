@@ -1,0 +1,473 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hm-hero",
+      "settings": {
+        "use_fallback": true,
+        "eyebrow": "Para mujeres de 40+  ·  con TRRIBOND",
+        "heading": "Para el pelo que está cambiando",
+        "subheading": "Tecnología que repara. Fórmula que cuida.",
+        "btn1_label": "Ver el sistema",
+        "btn1_url": "/collections/all",
+        "btn2_label": "Haz el test · 1 min"
+      }
+    },
+    "seals": {
+      "type": "hm-seals",
+      "settings": {},
+      "blocks": {
+        "item_1": {
+          "type": "item",
+          "settings": {
+            "icon": "rr6",
+            "text": "El Sello TRRIBÚ",
+            "accent": false,
+            "url": "/pages/transparencia"
+          }
+        },
+        "item_2": {
+          "type": "item",
+          "settings": {
+            "icon": "drop",
+            "text": "Pensado para el pelo en transición hormonal",
+            "accent": false,
+            "url": ""
+          }
+        },
+        "item_3": {
+          "type": "item",
+          "settings": {
+            "icon": "no",
+            "text": "Sin fitoestrógenos añadidos",
+            "accent": true,
+            "url": ""
+          }
+        },
+        "item_4": {
+          "type": "item",
+          "settings": {
+            "icon": "leaf",
+            "text": "Vegano",
+            "accent": false,
+            "url": ""
+          }
+        },
+        "item_5": {
+          "type": "item",
+          "settings": {
+            "icon": "paw",
+            "text": "Cruelty-free",
+            "accent": false,
+            "url": ""
+          }
+        },
+        "item_6": {
+          "type": "item",
+          "settings": {
+            "icon": "palette",
+            "text": "Color-safe",
+            "accent": false,
+            "url": ""
+          }
+        },
+        "item_7": {
+          "type": "item",
+          "settings": {
+            "icon": "peru",
+            "text": "Hecho en Perú",
+            "accent": false,
+            "url": ""
+          }
+        },
+        "item_8": {
+          "type": "item",
+          "settings": {
+            "icon": "flask",
+            "text": "Low tox",
+            "accent": false,
+            "url": ""
+          }
+        }
+      },
+      "block_order": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4",
+        "item_5",
+        "item_6",
+        "item_7",
+        "item_8"
+      ]
+    },
+    "system": {
+      "type": "hm-system",
+      "settings": {
+        "eyebrow": "El Sistema",
+        "heading": "No es un producto.",
+        "lede": "Es un sistema.",
+        "body": "<p>La mayoría de las marcas formulan para un problema aislado. TRRIBÚ no. Formula para el pelo que está cambiando.</p><p>Después de los 40 tu pelo no tiene un solo problema: tiene una causa —la transición hormonal— que aparece en muchos frentes a la vez. Por eso un producto suelto no alcanza.</p>",
+        "note": "TRRIBOND vive en cada paso del ritual.",
+        "link1_label": "Ver las 10 señales",
+        "link1_url": "/pages/sintomas",
+        "link2_label": "Conoce el sistema",
+        "link2_url": "/pages/sistema"
+      },
+      "blocks": {
+        "tag_1": {
+          "type": "tag",
+          "settings": {
+            "text": "Más frizz"
+          }
+        },
+        "tag_2": {
+          "type": "tag",
+          "settings": {
+            "text": "Más sequedad"
+          }
+        },
+        "tag_3": {
+          "type": "tag",
+          "settings": {
+            "text": "Menos cuerpo"
+          }
+        },
+        "tag_4": {
+          "type": "tag",
+          "settings": {
+            "text": "Más fragilidad"
+          }
+        },
+        "tag_5": {
+          "type": "tag",
+          "settings": {
+            "text": "Menos brillo"
+          }
+        },
+        "tag_6": {
+          "type": "tag",
+          "settings": {
+            "text": "Más quiebre"
+          }
+        },
+        "tag_7": {
+          "type": "tag",
+          "settings": {
+            "text": "Difícil de desenredar"
+          }
+        }
+      },
+      "block_order": [
+        "tag_1",
+        "tag_2",
+        "tag_3",
+        "tag_4",
+        "tag_5",
+        "tag_6",
+        "tag_7"
+      ]
+    },
+    "tech": {
+      "type": "hm-tech",
+      "settings": {
+        "eyebrow": "La Tecnología",
+        "heading_1": "Una tecnología,",
+        "heading_accent": "TRRIBOND",
+        "heading_2": ", en cada gota.",
+        "body": "<p>Combinamos <strong>moléculas bond de glucosa</strong> con péptidos vegetales de quinua, arveja y kiwicha, y romero, para reparar la fibra desde adentro. Reparación real, sin fitoestrógenos añadidos y sin ingredientes que pesen tu pelo.</p>",
+        "link_label": "Ver el sistema completo",
+        "link_url": "/pages/sistema"
+      },
+      "blocks": {
+        "row_1": {
+          "type": "row",
+          "settings": {
+            "number": "01",
+            "text": "Las moléculas bond refuerzan la fibra desde adentro y reducen la caída por quiebre"
+          }
+        },
+        "row_2": {
+          "type": "row",
+          "settings": {
+            "number": "02",
+            "text": "Los péptidos de quinua y arveja hidratan y controlan el frizz"
+          }
+        },
+        "row_3": {
+          "type": "row",
+          "settings": {
+            "number": "03",
+            "text": "Los péptidos de kiwicha devuelven cuerpo a la fibra"
+          }
+        },
+        "row_4": {
+          "type": "row",
+          "settings": {
+            "number": "04",
+            "text": "El romero protege como antioxidante"
+          }
+        }
+      },
+      "block_order": [
+        "row_1",
+        "row_2",
+        "row_3",
+        "row_4"
+      ]
+    },
+    "cuarteto": {
+      "type": "hm-products",
+      "settings": {
+        "eyebrow": "El Cuarteto",
+        "heading": "Cuatro pasos.",
+        "heading_serif": "Un solo sistema.",
+        "link_label": "Ver todo",
+        "link_url": "/collections/all",
+        "button_label": "Añadir al ritual"
+      },
+      "blocks": {
+        "pill_1": {
+          "type": "pill",
+          "settings": {
+            "label": "Todo",
+            "url": "/collections/all",
+            "active": true
+          }
+        },
+        "pill_2": {
+          "type": "pill",
+          "settings": {
+            "label": "Kits",
+            "url": "/pages/kits",
+            "active": false
+          }
+        },
+        "pill_3": {
+          "type": "pill",
+          "settings": {
+            "label": "Limpieza",
+            "url": "/products/el-shampoo",
+            "active": false
+          }
+        },
+        "pill_4": {
+          "type": "pill",
+          "settings": {
+            "label": "Reparación",
+            "url": "/products/la-mascarilla",
+            "active": false
+          }
+        },
+        "pill_5": {
+          "type": "pill",
+          "settings": {
+            "label": "Sin enjuague",
+            "url": "/products/el-acondicionador-sin-enjuague",
+            "active": false
+          }
+        },
+        "pill_6": {
+          "type": "pill",
+          "settings": {
+            "label": "Herramientas",
+            "url": "/collections/herramientas",
+            "active": false
+          }
+        }
+      },
+      "block_order": [
+        "pill_1",
+        "pill_2",
+        "pill_3",
+        "pill_4",
+        "pill_5",
+        "pill_6"
+      ]
+    },
+    "quote": {
+      "type": "hm-quote",
+      "settings": {
+        "overlay": 54,
+        "eyebrow": "Para mujeres de 40+",
+        "quote": "Tu pelo está cambiando. Y no es tu imaginación.",
+        "btn_label": "Ver las 10 señales",
+        "btn_url": "/pages/sintomas"
+      }
+    },
+    "free_of": {
+      "type": "hm-free-of",
+      "settings": {
+        "eyebrow": "Siempre libre de",
+        "heading": "El Sello TRRIBÚ",
+        "btn_label": "Ver todos los ingredientes",
+        "btn_url": "/pages/transparencia"
+      },
+      "blocks": {
+        "item_1": {
+          "type": "item",
+          "settings": {
+            "text": "Siliconas"
+          }
+        },
+        "item_2": {
+          "type": "item",
+          "settings": {
+            "text": "Sulfatos"
+          }
+        },
+        "item_3": {
+          "type": "item",
+          "settings": {
+            "text": "Derivados del petróleo"
+          }
+        },
+        "item_4": {
+          "type": "item",
+          "settings": {
+            "text": "PEG / etoxilados"
+          }
+        },
+        "item_5": {
+          "type": "item",
+          "settings": {
+            "text": "Fragancias sintéticas"
+          }
+        },
+        "item_6": {
+          "type": "item",
+          "settings": {
+            "text": "Disruptores endocrinos"
+          }
+        }
+      },
+      "block_order": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4",
+        "item_5",
+        "item_6"
+      ]
+    },
+    "tools": {
+      "type": "hm-tools",
+      "settings": {
+        "eyebrow": "Herramientas",
+        "heading": "La fórmula es la mitad.",
+        "heading_serif": "La otra es cómo lo tratas.",
+        "link_label": "Ver todo",
+        "link_url": "/collections/herramientas"
+      }
+    },
+    "founder": {
+      "type": "hm-founder",
+      "settings": {
+        "eyebrow": "Nosotros",
+        "heading": "No soy química.",
+        "lede": "Soy la clienta.",
+        "body": "<p>TRRIBÚ nace de tres mujeres. De Isabel, mi mamá, a quien acompañé tres años durante su cáncer investigando cada cosa que entraba a su cuerpo. De una amiga sobreviviente que me preguntó \"¿por qué no me haces uno para mí?\". Y de mí misma: pasé los 40 y mi pelo cambió.</p>",
+        "quote": "\"Lo que pongo en tu pelo es lo que pondría en el de mi mamá.\"",
+        "name": "Pao",
+        "role": "Fundadora de TRRIBÚ",
+        "btn_label": "Lee nuestra historia",
+        "btn_url": "/pages/nosotros"
+      }
+    },
+    "faq": {
+      "type": "hm-faq",
+      "settings": {
+        "eyebrow": "Preguntas frecuentes",
+        "heading": "Lo que más nos preguntan",
+        "intro": "Sin rodeos y sin promesas que no podamos cumplir. Si te queda una duda, escríbenos.",
+        "outro": "¿Otra duda? Escríbenos y te contamos con transparencia.",
+        "btn1_label": "Ver todas las preguntas",
+        "btn1_url": "/pages/faq",
+        "btn2_label": "Ver transparencia",
+        "btn2_url": "/pages/transparencia"
+      },
+      "blocks": {
+        "question_1": {
+          "type": "question",
+          "settings": {
+            "question": "¿De verdad un solo sistema atiende todas las señales?",
+            "answer": "<p>Sí. Trabajamos la fibra del pelo en cada paso, no un problema aislado. Por eso es un sistema y no un producto estrella: los cuatro productos, juntos, cubren las señales del pelo que está cambiando.</p>"
+          }
+        },
+        "question_2": {
+          "type": "question",
+          "settings": {
+            "question": "¿Puedo usarlo si estoy o estuve en tratamiento oncológico?",
+            "answer": "<p>TRRIBÚ es cosmética capilar, no un producto médico, y no podemos decirte si es adecuado para tu caso — eso lo decide tu médico. Lo que sí podemos decirte es cómo está formulado: sin disruptores endocrinos ni fitoestrógenos añadidos, sin fragancias sintéticas y sin derivados del petróleo. Esa decisión nació justamente de una amiga sobreviviente.</p>"
+          }
+        },
+        "question_3": {
+          "type": "question",
+          "settings": {
+            "question": "¿Es para todo tipo de pelo, incluso rizado?",
+            "answer": "<p>Sí. El sistema trabaja sobre la fibra, y la fibra cambia con las hormonas en todos los tipos de pelo. Lo que varía es cuánto producto usas y cada cuánto: el rizo suele pedir más mascarilla, el liso fino menos acondicionador.</p>"
+          }
+        },
+        "question_4": {
+          "type": "question",
+          "settings": {
+            "question": "¿Sirve si me tiño o tengo canas?",
+            "answer": "<p>Sí. Las cuatro fórmulas son color-safe: no destiñen tu color ni tus mechas. La fundadora tiene mechas y no piensa renunciar a ellas — el sistema está pensado exactamente para eso.</p>"
+          }
+        },
+        "question_5": {
+          "type": "question",
+          "settings": {
+            "question": "¿TRRIBÚ hace crecer el pelo?",
+            "answer": "<p>No, y no vamos a decir que sí. TRRIBÚ trabaja la fibra: la refuerza para que se rompa menos. Eso reduce la caída por quiebre —el pelo que se parte a media hebra— que es distinto de la caída desde la raíz. El romero está en las fórmulas por su acción antioxidante, no por ningún efecto sobre el folículo.</p>"
+          }
+        },
+        "question_6": {
+          "type": "question",
+          "settings": {
+            "question": "¿Necesito los cuatro productos?",
+            "answer": "<p>No necesariamente. Funciona mejor como sistema completo, pero puedes empezar por el dúo —El Shampoo y El Acondicionador— e ir sumando La Mascarilla y El Acondicionador Sin Enjuague según lo que tu pelo vaya pidiendo.</p><p>Si tienes varias señales a la vez —mechas, frizz que antes no tenías, quiebre a media hebra— el sistema completo trabaja mejor. <a href=\"/pages/quiz\" title=\"Test de un minuto\">El test de un minuto</a> te ayuda a saber por dónde empezar.</p>"
+          }
+        },
+        "question_7": {
+          "type": "question",
+          "settings": {
+            "question": "¿En cuánto tiempo veo resultados?",
+            "answer": "<p>El desenredo y el control de frizz se perciben desde el primer uso; el refuerzo de la fibra es progresivo con el uso continuo del sistema.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_1",
+        "question_2",
+        "question_3",
+        "question_4",
+        "question_5",
+        "question_6",
+        "question_7"
+      ]
+    },
+    "cta": {
+      "type": "hm-cta",
+      "settings": {
+        "overlay": 56,
+        "heading": "Para nosotras. Las que cambiamos.",
+        "subheading": "Pero no renunciamos.",
+        "btn_label": "Ver los kits",
+        "btn_url": "/pages/kits"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "seals",
+    "system",
+    "tech",
+    "cuarteto",
+    "quote",
+    "free_of",
+    "tools",
+    "founder",
+    "faq",
+    "cta"
+  ]
+}

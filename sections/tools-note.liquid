@@ -1,0 +1,16 @@
+{{ 'tools.css' | asset_url | stylesheet_tag }}
+{%- if section.settings.text != blank -%}
+  <section class="tools-note">
+    <p class="tools-note__text">{{ section.settings.text }}</p>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Herramientas · nota",
+  "settings": [
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Precios referenciales. Las cuatro herramientas son veganas, igual que las fórmulas del cuarteto." }
+  ],
+  "presets": [{ "name": "Nota pequeña centrada" }]
+}
+{% endschema %}

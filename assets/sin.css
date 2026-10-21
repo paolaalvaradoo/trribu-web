@@ -1,0 +1,60 @@
+/* ==========================================================================
+   TRRIBÚ · Síntomas (prefijo sin)
+   ========================================================================== */
+.sin-eyebrow { font-family: var(--f-display); font-size: 12px; letter-spacing: .34em; color: var(--muted); text-transform: uppercase; }
+.sin-strong { font-weight: 500; }
+.sin-pill {
+  display: inline-block; text-decoration: none; background: var(--ink); color: #fff;
+  font-family: var(--f-display); font-size: 15px; letter-spacing: .04em; padding: 15px 34px; border-radius: 32px;
+  transition: background .25s ease, transform .2s ease;
+}
+.sin-pill:hover { background: var(--ink-2); color: #fff; }
+
+/* Hero */
+.sin-hero { position: relative; text-align: center; padding-top: 100px; padding-bottom: 72px; }
+.sin-hero__eyebrow { margin-bottom: 22px; }
+.sin-hero__title { font-family: var(--f-display); font-weight: 300; font-size: 56px; line-height: 1.1; letter-spacing: -.01em; margin: 0; color: var(--ink); }
+.sin-hero__text { font-size: 18px; line-height: 1.7; color: var(--muted); max-width: 620px; margin: 26px auto 0; }
+
+/* 10 señales */
+.sin-sig { padding-top: 10px; padding-bottom: 40px; }
+.sin-sig__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.sin-card {
+  background: var(--paper-2); border: 1px solid var(--line); border-radius: 18px; padding: 34px 30px;
+  transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+}
+.sin-card:hover { transform: translateY(-4px); box-shadow: 0 22px 40px -26px rgba(70,45,25,.4); border-color: #E4D6C5; }
+.sin-card__num { font-family: var(--f-display); font-size: 13px; letter-spacing: .16em; color: var(--ink); margin-bottom: 16px; }
+.sin-card__title { font-family: var(--f-display); font-weight: 500; font-size: 22px; color: var(--ink); margin-bottom: 12px; }
+.sin-card__text { font-size: 15px; line-height: 1.65; color: var(--muted); margin: 0; }
+.sin-cta { grid-column: span 2; background: var(--ink); border-radius: 18px; padding: 40px; display: flex; align-items: center; justify-content: space-between; gap: 30px; }
+.sin-cta__title { font-family: var(--f-display); font-weight: 300; font-size: 30px; color: #fff; line-height: 1.2; }
+.sin-cta__btn {
+  flex-shrink: 0; text-decoration: none; background: #fff; color: var(--ink);
+  font-family: var(--f-display); font-size: 15px; letter-spacing: .04em; padding: 15px 32px; border-radius: 30px;
+  transition: background .25s ease;
+}
+.sin-cta__btn:hover { background: var(--sand); color: var(--ink); }
+
+/* Puente al sistema */
+.sin-bridge { text-align: center; padding-top: 80px; padding-bottom: 100px; }
+.sin-bridge__eyebrow { margin-bottom: 18px; }
+.sin-bridge__title { font-family: var(--f-display); font-weight: 300; font-size: 38px; line-height: 1.14; margin: 0; color: var(--ink); }
+.sin-bridge__text { font-size: 17px; line-height: 1.7; color: var(--muted); max-width: 600px; margin: 24px auto 0; }
+.sin-bridge .sin-pill { margin-top: 30px; }
+
+/* --------------------------------------------------------------------------
+   Móvil
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .sin-hero, .sin-sig, .sin-bridge { padding-top: 52px; padding-bottom: 52px; }
+  .sin-hero__title { font-size: 33px; line-height: 1.14; }
+  .sin-bridge__title { font-size: 27px; line-height: 1.18; }
+  .sin-cta__title { font-size: 24px; line-height: 1.22; }
+  .sin-sig__grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .sin-cta { grid-column: auto; flex-wrap: wrap; }
+  .sin-pill, .sin-cta__btn { min-height: 44px; }
+}
+@media (max-width: 480px) {
+  .sin-hero__title { font-size: 29px; }
+}

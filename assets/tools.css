@@ -1,0 +1,90 @@
+/* ==========================================================================
+   TRRIBÚ · Herramientas (templates/collection.herramientas.json) — prefijo tools
+   Fuente: TRRIBÚ Herramientas.dc.html
+   ========================================================================== */
+
+/* Cabecera */
+.tools-hero { max-width: 960px; margin: 0 auto; padding: 84px 56px 58px; text-align: center; }
+.tools-hero__eyebrow { font-family: var(--f-display); font-size: 12px; letter-spacing: .34em; color: var(--muted); margin-bottom: 18px; text-transform: uppercase; }
+.tools-hero__title { font-family: var(--f-display); font-weight: 300; font-size: 50px; line-height: 1.1; margin: 0; color: var(--ink); }
+.tools-hero__strong { font-weight: 500; color: var(--ink); }
+.tools-hero__text { font-size: 17px; line-height: 1.7; color: var(--muted); max-width: 600px; margin: 24px auto 0; }
+
+/* Listado */
+.tools-grid-sec { max-width: 1300px; margin: 0 auto; padding: 0 56px 40px; }
+.tools-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.tools-card {
+  min-width: 0; background: #fff; border: 1px solid #EEE; border-radius: 18px; overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s ease;
+}
+.tools-card:hover { transform: translateY(-8px); box-shadow: 0 26px 44px -28px rgba(70,45,25,.4); }
+.tools-card__shot { position: relative; display: block; aspect-ratio: 4 / 3; background: #F4F1EA; overflow: hidden; }
+.tools-card__shot > img, .tools-card__shot > .media { position: absolute; inset: 0; width: 100%; height: 100%; }
+.tools-card__shot > img { object-fit: cover; }
+.tools-card__body { padding: 26px 24px 24px; display: flex; flex-direction: column; flex: 1; }
+.tools-card__material { font-family: var(--f-display); font-size: 11px; letter-spacing: .16em; color: var(--ink); margin-bottom: 10px; text-transform: uppercase; }
+.tools-card__name { font-family: var(--f-display); font-weight: 500; font-size: 21px; color: var(--ink); text-decoration: none; }
+.tools-card__name:hover { color: var(--ink-hover); }
+.tools-card__verbs { font-size: 12.5px; letter-spacing: .04em; color: var(--muted-2); margin-top: 5px; }
+.tools-card__desc { font-size: 14px; line-height: 1.6; color: var(--muted); margin: 14px 0 16px; }
+.tools-card__chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 20px; }
+.tools-card__chip { background: var(--paper-2); border-radius: 20px; padding: 5px 12px; font-size: 11.5px; color: var(--ink-hover); }
+.tools-card__foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.tools-card__price { font-family: var(--f-display); font-size: 17px; color: var(--ink); }
+.tools-card__price s { font-size: 13px; color: var(--muted-3); }
+.tools-card__btn {
+  border: 0; cursor: pointer; background: var(--ink); color: #fff; font-family: var(--f-display);
+  font-size: 12.5px; padding: 9px 18px; border-radius: 24px; white-space: nowrap;
+  transition: transform .2s ease, filter .2s ease, background .2s ease;
+}
+.tools-card__btn:hover { transform: translateY(-2px); filter: brightness(.95); }
+.tools-card__btn.is-loading { opacity: .55; pointer-events: none; }
+.tools-card__btn[disabled] { background: var(--line-2); color: var(--muted); cursor: default; transform: none; }
+
+/* Tarjeta de kits */
+.tools-card--dark { background: var(--ink); border: 0; justify-content: center; padding: 36px 32px; color: #F5F3EF; }
+.tools-kits__eyebrow { font-family: var(--f-display); font-size: 11px; letter-spacing: .28em; color: #D8CFC4; margin-bottom: 14px; text-transform: uppercase; }
+.tools-kits__title { font-family: var(--f-display); font-weight: 300; font-size: 26px; line-height: 1.2; margin-bottom: 14px; }
+.tools-kits__text { font-size: 14px; line-height: 1.6; color: var(--muted-3); margin: 0 0 22px; }
+.tools-kits__btn {
+  align-self: flex-start; text-decoration: none; background: #fff; color: var(--ink); font-family: var(--f-display);
+  font-size: 14px; padding: 12px 24px; border-radius: 28px; transition: transform .2s ease, filter .2s ease;
+}
+.tools-kits__btn:hover { transform: translateY(-2px); filter: brightness(.95); color: var(--ink); }
+
+.tools-empty { grid-column: 1 / -1; text-align: center; padding: 20px 0 40px; }
+.tools-empty__title { font-family: var(--f-display); font-weight: 300; font-size: 26px; margin: 0; }
+.tools-empty__text { font-size: 14px; color: var(--muted); margin: 10px 0 0; }
+.tools-pag { display: flex; justify-content: center; gap: 12px; margin-top: 40px; font-family: var(--f-display); font-size: 14px; }
+.tools-pag a { text-decoration: none; }
+
+/* Por qué */
+.tools-why { background: var(--paper-2); border-top: 1px solid #EFEFEF; border-bottom: 1px solid #EFEFEF; }
+.tools-why__grid { max-width: 1100px; margin: 0 auto; padding: 80px 56px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; text-align: center; }
+.tools-why__icon { display: inline-block; color: var(--ink); margin-bottom: 14px; }
+.tools-why__title { font-family: var(--f-display); font-weight: 500; font-size: 18px; margin-bottom: 8px; }
+.tools-why__text { font-size: 14px; line-height: 1.55; color: var(--muted); margin: 0; }
+
+/* Nota */
+.tools-note { max-width: 900px; margin: 0 auto; padding: 60px 56px 90px; text-align: center; }
+.tools-note__text { font-size: 13px; line-height: 1.7; color: var(--muted-3); margin: 0; }
+
+/* Móvil */
+@media (max-width: 900px) {
+  .tools-hero { padding: 52px 20px; }
+  .tools-hero__title { font-size: 33px; line-height: 1.14; }
+  .tools-grid-sec { padding: 0 20px 52px; }
+  .tools-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .tools-card__btn, .tools-kits__btn { min-height: 44px; }
+  .tools-card__btn { white-space: normal; }
+  .tools-kits__btn { display: inline-flex; align-items: center; }
+  .tools-why__grid { grid-template-columns: minmax(0, 1fr); gap: 28px; padding: 52px 20px; }
+  .tools-note { padding: 52px 20px; }
+}
+@media (max-width: 480px) {
+  .tools-hero { padding-left: 16px; padding-right: 16px; }
+  .tools-hero__title { font-size: 29px; }
+  .tools-grid-sec { padding-left: 16px; padding-right: 16px; }
+  .tools-why__grid, .tools-note { padding-left: 16px; padding-right: 16px; }
+}

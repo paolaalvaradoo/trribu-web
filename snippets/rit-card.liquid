@@ -1,0 +1,56 @@
+{%- comment -%}
+  Tarjeta del builder "Arma tu ritual".
+  Uso: {% render 'rit-card', product: p, index: 0, kind: 'product|tool' %}
+{%- endcomment -%}
+{%- liquid
+  assign v = product.selected_or_first_available_variant
+  assign glyph = '◇'
+  assign soft = '#F4EDE4'
+  case product.handle
+    when 'el-peine'
+      assign glyph = '⊞'
+    when 'la-toalla'
+      assign glyph = '▦'
+      assign soft = '#EEF1F0'
+    when 'el-gorro'
+      assign glyph = '❍'
+    when 'las-pinzas'
+      assign glyph = '✄'
+  endcase
+-%}
+<div class="rit-card rit-card--{{ kind }}{% unless v.available %} is-off{% endunless %}" data-rit-card="{{ index }}" style="{% render 'product-field', product: product, field: 'style' %}">
+  {%- if kind == 'tool' -%}
+    <div class="rit-tico" style="background:{{ soft }}" aria-hidden="true">
+      {%- if product.featured_media -%}
+        {{ product.featured_media | image_url: width: 140 | image_tag: loading: 'lazy', alt: '' }}
+      {%- else -%}
+        <span>{{ glyph }}</span>
+      {%- endif -%}
+    </div>
+  {%- else -%}
+    <div class="rit-mini" aria-hidden="true">
+      {%- if product.featured_media -%}
+        {{ product.featured_media | image_url: width: 140 | image_tag: loading: 'lazy', alt: '' }}
+      {%- else -%}
+        <div class="rit-mini__fill"></div>
+        <div class="rit-mini__logo">{% render 'wordmark', height: 6 %}</div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+  <div class="rit-card__info">
+    <h3 class="rit-card__name"><a href="{{ product.url }}" class="rit-card__link">{{ product.title }}</a></h3>
+    {%- if kind != 'tool' -%}
+      <div class="rit-card__tag">{%- render 'product-field', product: product, field: 'verbs' -%}</div>
+    {%- endif -%}
+    <div class="rit-card__foot">
+      {%- if kind != 'tool' or settings.show_tool_prices -%}
+        <span class="rit-card__price">{{ v.price | money_without_trailing_zeros }}</span>
+      {%- endif -%}
+      <div class="rit-qty">
+        <button type="button" data-rit-dec aria-label="Quitar un {{ product.title | escape }}" disabled>−</button>
+        <span class="rit-qty__n" data-rit-n aria-live="polite">0</span>
+        <button type="button" data-rit-inc aria-label="Sumar un {{ product.title | escape }}"{% unless v.available %} disabled{% endunless %}>+</button>
+      </div>
+    </div>
+  </div>
+</div>

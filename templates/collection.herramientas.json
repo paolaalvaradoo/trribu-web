@@ -1,0 +1,45 @@
+{
+  "sections": {
+    "header": {
+      "type": "tools-header",
+      "settings": {
+        "eyebrow": "HERRAMIENTAS",
+        "heading": "La fórmula es la mitad.",
+        "heading_strong": "La otra mitad es cómo lo tratas.",
+        "text": "Se puede quebrar una fibra reforzada si la secas a fricción y duermes sobre algodón. Estos objetos no tienen fórmula. Tienen física."
+      }
+    },
+    "main": {
+      "type": "tools-grid",
+      "settings": {
+        "button_label": "Añadir al carrito",
+        "added_label": "Añadido ✓",
+        "sold_out_label": "Agotado",
+        "show_kits_card": true,
+        "kits_eyebrow": "EL RITUAL COMPLETO",
+        "kits_heading": "Producto + herramienta,\nen un solo kit.",
+        "kits_text": "Combina el sistema reparador con las herramientas que protegen el resultado.",
+        "kits_label": "Ver los kits",
+        "kits_link": "/pages/kits",
+        "empty_heading": "Las herramientas llegan pronto.",
+        "empty_text": "Agrega productos a la colección Herramientas para mostrarlos aquí."
+      }
+    },
+    "why": {
+      "type": "tools-why",
+      "blocks": {
+        "why_1": { "type": "item", "settings": { "icon": "drop", "title": "Menos quiebre", "text": "Materiales suaves que no friccionan ni rompen la fibra debilitada." } },
+        "why_2": { "type": "item", "settings": { "icon": "waves", "title": "Menos frizz", "text": "Superficies satinadas que conservan la hidratación y el alisado." } },
+        "why_3": { "type": "item", "settings": { "icon": "palette", "title": "Color que dura", "text": "Menos roce y calor = el color y las mechas se apagan más lento." } }
+      },
+      "block_order": ["why_1", "why_2", "why_3"]
+    },
+    "note": {
+      "type": "tools-note",
+      "settings": {
+        "text": "Precios referenciales. Las cuatro herramientas son veganas, igual que las fórmulas del cuarteto."
+      }
+    }
+  },
+  "order": ["header", "main", "why", "note"]
+}

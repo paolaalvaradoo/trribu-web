@@ -1,0 +1,53 @@
+{
+  "sections": {
+    "header": {
+      "type": "col-header",
+      "settings": {
+        "eyebrow": "LAS 4 FÓRMULAS",
+        "heading": "Cuatro pasos para el pelo",
+        "heading_italic": "que está cambiando.",
+        "text": "Después de los 40, los cambios hormonales también se notan en el pelo: más frizz, menos cuerpo, más quiebre. TRRIBÚ es un sistema de cuatro fórmulas que trabajan juntas, y cada una se ocupa de una parte.",
+        "quiz_prompt": "¿No sabes por dónde empezar?",
+        "quiz_label": "Haz el test · 1 min",
+        "quiz_link": "",
+        "use_collection_info": false
+      }
+    },
+    "main": {
+      "type": "col-grid",
+      "blocks": {
+        "f_todo": { "type": "filter", "settings": { "label": "TODO", "category": "todo", "link": "" } },
+        "f_kits": { "type": "filter", "settings": { "label": "KITS", "category": "", "link": "/pages/kits" } },
+        "f_limpieza": { "type": "filter", "settings": { "label": "LIMPIEZA", "category": "limpieza", "link": "" } },
+        "f_reparacion": { "type": "filter", "settings": { "label": "REPARACIÓN", "category": "reparacion", "link": "" } },
+        "f_sinenjuague": { "type": "filter", "settings": { "label": "SIN ENJUAGUE", "category": "sin-enjuague", "link": "" } },
+        "f_herramientas": { "type": "filter", "settings": { "label": "HERRAMIENTAS", "category": "", "link": "/collections/herramientas" } }
+      },
+      "block_order": ["f_todo", "f_kits", "f_limpieza", "f_reparacion", "f_sinenjuague", "f_herramientas"],
+      "settings": {
+        "button_label": "AÑADIR AL CARRITO",
+        "added_label": "AÑADIDO ✓",
+        "sold_out_label": "AGOTADO",
+        "filters_label": "Filtrar productos",
+        "filter_empty": "No hay productos en esta categoría por ahora.",
+        "pagination_label": "Páginas",
+        "empty_heading": "Aún no hay productos aquí.",
+        "empty_text": "Estamos preparando esta colección. Mientras tanto, mira las cuatro fórmulas del sistema.",
+        "empty_label": "VER TODOS LOS PRODUCTOS",
+        "empty_link": "/collections/all"
+      }
+    },
+    "kits": {
+      "type": "col-kits",
+      "settings": {
+        "eyebrow": "EL RITUAL COMPLETO",
+        "heading": "Empieza tu reparación con el ritual completo.",
+        "heading_strong": "Llévalo en kit.",
+        "button_label": "VER LOS KITS",
+        "button_link": "/pages/kits",
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": ["header", "main", "kits"]
+}

@@ -1,0 +1,95 @@
+{{ 'pdp.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  capture p_color
+    render 'product-field', product: product, field: 'color'
+  endcapture
+  capture p_ink
+    render 'product-field', product: product, field: 'ink'
+  endcapture
+  capture hero
+    render 'pdp-data', product: product, field: 'hero'
+  endcapture
+  assign p_color = p_color | strip
+  assign c_mid = p_color | color_mix: '#191813', 62
+  assign c_low = p_color | color_mix: '#191813', 50
+  assign heading = section.settings.heading | replace: '[producto]', product.title
+-%}
+<section class="pdp-sig" style="--sig-hi:{{ p_ink | strip }};--sig-c:{{ p_color }};--sig-mid:{{ c_mid }};--sig-low:{{ c_low }}">
+  <div class="pdp-sig__wrap">
+    <div class="pdp-sig__head">
+      <div>
+        <div class="pdp-eyebrow pdp-eyebrow--dark">{{ section.settings.eyebrow }}</div>
+        <h2 class="pdp-sig__title">{{ heading }}</h2>
+      </div>
+      {%- if hero != blank -%}
+        <div class="pdp-sig__hero">
+          <div class="pdp-sig__hero-l">{{ section.settings.hero_label }}</div>
+          <div class="pdp-sig__hero-v">{{ hero }}</div>
+        </div>
+      {%- endif -%}
+    </div>
+    <ul class="pdp-sig__chips" role="list">
+      {%- for block in section.blocks -%}
+        {%- capture lv -%}{%- render 'pdp-data', product: product, field: 'level', signal: block.settings.key -%}{%- endcapture -%}
+        {%- liquid
+          case lv
+            when 'alto'
+              assign lv_label = section.settings.legend_hi
+            when 'medio'
+              assign lv_label = section.settings.legend_mid
+            when 'leve'
+              assign lv_label = section.settings.legend_low
+            else
+              assign lv_label = section.settings.legend_other
+          endcase
+        -%}
+        <li class="pdp-sig__chip pdp-sig__chip--{{ lv }}" {{ block.shopify_attributes }}>{{ block.settings.label }}<span class="visually-hidden"> · {{ lv_label }}</span></li>
+      {%- endfor -%}
+    </ul>
+    <div class="pdp-sig__legend">
+      <div><span class="pdp-sig__dot pdp-sig__dot--alto"></span><span>{{ section.settings.legend_hi }}</span></div>
+      <div><span class="pdp-sig__dot pdp-sig__dot--medio"></span><span>{{ section.settings.legend_mid }}</span></div>
+      <div><span class="pdp-sig__dot pdp-sig__dot--leve"></span><span>{{ section.settings.legend_low }}</span></div>
+      <div><span class="pdp-sig__dot pdp-sig__dot--otro"></span><span>{{ section.settings.legend_other }}</span></div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ficha · señales",
+  "tag": "div",
+  "class": "pdp-sec",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "QUÉ SEÑALES TRABAJA" },
+    { "type": "text", "id": "heading", "label": "Título ([producto] = nombre)", "default": "De las 9 señales, [producto] se enfoca en estas" },
+    { "type": "text", "id": "hero_label", "label": "Etiqueta señal héroe", "default": "SEÑAL HÉROE" },
+    { "type": "header", "content": "Leyenda" },
+    { "type": "text", "id": "legend_hi", "label": "Alto", "default": "Alto" },
+    { "type": "text", "id": "legend_mid", "label": "Medio", "default": "Medio" },
+    { "type": "text", "id": "legend_low", "label": "Leve", "default": "Leve" },
+    { "type": "text", "id": "legend_other", "label": "Otro paso", "default": "Lo trabaja otro paso" },
+    { "type": "paragraph", "content": "El nivel de cada señal sale del metafield trribu.levels del producto (JSON con las claves de abajo)." }
+  ],
+  "blocks": [
+    {
+      "type": "signal",
+      "name": "Señal",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Nombre", "default": "Sequedad" },
+        { "type": "select", "id": "key", "label": "Clave en trribu.levels", "default": "sequedad", "options": [
+          { "value": "frizz", "label": "frizz" },
+          { "value": "sequedad", "label": "sequedad" },
+          { "value": "brillo", "label": "brillo" },
+          { "value": "cuerpo", "label": "cuerpo" },
+          { "value": "quiebre", "label": "quiebre" },
+          { "value": "desenredar", "label": "desenredar" },
+          { "value": "poroso", "label": "poroso" },
+          { "value": "color", "label": "color" },
+          { "value": "textura", "label": "textura" }
+        ] }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,53 @@
+{{ 'sis.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign total = section.blocks.size
+  assign half = total | plus: 1 | divided_by: 2
+-%}
+<section class="sis-bg sis-bt sis-bb">
+  <div class="wrap sis-w sis-sig__inner">
+    <div class="sis-sig__head">
+      <h2 class="sis-h2">{{ section.settings.title }}</h2>
+      {%- if section.settings.text != blank -%}<p class="sis-lead sis-sig__lead">{{ section.settings.text }}</p>{%- endif -%}
+    </div>
+    <div class="sis-sig__grid">
+      {%- for c in (1..2) -%}
+        {%- if c == 1 -%}{%- assign off = 0 -%}{%- else -%}{%- assign off = half -%}{%- endif -%}
+        {%- if off < total -%}
+          <div class="sis-sig__col">
+            {%- for block in section.blocks limit: half offset: off -%}
+              {%- assign n = forloop.index | plus: off -%}
+              <div class="sis-sig__row" {{ block.shopify_attributes }}>
+                <span class="sis-sig__num">{% if n < 10 %}0{% endif %}{{ n }}</span>
+                <span class="sis-sig__txt">{{ block.settings.text }}</span>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    {%- if section.settings.link_label != blank -%}
+      <a href="{{ section.settings.link | default: settings.quiz_url }}" class="txt-link sis-sig__link">{{ section.settings.link_label }}</a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sistema · Señales",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Título", "default": "El pelo no cambia en una sola cosa." },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Cambia en varias a la vez, y por eso las soluciones sueltas se quedan cortas. Estas son las señales que aparecen — no todas juntas, no en el mismo orden, no en todas igual." },
+    { "type": "text", "id": "link_label", "label": "Texto del enlace", "default": "HAZ EL TEST · 1 MIN" },
+    { "type": "url", "id": "link", "label": "Enlace", "info": "Vacío = página del quiz (Configuración del tema)" }
+  ],
+  "blocks": [
+    {
+      "type": "signal",
+      "name": "Señal",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Señal", "default": "Frizz que antes no tenías" }
+      ]
+    }
+  ]
+}
+{% endschema %}

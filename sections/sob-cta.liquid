@@ -1,0 +1,20 @@
+{{ 'sob.css' | asset_url | stylesheet_tag }}
+<section class="sob-cta">
+  <h2 class="sob-h2 sob-h2--40">{{ section.settings.title }}</h2>
+  {%- if section.settings.btn_label != blank -%}
+    <a href="{{ section.settings.btn_link | default: routes.all_products_collection_url }}" class="sob-cta__btn">{{ section.settings.btn_label }}</a>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Nosotros · cierre",
+  "tag": "div",
+  "settings": [
+    { "type": "inline_richtext", "id": "title", "label": "Título", "default": "Para nosotras. Las que cambiamos. <strong>Pero no renunciamos.</strong>" },
+    { "type": "text", "id": "btn_label", "label": "Botón", "default": "Conoce la línea" },
+    { "type": "url", "id": "btn_link", "label": "Enlace del botón", "default": "/collections/all" }
+  ],
+  "presets": [{ "name": "Nosotros · cierre" }]
+}
+{% endschema %}

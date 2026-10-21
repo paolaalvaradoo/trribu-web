@@ -1,0 +1,83 @@
+{%- comment -%}
+  Datos de cada herramienta (página Herramientas).
+  Lee el metafield `trribu.<campo>`; si falta, usa el texto del prototipo
+  según el handle (el-peine, la-toalla, el-gorro, las-pinzas).
+
+  Uso:  {%- render 'tools-data', product: p, field: 'material' -%}
+
+  Campos:
+    material     ACETATO DE CELULOSA · PÚAS ANCHAS
+    verbs        desenreda · sin estática
+    description  párrafo corto
+    why          etiquetas (chips) separadas por "|"
+    tint         fondo de la foto
+    label        texto guía del espacio de foto (solo editor)
+
+  Metafields (Configuración → Datos personalizados → Productos):
+    trribu.material (texto) · trribu.verbs (texto) · trribu.description (texto multilínea)
+    trribu.why (lista de textos, o texto separado por comas) · trribu.tint (color)
+{%- endcomment -%}
+{%- liquid
+  assign mf = product.metafields.trribu
+
+  case product.handle
+    when 'el-peine', 'peine'
+      assign d_material = 'Acetato de celulosa · púas anchas'
+      assign d_verbs = 'desenreda · sin estática'
+      assign d_description = 'Desenreda sin romper. El plástico carga estática y genera frizz; el acetato no. Púas anchas y pulidas que se deslizan sin tirar, incluso en mojado.'
+      assign d_why = 'desenreda|sin estática|sin tirones'
+      assign d_tint = '#F4F1EA'
+      assign d_label = 'El Peine · acetato de celulosa'
+    when 'la-toalla', 'toalla'
+      assign d_material = 'Microfibra waffle'
+      assign d_verbs = 'seca · sin frizz'
+      assign d_description = 'Seca sin maltratar. La toalla de algodón raspa la cutícula y la frotas de más. La microfibra waffle absorbe más rápido con menos fricción.'
+      assign d_why = 'seca rápido|sin frizz|ultra suave'
+      assign d_tint = '#F1F3F0'
+      assign d_label = 'La Toalla · microfibra waffle'
+    when 'el-gorro', 'gorro'
+      assign d_material = 'Ducha · interior de satín'
+      assign d_verbs = 'satín · impermeable'
+      assign d_description = 'Cuida tu pelo entre lavados. Lavar todos los días reseca: el gorro protege tu peinado del agua y la humedad de la ducha, para que laves con menos frecuencia. Ideal entre lavados o para dejar actuar la mascarilla.'
+      assign d_why = 'impermeable|satín suave|reutilizable'
+      assign d_tint = '#F4F1EA'
+      assign d_label = 'El Gorro · interior de satín'
+    when 'las-pinzas', 'pinzas'
+      assign d_material = 'Acetato · set de 2'
+      assign d_verbs = 'sujetan · sin marcas'
+      assign d_description = 'Sujetan sin marcar. Las pinzas de metal o plástico duro doblan y parten el pelo frágil. El acetato sujeta firme con un agarre suave, sin dejar marca ni quiebre.'
+      assign d_why = 'sin marcas|agarre suave'
+      assign d_tint = '#F4F1EA'
+      assign d_label = 'Las Pinzas · acetato'
+    else
+      assign d_material = ''
+      assign d_verbs = ''
+      assign d_description = product.description | strip_html | truncatewords: 32
+      assign d_why = ''
+      assign d_tint = '#F4F1EA'
+      assign d_label = product.title | append: ' · foto'
+  endcase
+
+  case field
+    when 'material'
+      echo mf.material.value | default: d_material
+    when 'verbs'
+      echo mf.verbs.value | default: d_verbs
+    when 'description'
+      echo mf.description.value | default: d_description
+    when 'why'
+      if mf.why.value != blank
+        if mf.why.type contains 'list'
+          echo mf.why.value | join: '|'
+        else
+          echo mf.why.value | replace: ', ', '|' | replace: ',', '|'
+        endif
+      else
+        echo d_why
+      endif
+    when 'tint'
+      echo mf.tint.value | default: d_tint
+    when 'label'
+      echo d_label
+  endcase
+-%}

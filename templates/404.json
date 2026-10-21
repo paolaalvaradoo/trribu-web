@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "main": {
+      "type": "gen-404",
+      "settings": {
+        "eyebrow": "Página no encontrada",
+        "title": "Esta página <em>cambió de lugar.</em>",
+        "text": "Puede que el enlace esté viejo o mal escrito. Mientras tanto, te ayudamos a encontrar lo que tu pelo necesita.",
+        "btn1_label": "Ver productos",
+        "btn1_link": "/collections/all",
+        "btn2_label": "Haz el test · 1 min"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

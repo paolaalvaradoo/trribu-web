@@ -1,0 +1,19 @@
+{{ 'sis.css' | asset_url | stylesheet_tag }}
+<header class="sis-hero wrap wrap--920">
+  {%- if section.settings.eyebrow != blank -%}<div class="sis-eyebrow sis-hero__eyebrow">{{ section.settings.eyebrow }}</div>{%- endif -%}
+  <h1 class="sis-hero__title">{{ section.settings.title }}</h1>
+  {%- if section.settings.serif != blank -%}<p class="sis-hero__serif">{{ section.settings.serif }}</p>{%- endif -%}
+  {%- if section.settings.text != blank -%}<p class="sis-hero__text">{{ section.settings.text }}</p>{%- endif -%}
+</header>
+
+{% schema %}
+{
+  "name": "Sistema · Hero",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "EL SISTEMA" },
+    { "type": "text", "id": "title", "label": "Título", "default": "No es tu imaginación." },
+    { "type": "text", "id": "serif", "label": "Frase en cursiva", "default": "Es hormonal." },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Cuando bajan los estrógenos, el pelo cambia con ellos. Se quiebra donde antes no se quebraba, se encrespa con una humedad que antes no lo afectaba, y pierde el cuerpo que tenía. No es que estés usando mal el shampoo: el pelo que tienes hoy no es el mismo que tenías hace cinco años, y por eso lo de siempre dejó de funcionar." }
+  ]
+}
+{% endschema %}

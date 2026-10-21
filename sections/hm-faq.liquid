@@ -1,0 +1,63 @@
+{{ 'hm.css' | asset_url | stylesheet_tag }}
+<div class="hm-faq bt bg-paper-2">
+  <div class="wrap wrap--920 hm-faq__inner">
+    <div class="hm-faq__head">
+      {%- if section.settings.eyebrow != blank -%}<div class="eyebrow">{{ section.settings.eyebrow }}</div>{%- endif -%}
+      <h2 class="h3 hm-h36">{{ section.settings.heading }}</h2>
+      {%- if section.settings.intro != blank -%}<p class="hm-faq__intro">{{ section.settings.intro }}</p>{%- endif -%}
+    </div>
+    {%- if section.blocks.size > 0 -%}
+      <div class="faq-list">
+        {%- for block in section.blocks -%}
+          <details class="faq" {{ block.shopify_attributes }}>
+            <summary class="faq-q">{{ block.settings.question }}</summary>
+            <div class="faq-a">{{ block.settings.answer }}</div>
+          </details>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+    <div class="hm-faq__foot">
+      {%- if section.settings.outro != blank -%}<p class="hm-faq__outro">{{ section.settings.outro }}</p>{%- endif -%}
+      <div class="hm-faq__btns">
+        {%- if section.settings.btn1_label != blank -%}<a href="{{ section.settings.btn1_url | default: '/pages/faq' }}" class="btn btn--line hm-btn-14">{{ section.settings.btn1_label }}</a>{%- endif -%}
+        {%- if section.settings.btn2_label != blank -%}<a href="{{ section.settings.btn2_url | default: '/pages/transparencia' }}" class="btn btn--line hm-btn-14">{{ section.settings.btn2_label }}</a>{%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Preguntas frecuentes",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Preguntas frecuentes" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Lo que más nos preguntan" },
+    { "type": "textarea", "id": "intro", "label": "Introducción", "default": "Sin rodeos y sin promesas que no podamos cumplir. Si te queda una duda, escríbenos." },
+    { "type": "header", "content": "Cierre" },
+    { "type": "textarea", "id": "outro", "label": "Texto final", "default": "¿Otra duda? Escríbenos y te contamos con transparencia." },
+    { "type": "text", "id": "btn1_label", "label": "Botón 1 · texto", "default": "Ver todas las preguntas" },
+    { "type": "url", "id": "btn1_url", "label": "Botón 1 · enlace", "info": "Vacío = /pages/faq" },
+    { "type": "text", "id": "btn2_label", "label": "Botón 2 · texto", "default": "Ver transparencia" },
+    { "type": "url", "id": "btn2_url", "label": "Botón 2 · enlace", "info": "Vacío = /pages/transparencia" }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Pregunta",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Pregunta", "default": "¿En cuánto tiempo veo resultados?" },
+        { "type": "richtext", "id": "answer", "label": "Respuesta", "default": "<p>El desenredo y el control de frizz se perciben desde el primer uso; el refuerzo de la fibra es progresivo con el uso continuo del sistema.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Preguntas frecuentes",
+      "blocks": [
+        { "type": "question" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,53 @@
+{{ 'sis.css' | asset_url | stylesheet_tag }}
+<section>
+  <div class="wrap sis-w sec">
+    <div class="sis-fr__head">
+      {%- if section.settings.eyebrow != blank -%}<div class="sis-eyebrow sis-fr__eyebrow">{{ section.settings.eyebrow }}</div>{%- endif -%}
+      <h2 class="sis-h2 sis-fr__title">{{ section.settings.title }}{% if section.settings.title_serif != blank %} <span class="sis-serif">{{ section.settings.title_serif }}</span>{% endif %}</h2>
+      {%- if section.settings.text != blank -%}<p class="sis-lead">{{ section.settings.text }}</p>{%- endif -%}
+    </div>
+    <div class="sis-fr__grid">
+      {%- for block in section.blocks -%}
+        <div class="sis-fr__item" style="--fr-c:{{ block.settings.color }}" {{ block.shopify_attributes }}>
+          <div class="sis-fr__label">{{ section.settings.label_prefix }} {% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</div>
+          <div class="sis-fr__name">{{ block.settings.title }}</div>
+          <div class="sis-fr__bar"></div>
+          <p class="sis-fr__text">{{ block.settings.text }}</p>
+          {%- assign tags = block.settings.tags | split: ',' -%}
+          {%- if tags.size > 0 -%}
+            <div class="sis-fr__tags">
+              {%- for t in tags -%}{%- assign tt = t | strip -%}{%- if tt != blank -%}<span class="sis-fr__tag">{{ tt }}</span>{%- endif -%}{%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+    {%- if section.settings.note != blank -%}<div class="sis-fr__note">{{ section.settings.note }}</div>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sistema · Cuatro frentes",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "QUÉ TRABAJAMOS" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Diez señales." },
+    { "type": "text", "id": "title_serif", "label": "Título · parte en cursiva", "default": "Cuatro frentes." },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Las diez señales del pelo que está cambiando no son diez problemas: son una causa que sale por cuatro lados." },
+    { "type": "text", "id": "label_prefix", "label": "Etiqueta de cada frente", "default": "FRENTE" },
+    { "type": "richtext", "id": "note", "label": "Nota al pie", "default": "<p>Trabajamos la fibra del pelo. No el folículo, no tus hormonas — no prometemos crecimiento. <a href=\"/pages/transparencia\">Cómo lo formulamos</a></p>" }
+  ],
+  "blocks": [
+    {
+      "type": "front",
+      "name": "Frente",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Nombre", "default": "Refuerzo interno" },
+        { "type": "color", "id": "color", "label": "Color de la barra", "default": "#8E524B" },
+        { "type": "textarea", "id": "text", "label": "Texto", "default": "Las moléculas bond y los péptidos trabajan dentro del córtex: enlaces más firmes, hebra más resistente." },
+        { "type": "text", "id": "tags", "label": "Señales que cubre", "info": "Separadas por comas", "default": "Fragilidad, Quiebre, Menos cuerpo" }
+      ]
+    }
+  ]
+}
+{% endschema %}

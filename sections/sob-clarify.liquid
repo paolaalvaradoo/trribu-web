@@ -1,0 +1,22 @@
+{{ 'sob.css' | asset_url | stylesheet_tag }}
+<section class="sob-clar">
+  <div class="sob-clar__in">
+    {%- if section.settings.eyebrow != blank -%}<p class="sob-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+    <h2 class="sob-h2 sob-h2--38">{{ section.settings.title }}{% if section.settings.title_2 != blank %}<br>{{ section.settings.title_2 }}{% endif %}</h2>
+    <div class="sob-clar__text sob-body">{{ section.settings.text }}</div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Nosotros · aclaración",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Una aclaración" },
+    { "type": "inline_richtext", "id": "title", "label": "Título · línea 1", "default": "Por qué TRRIBÚ no es" },
+    { "type": "inline_richtext", "id": "title_2", "label": "Título · línea 2", "default": "una marca oncológica." },
+    { "type": "richtext", "id": "text", "label": "Texto", "default": "<p>Texto.</p>" }
+  ],
+  "presets": [{ "name": "Nosotros · aclaración" }]
+}
+{% endschema %}

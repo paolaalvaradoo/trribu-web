@@ -1,0 +1,17 @@
+{
+  "current": {
+    "accent": "#BB7B73",
+    "hero_veil": "dense",
+    "show_tool_prices": true,
+    "free_shipping_threshold": 150,
+    "tier1_min": 3,
+    "tier1_pct": 10,
+    "tier2_min": 5,
+    "tier2_pct": 15,
+    "show_tier_hint": true,
+    "dispatch_days": "Lunes, Miércoles, Viernes",
+    "quiz_url": "/pages/quiz",
+    "ritual_url": "/pages/arma-tu-ritual"
+  },
+  "presets": {}
+}

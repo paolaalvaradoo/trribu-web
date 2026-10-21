@@ -1,0 +1,104 @@
+{%- comment -%}
+  FAQ · hero + acordeón de preguntas (bloques) + JSON-LD FAQPage.
+  Si las preguntas tienen categoría y hay más de una, aparecen filtros.
+{%- endcomment -%}
+{{ 'faq.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'faq.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign cats = ''
+  for block in section.blocks
+    assign c = block.settings.category | strip
+    if c != blank
+      assign key = '|' | append: c | append: '|'
+      unless cats contains key
+        assign cats = cats | append: key
+      endunless
+    endif
+  endfor
+  assign cat_list = cats | remove_first: '|' | split: '||'
+-%}
+
+<header class="faq-hero">
+  {%- if section.settings.eyebrow != blank -%}<p class="faq-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+  <h1 class="faq-hero__title">{{ section.settings.title }}</h1>
+  {%- if section.settings.lede != blank -%}<p class="faq-hero__lede">{{ section.settings.lede }}</p>{%- endif -%}
+</header>
+
+<section class="faq-acc" data-faq aria-label="{{ section.settings.eyebrow | escape }}">
+  {%- if cat_list.size > 1 -%}
+    <div class="faq-cats" role="group" aria-label="Categorías">
+      <button type="button" class="pill is-on" data-faq-cat="" aria-pressed="true">{{ section.settings.all_label }}</button>
+      {%- for c in cat_list -%}
+        {%- assign cc = c | remove: '|' -%}
+        <button type="button" class="pill" data-faq-cat="{{ cc | handle }}" aria-pressed="false">{{ cc }}</button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  {%- for block in section.blocks -%}
+    {%- liquid
+      assign open = false
+      if forloop.first and section.settings.open_first
+        assign open = true
+      endif
+    -%}
+    <div class="faq-acc__item{% if open %} is-open{% endif %}" id="faq-{{ block.id }}" data-cat="{{ block.settings.category | strip | handle }}" {{ block.shopify_attributes }}>
+      <h2 class="faq-acc__h">
+        <button type="button" class="faq-acc__q" aria-expanded="{{ open }}" aria-controls="faq-a-{{ block.id }}">
+          <span>{{ block.settings.question }}</span>
+          <span class="faq-acc__icon" aria-hidden="true"></span>
+        </button>
+      </h2>
+      <div class="faq-acc__panel" id="faq-a-{{ block.id }}" role="region">
+        <div class="faq-acc__a">{{ block.settings.answer }}</div>
+      </div>
+    </div>
+  {%- endfor -%}
+</section>
+
+{%- if section.settings.schema_markup and section.blocks.size > 0 -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {%- for block in section.blocks -%}
+    {
+      "@type": "Question",
+      "name": {{ block.settings.question | strip_html | json }},
+      "acceptedAnswer": { "@type": "Answer", "text": {{ block.settings.answer | strip_html | strip | json }} }
+    }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+}
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "FAQ · preguntas",
+  "tag": "div",
+  "class": "faq-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Preguntas frecuentes" },
+    { "type": "inline_richtext", "id": "title", "label": "Título", "info": "Usa negrita para la parte destacada.", "default": "Lo que más <strong>nos preguntan</strong>" },
+    { "type": "textarea", "id": "lede", "label": "Bajada", "default": "Sin rodeos y sin promesas que no podamos cumplir. Si te queda una duda, escríbenos." },
+    { "type": "checkbox", "id": "open_first", "label": "Abrir la primera pregunta", "default": true },
+    { "type": "text", "id": "all_label", "label": "Filtro «todas»", "default": "Todas", "info": "Los filtros solo aparecen si las preguntas tienen más de una categoría." },
+    { "type": "checkbox", "id": "schema_markup", "label": "Datos estructurados FAQPage (SEO)", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Pregunta",
+      "settings": [
+        { "type": "text", "id": "category", "label": "Categoría (opcional)" },
+        { "type": "text", "id": "question", "label": "Pregunta", "default": "¿Pregunta?" },
+        { "type": "richtext", "id": "answer", "label": "Respuesta", "default": "<p>Respuesta.</p>" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "FAQ · preguntas" }]
+}
+{% endschema %}

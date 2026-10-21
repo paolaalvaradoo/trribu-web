@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "gen-list-collections",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

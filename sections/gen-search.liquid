@@ -1,0 +1,83 @@
+{{ 'gen.css' | asset_url | stylesheet_tag }}
+{%- paginate search.results by section.settings.per_page -%}
+<section class="sec">
+  <div class="wrap wrap--1320">
+    <header class="gen-head">
+      {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h1 class="h2">
+        {%- if search.performed -%}«{{ search.terms }}»{%- else -%}{{ section.settings.title }}{%- endif -%}
+      </h1>
+    </header>
+
+    <form action="{{ routes.search_url }}" method="get" role="search" class="gen-search__form">
+      <label for="SearchPage" class="visually-hidden">Buscar</label>
+      <input id="SearchPage" class="field" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ section.settings.placeholder | escape }}">
+      <input type="hidden" name="options[prefix]" value="last">
+      <button type="submit" class="btn btn--solid">Buscar</button>
+    </form>
+
+    {%- if search.performed -%}
+      {%- if search.results_count == 0 -%}
+        <div class="center">
+          <p class="body">{{ section.settings.empty_text }}</p>
+          <div class="gen-actions">
+            <a href="{{ routes.all_products_collection_url }}" class="btn btn--solid">Ver productos</a>
+            <a href="{{ settings.quiz_url | default: '/pages/quiz' }}" class="btn btn--line">Haz el test · 1 min</a>
+          </div>
+        </div>
+      {%- else -%}
+        <p class="gen-search__count">{{ search.results_count }} {% if search.results_count == 1 %}resultado{% else %}resultados{% endif %}</p>
+        {%- assign products = search.results | where: 'object_type', 'product' -%}
+        {%- if products.size > 0 -%}
+          <div class="gen-search__group">
+            <h2 class="gen-search__h">Productos</h2>
+            <div class="pgrid">
+              {%- for p in products -%}
+                {% render 'product-card', product: p %}
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+        {%- assign has_other = false -%}
+        {%- for item in search.results -%}{%- if item.object_type != 'product' -%}{%- assign has_other = true -%}{%- break -%}{%- endif -%}{%- endfor -%}
+        {%- if has_other -%}
+          <div class="gen-search__group">
+            <h2 class="gen-search__h">Páginas y artículos</h2>
+            <ul class="gen-rows">
+              {%- for item in search.results -%}
+                {%- if item.object_type == 'page' or item.object_type == 'article' -%}
+                  <li class="gen-row">
+                    <a href="{{ item.url }}">
+                      <span>
+                        <span class="gen-row__title">{{ item.title }}</span>
+                        {%- assign ex = item.excerpt | default: item.content | strip_html | truncatewords: 26 -%}
+                        {%- if ex != blank -%}<span class="gen-row__ex">{{ ex }}</span>{%- endif -%}
+                      </span>
+                      <span class="gen-row__meta">{% if item.object_type == 'page' %}Página{% else %}Artículo{% endif %}</span>
+                    </a>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+        {% render 'gen-pagination', paginate: paginate %}
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</section>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Búsqueda",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Buscar" },
+    { "type": "text", "id": "title", "label": "Título (sin búsqueda)", "default": "¿Qué estás buscando?" },
+    { "type": "text", "id": "placeholder", "label": "Texto del campo", "default": "Buscar productos, ingredientes, preguntas…" },
+    { "type": "textarea", "id": "empty_text", "label": "Sin resultados", "default": "No encontramos nada con esa búsqueda. Prueba con otra palabra o deja que el test te diga por dónde empezar." },
+    { "type": "range", "id": "per_page", "label": "Resultados por página", "min": 8, "max": 48, "step": 4, "default": 24 }
+  ]
+}
+{% endschema %}

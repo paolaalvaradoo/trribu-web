@@ -1,0 +1,89 @@
+{{ 'sis.css' | asset_url | stylesheet_tag }}
+<section>
+  <div class="wrap sis-w sec">
+    <div class="sis-q__head">
+      {%- if section.settings.eyebrow != blank -%}<div class="sis-eyebrow">{{ section.settings.eyebrow }}</div>{%- endif -%}
+      <h2 class="sis-h2">{{ section.settings.title }}</h2>
+      {%- if section.settings.text != blank -%}<p class="sis-lead">{{ section.settings.text }}</p>{%- endif -%}
+    </div>
+    <div class="sis-q__list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign p = block.settings.product
+          if p == blank and block.settings.handle != blank
+            assign p = all_products[block.settings.handle]
+          endif
+          assign has_p = false
+          if p != blank and p.id != blank
+            assign has_p = true
+          endif
+        -%}
+        {%- capture p_style -%}{%- if has_p -%}{%- render 'product-field', product: p, field: 'style' -%}{%- endif -%}{%- endcapture -%}
+        {%- capture p_num -%}{%- if has_p -%}{%- render 'product-field', product: p, field: 'number' -%}{%- endif -%}{%- endcapture -%}
+        {%- capture p_verbs -%}{%- if has_p -%}{%- render 'product-field', product: p, field: 'verbs' -%}{%- endif -%}{%- endcapture -%}
+        {%- capture p_size -%}{%- if has_p -%}{%- render 'product-field', product: p, field: 'size' -%}{%- endif -%}{%- endcapture -%}
+        {%- liquid
+          assign num = block.settings.number | default: p_num
+          if num == blank
+            if forloop.index < 10
+              assign num = '0' | append: forloop.index
+            else
+              assign num = forloop.index
+            endif
+          endif
+          assign name = block.settings.name
+          if name == blank and has_p
+            assign name = p.title | escape
+          endif
+          assign verbs = block.settings.verbs | default: p_verbs
+          assign size = block.settings.size | default: p_size
+        -%}
+        <div class="sis-q__row" style="{{ p_style }}{% if block.settings.color != blank %}--pc-ink:{{ block.settings.color }};{% endif %}" {{ block.shopify_attributes }}>
+          <div class="sis-q__num">{{ num }}</div>
+          <div>
+            <div class="sis-q__name">{% if has_p %}<a href="{{ p.url }}">{{ name }}</a>{% else %}{{ name }}{% endif %}</div>
+            {%- if verbs != blank -%}<div class="sis-q__verbs">{{ verbs }}</div>{%- endif -%}
+            {%- if size != blank -%}<div class="sis-q__size">{{ size }}</div>{%- endif -%}
+          </div>
+          <p class="sis-q__text">{{ block.settings.text }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+    <div class="sis-q__ctas">
+      {%- if section.settings.btn1_label != blank -%}<a href="{{ section.settings.btn1_link | default: routes.all_products_collection_url }}" class="btn btn--solid">{{ section.settings.btn1_label }}</a>{%- endif -%}
+      {%- if section.settings.btn2_label != blank -%}<a href="{{ section.settings.btn2_link | default: '/pages/kits' }}" class="btn btn--line">{{ section.settings.btn2_label }}</a>{%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sistema · El cuarteto",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "EL CUARTETO" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Cuatro pasos. Un solo sistema." },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Cada fórmula está calibrada para su momento. Juntas cubren las señales del pelo que está cambiando." },
+    { "type": "text", "id": "btn1_label", "label": "Botón 1 · texto", "default": "CONOCE LA LÍNEA" },
+    { "type": "url", "id": "btn1_link", "label": "Botón 1 · enlace", "default": "/collections/all" },
+    { "type": "text", "id": "btn2_label", "label": "Botón 2 · texto", "default": "VER LOS KITS" },
+    { "type": "url", "id": "btn2_link", "label": "Botón 2 · enlace", "info": "Vacío = /pages/kits" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Paso",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Producto" },
+        { "type": "text", "id": "handle", "label": "Handle de respaldo", "info": "Se usa si no eliges producto", "default": "el-shampoo" },
+        { "type": "header", "content": "Opcional · reemplaza los datos del producto" },
+        { "type": "text", "id": "number", "label": "Número" },
+        { "type": "text", "id": "name", "label": "Nombre", "info": "Vacío = nombre del producto. Admite <br>." },
+        { "type": "text", "id": "verbs", "label": "Verbos" },
+        { "type": "text", "id": "size", "label": "Tamaño" },
+        { "type": "color", "id": "color", "label": "Color de los verbos" },
+        { "type": "textarea", "id": "text", "label": "Descripción", "default": "Limpia sin sulfatos y deja el pelo en el pH que el resto del sistema necesita. Es el único paso que trabaja el cuero cabelludo. Casi no lleva aceites, a propósito: un limpiador que nutre deja residuo y apelmaza." }
+      ]
+    }
+  ]
+}
+{% endschema %}

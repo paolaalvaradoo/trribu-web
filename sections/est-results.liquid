@@ -1,0 +1,62 @@
+{{ 'est.css' | asset_url | stylesheet_tag }}
+<div class="wrap est-results">
+  <div class="est-results__head">
+    {%- if section.settings.eyebrow != blank -%}<p class="est-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+    <h2 class="est-h2">
+      {{- section.settings.heading -}}
+      {%- if section.settings.heading_strong != blank %} <strong>{{ section.settings.heading_strong }}</strong>{%- endif -%}
+    </h2>
+  </div>
+  <div class="est-grid3">
+    {%- for block in section.blocks -%}
+      <div class="est-result" {{ block.shopify_attributes }}>
+        <div class="est-result__label">{{ block.settings.label }}</div>
+        <ul class="est-result__stats">
+          {%- for i in (1..4) -%}
+            {%- liquid
+              assign k_value = 'stat_' | append: i | append: '_value'
+              assign k_label = 'stat_' | append: i | append: '_label'
+              assign v = block.settings[k_value]
+              assign l = block.settings[k_label]
+            -%}
+            {%- if v != blank or l != blank -%}
+              <li><span class="est-stat__value">{{ v }}</span><span class="est-stat__label">{{ l }}</span></li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endfor -%}
+  </div>
+  {%- if section.settings.foot != blank -%}<p class="est-results__foot">{{ section.settings.foot }}</p>{%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Estudio · Resultados",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "RESULTADOS" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Lo que ellas" },
+    { "type": "text", "id": "heading_strong", "label": "Título · palabra destacada", "default": "notaron" },
+    { "type": "textarea", "id": "foot", "label": "Nota del estudio", "default": "Estudio de autopercepción, N mujeres 40+, tras X semanas de uso del sistema TRRIBÚ. Cifras pendientes de panel." }
+  ],
+  "blocks": [
+    {
+      "type": "moment",
+      "name": "Momento",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Momento", "default": "PRIMER USO" },
+        { "type": "paragraph", "content": "Mientras el panel no se haya corrido, deja los porcentajes en «—%»." },
+        { "type": "text", "id": "stat_1_value", "label": "Dato 1 · porcentaje", "default": "—%" },
+        { "type": "text", "id": "stat_1_label", "label": "Dato 1 · texto", "default": "notó su pelo más suave" },
+        { "type": "text", "id": "stat_2_value", "label": "Dato 2 · porcentaje", "default": "—%" },
+        { "type": "text", "id": "stat_2_label", "label": "Dato 2 · texto", "default": "lo sintió más sedoso" },
+        { "type": "text", "id": "stat_3_value", "label": "Dato 3 · porcentaje", "default": "—%" },
+        { "type": "text", "id": "stat_3_label", "label": "Dato 3 · texto", "default": "percibió menos frizz" },
+        { "type": "text", "id": "stat_4_value", "label": "Dato 4 · porcentaje (opcional)" },
+        { "type": "text", "id": "stat_4_label", "label": "Dato 4 · texto (opcional)" }
+      ]
+    }
+  ]
+}
+{% endschema %}

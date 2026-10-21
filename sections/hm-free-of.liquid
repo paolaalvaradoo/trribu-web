@@ -1,0 +1,46 @@
+{{ 'hm.css' | asset_url | stylesheet_tag }}
+<div class="hm-free">
+  <div class="wrap wrap--1120 hm-free__inner">
+    {%- if section.settings.eyebrow != blank -%}<div class="eyebrow">{{ section.settings.eyebrow }}</div>{%- endif -%}
+    <h2 class="h3 hm-h36">{{ section.settings.heading }}</h2>
+    {%- if section.blocks.size > 0 -%}
+      <ul class="hm-free__grid" role="list">
+        {%- for block in section.blocks -%}
+          <li class="hm-free__cell" {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    {%- if section.settings.btn_label != blank -%}
+      <a href="{{ section.settings.btn_url | default: '/pages/transparencia' }}" class="btn btn--line hm-btn-14 hm-free__btn">{{ section.settings.btn_label }}</a>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sello · siempre libre de",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Siempre libre de" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "El Sello TRRIBÚ" },
+    { "type": "text", "id": "btn_label", "label": "Botón · texto", "default": "Ver todos los ingredientes" },
+    { "type": "url", "id": "btn_url", "label": "Botón · enlace" }
+  ],
+  "blocks": [
+    { "type": "item", "name": "Ingrediente excluido", "settings": [ { "type": "text", "id": "text", "label": "Texto", "default": "Siliconas" } ] }
+  ],
+  "presets": [
+    {
+      "name": "Sello · siempre libre de",
+      "blocks": [
+        { "type": "item", "settings": { "text": "Siliconas" } },
+        { "type": "item", "settings": { "text": "Sulfatos" } },
+        { "type": "item", "settings": { "text": "Derivados del petróleo" } },
+        { "type": "item", "settings": { "text": "PEG / etoxilados" } },
+        { "type": "item", "settings": { "text": "Fragancias sintéticas" } },
+        { "type": "item", "settings": { "text": "Disruptores endocrinos" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

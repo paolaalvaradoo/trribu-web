@@ -1,0 +1,17 @@
+{%- comment -%}
+  Tile de herramienta (Home). Uso: {% render 'hm-tool-tile', product: p %}
+  El precio se oculta con settings.show_tool_prices (CSS en layout).
+{%- endcomment -%}
+<a href="{{ product.url }}" class="tile">
+  <div class="tile__shot">
+    <div class="tile__img">
+      {%- if product.featured_media -%}
+        {{ product.featured_media | image_url: width: 800 | image_tag: widths: '300, 450, 600, 800', sizes: '(max-width: 900px) 50vw, 25vw', loading: 'lazy', alt: product.title | escape }}
+      {%- else -%}
+        {% render 'media', label: product.title, class: 'hm-fill hm-fill--clear' %}
+      {%- endif -%}
+    </div>
+  </div>
+  <div class="tile__name">{{ product.title }}</div>
+  <div class="tile__price">{{ product.price | money_without_trailing_zeros }}</div>
+</a>

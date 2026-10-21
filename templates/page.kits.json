@@ -1,0 +1,95 @@
+{
+  "sections": {
+    "hero": {
+      "type": "kit-hero",
+      "settings": {
+        "eyebrow": "KITS",
+        "title": "Arma tu ritual,",
+        "title_accent": "a tu medida",
+        "lede": "Kits listos para no pensar — o <a href=\"/pages/arma-tu-ritual\" title=\"Arma tu ritual\">arma el tuyo libre aquí</a>."
+      }
+    },
+    "featured": {
+      "type": "kit-featured",
+      "settings": {
+        "handle": "el-kit-completo",
+        "contents_handles": "el-shampoo, el-acondicionador, la-mascarilla, el-acondicionador-sin-enjuague, la-toalla, el-peine",
+        "image_label": "Foto del Kit Completo (cuarteto + toalla + peine)",
+        "badge_prefix": "AHORRA",
+        "badge_pct": 20,
+        "eyebrow": "EL RITUAL COMPLETO",
+        "title": "Todo el ritual,",
+        "title_accent": "de día y de noche",
+        "text": "El sistema reparador completo más las herramientas que protegen el resultado. Reparar y proteger, en una sola caja.",
+        "items": "El Shampoo · El Acondicionador · La Mascarilla · El Acondicionador Sin Enjuague\nLa Toalla\nEl Peine",
+        "save_label": "Ahorras",
+        "button_label": "Añadir el Kit Completo",
+        "soon_label": "Próximamente"
+      }
+    },
+    "more": {
+      "type": "kit-grid",
+      "settings": {
+        "eyebrow": "MÁS KITS",
+        "title": "Empieza por donde",
+        "title_accent": "tú quieras"
+      },
+      "blocks": {
+        "duo": {
+          "type": "kit",
+          "settings": {
+            "handle": "el-duo",
+            "contents_handles": "el-shampoo, el-acondicionador",
+            "image_label": "El Dúo (Shampoo + Acondicionador)",
+            "grad_from": "#FBF1EA",
+            "grad_to": "#F1E2D6",
+            "badge_prefix": "AHORRA",
+            "badge_pct": 10,
+            "eyebrow": "DONDE EMPIEZA EL RITUAL",
+            "name": "El Dúo",
+            "contents_text": "El Shampoo + El Acondicionador",
+            "text": "Limpia sin resecar; repara al enjuagar. Donde empieza todo ritual.",
+            "button_label": "Añadir",
+            "soon_label": "Próximamente"
+          }
+        },
+        "esencial": {
+          "type": "kit",
+          "settings": {
+            "handle": "kit-esencial",
+            "contents_handles": "el-shampoo, el-acondicionador, la-mascarilla",
+            "image_label": "Kit Esencial (Shampoo + Acondicionador + Mascarilla)",
+            "grad_from": "#F1E7DA",
+            "grad_to": "#E7D8C6",
+            "badge_prefix": "AHORRA",
+            "badge_pct": 15,
+            "eyebrow": "EL TRÍO BASE",
+            "name": "Kit Esencial",
+            "contents_text": "El Shampoo + El Acondicionador + La Mascarilla",
+            "text": "El trío base de reparación.",
+            "button_label": "Añadir",
+            "soon_label": "Próximamente"
+          }
+        }
+      },
+      "block_order": [
+        "duo",
+        "esencial"
+      ]
+    },
+    "cta": {
+      "type": "kit-cta",
+      "settings": {
+        "title": "¿Prefieres elegir pieza por pieza?",
+        "text": "Arma el tuyo libre: más sumas, más ahorras — [t1_pct] desde [t1_min] ítems · [t2_pct] desde [t2_min].",
+        "button_label": "Arma el tuyo aquí"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "featured",
+    "more",
+    "cta"
+  ]
+}

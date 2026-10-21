@@ -1,0 +1,68 @@
+/* ==========================================================================
+   TRRIBÚ · El estudio (prefijo est-)
+   Recreado desde "TRRIBÚ Estudio.dc.html".
+   ========================================================================== */
+
+.est-eyebrow { font-family: var(--f-display); font-size: 12px; letter-spacing: .34em; color: var(--muted); margin: 0 0 16px; }
+.est-h2 { font-family: var(--f-display); font-weight: 300; font-size: 40px; line-height: 1.12; margin: 0; color: inherit; }
+.est-h2 strong { font-weight: 500; }
+.est-label { font-family: var(--f-display); font-size: 12px; letter-spacing: .16em; color: var(--ink); margin-bottom: 14px; }
+.est-text { font-size: 15.5px; line-height: 1.7; color: var(--muted); margin: 0; }
+.est-text p { margin: 0; }
+.est-text p + p { margin-top: 12px; }
+.est-text strong { font-weight: 600; color: inherit; }
+.est-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.est-card { background: var(--paper-2); border: 1px solid var(--line); border-radius: 18px; padding: 36px 34px; min-width: 0; }
+
+/* Hero */
+.est-hero { max-width: 900px; padding-top: 96px; padding-bottom: 66px; text-align: center; }
+.est-hero .est-eyebrow { margin-bottom: 22px; }
+.est-hero__title { font-family: var(--f-display); font-weight: 300; font-size: 52px; line-height: 1.1; margin: 0; color: var(--ink); }
+.est-hero__title strong { font-weight: 500; }
+.est-hero__lede { font-size: 17px; line-height: 1.7; color: var(--muted); max-width: 640px; margin: 26px auto 0; }
+
+/* Qué es / qué no es */
+.est-define { max-width: 1120px; padding-top: 20px; padding-bottom: 70px; }
+
+/* Los 3 momentos */
+.est-moments { background: var(--ink); color: #F5F3EF; }
+.est-moments__inner { max-width: 1180px; padding-top: 90px; padding-bottom: 90px; }
+.est-moments__head { text-align: center; max-width: 680px; margin: 0 auto 56px; }
+.est-moments__head .est-eyebrow { color: #D8CFC4; }
+.est-grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.est-moment { background: var(--ink); border-radius: 18px; padding: 36px 30px; min-width: 0; }
+.est-moment__label { font-family: var(--f-display); font-size: 12px; letter-spacing: .14em; color: #D8CFC4; margin-bottom: 12px; }
+.est-moment__when { font-size: 13px; color: var(--muted-3); margin-bottom: 18px; }
+.est-moment__list { display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; color: #C9C4BA; list-style: none; margin: 0; padding: 0; }
+
+/* Resultados */
+.est-results { max-width: 1180px; padding-top: 90px; padding-bottom: 30px; }
+.est-results__head { text-align: center; max-width: 680px; margin: 0 auto 50px; color: var(--ink); }
+.est-result { border: 1px solid var(--line); border-radius: 18px; padding: 34px 30px; min-width: 0; }
+.est-result__label { font-family: var(--f-display); font-size: 12px; letter-spacing: .14em; color: var(--ink); margin-bottom: 22px; }
+.est-result__stats { display: flex; flex-direction: column; gap: 18px; list-style: none; margin: 0; padding: 0; }
+.est-stat__value { display: block; font-family: var(--f-display); font-weight: 300; font-size: 34px; color: var(--ink); }
+.est-stat__label { display: block; font-size: 14px; color: var(--muted); }
+.est-results__foot { font-size: 12.5px; line-height: 1.6; color: var(--muted-3); margin: 26px 2px 0; text-align: center; }
+
+/* Cómo sacamos el % + honestidad */
+.est-method { max-width: 1120px; padding-top: 60px; padding-bottom: 100px; }
+.est-method .est-card { padding: 38px 34px; }
+.est-formula { margin-top: 20px; font-family: var(--f-display); font-size: 15px; color: var(--muted); background: #fff; border-radius: 12px; padding: 16px 20px; }
+.est-card--dark { background: var(--ink); border-color: var(--ink); color: #F5F3EF; }
+.est-card--dark .est-label { color: #D8CFC4; }
+.est-card--dark .est-text { color: #C9C4BA; }
+
+/* Móvil */
+@media (max-width: 900px) {
+  .est-hero, .est-define, .est-moments__inner, .est-results, .est-method { padding-top: 52px; padding-bottom: 52px; }
+  .est-hero__title { font-size: 33px; line-height: 1.14; }
+  .est-h2 { font-size: 27px; line-height: 1.18; }
+  .est-stat__value { font-size: 24px; line-height: 1.22; }
+  .est-pair, .est-grid3 { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .est-moments__head { margin-bottom: 32px; }
+}
+@media (max-width: 480px) {
+  .est-hero__title { font-size: 29px; }
+  .est-card, .est-method .est-card { padding: 30px 24px; }
+}

@@ -1,0 +1,47 @@
+{
+  "sections": {
+    "hero": {
+      "type": "rit-hero",
+      "settings": {
+        "eyebrow": "ARMA TU RITUAL",
+        "title": "Tu set,",
+        "title_accent": "a tu medida",
+        "lede": "¿Prefieres no pensar? Mira nuestros <a href=\"/pages/kits\" title=\"Kits\">kits listos</a>. ¿O ármalo libre aquí: más sumas, más ahorras — <b>[t1_pct]</b> desde [t1_min] ítems · <b>[t2_pct]</b> desde [t2_min]."
+      }
+    },
+    "builder": {
+      "type": "rit-builder",
+      "settings": {
+        "step_products": "1 · EL SISTEMA",
+        "products_handles": "el-shampoo, el-acondicionador, la-mascarilla, el-acondicionador-sin-enjuague",
+        "step_tools": "2 · LAS HERRAMIENTAS",
+        "tools_handles": "el-peine, la-toalla, el-gorro, las-pinzas",
+        "sum_title": "Tu ritual",
+        "count_zero": "Aún no has elegido nada",
+        "count_one": "[n] ítem en tu set",
+        "count_many": "[n] ítems en tu set",
+        "item_one": "ítem",
+        "item_many": "ítems",
+        "empty_text": "Empieza a sumar productos y verás tu set aquí.",
+        "subtotal_label": "Subtotal",
+        "disc_label": "Descuento [pct]",
+        "total_label": "Total",
+        "nudge_first": "Suma [n] [items] más y obtén [pct].",
+        "nudge_next": "Suma [n] [items] más para llegar a [pct].",
+        "nudge_max": "¡Máximo descuento desbloqueado! [pct] aplicado.",
+        "nudge_masc": "Completa la reparación profunda: añade La Mascarilla.",
+        "show_meter": true,
+        "cta_label": "Añadir al carrito · [total]",
+        "cta_empty": "Elige tus productos",
+        "added_label": "Añadido ✓",
+        "ship_text": "Envío gratis desde [amount]",
+        "fine_print": "Precios referenciales",
+        "bar_button": "Ver mi ritual"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "builder"
+  ]
+}

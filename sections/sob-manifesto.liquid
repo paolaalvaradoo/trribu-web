@@ -1,0 +1,66 @@
+{%- comment -%}
+  Manifiesto de la fundadora (fondo tinta). Bloques en orden libre:
+  frase grande, párrafo, separador y cita destacada. Firma al final.
+{%- endcomment -%}
+{{ 'sob.css' | asset_url | stylesheet_tag }}
+<section class="sob-man">
+  <div class="sob-man__in">
+    {%- if section.settings.eyebrow != blank -%}<p class="sob-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'lead' -%}
+          <p class="sob-man__lead{% if block.settings.white %} sob-man__lead--white{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+        {%- when 'paragraph' -%}
+          <div class="sob-man__p" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+        {%- when 'divider' -%}
+          <div class="sob-man__div" role="presentation" {{ block.shopify_attributes }}></div>
+        {%- when 'quote' -%}
+          <blockquote class="sob-man__quote" {{ block.shopify_attributes }}><p>{{ block.settings.text }}</p></blockquote>
+      {%- endcase -%}
+    {%- endfor -%}
+    {%- if section.settings.name != blank -%}
+      <div class="sob-man__sign">
+        <div class="sob-man__sign-line"></div>
+        <div>
+          <div class="sob-man__sign-name">{{ section.settings.name }}</div>
+          {%- if section.settings.role != blank -%}<div class="sob-man__sign-role">{{ section.settings.role }}</div>{%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Nosotros · manifiesto",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "El manifiesto" },
+    { "type": "text", "id": "name", "label": "Firma · nombre", "default": "Pao" },
+    { "type": "text", "id": "role", "label": "Firma · cargo", "default": "Fundadora de TRRIBÚ" }
+  ],
+  "blocks": [
+    {
+      "type": "lead", "name": "Frase grande",
+      "settings": [
+        { "type": "inline_richtext", "id": "text", "label": "Texto", "default": "No soy química. No soy farmacéutica. No soy ingeniera." },
+        { "type": "checkbox", "id": "white", "label": "Blanco puro (frase de cierre)", "default": false }
+      ]
+    },
+    {
+      "type": "paragraph", "name": "Párrafo",
+      "settings": [
+        { "type": "richtext", "id": "text", "label": "Texto", "info": "Cursiva y negrita se destacan en blanco.", "default": "<p>Soy administradora con marketing. Y soy investigadora desde siempre.</p>" }
+      ]
+    },
+    { "type": "divider", "name": "Separador", "settings": [] },
+    {
+      "type": "quote", "name": "Cita destacada",
+      "settings": [
+        { "type": "inline_richtext", "id": "text", "label": "Texto", "info": "La cursiva sale en arena.", "default": "TRRIBÚ no es un seguro contra nada. TRRIBÚ promete que lo que pongo en tu pelo es lo que pondría en el de mi mamá <em>si estuviera viva.</em>" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Nosotros · manifiesto" }]
+}
+{% endschema %}

@@ -1,0 +1,16 @@
+{{ 'sob.css' | asset_url | stylesheet_tag }}
+<section class="sob-portrait">
+  {% render 'media', image: section.settings.image, label: 'Retrato de la fundadora · luz de ventana · a sangre', position: section.settings.position, sizes: '100vw' %}
+</section>
+
+{% schema %}
+{
+  "name": "Nosotros · retrato",
+  "tag": "div",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Retrato de la fundadora", "info": "Luz de ventana · a sangre" },
+    { "type": "text", "id": "position", "label": "Encuadre (object-position)", "default": "50% 30%" }
+  ],
+  "presets": [{ "name": "Nosotros · retrato" }]
+}
+{% endschema %}

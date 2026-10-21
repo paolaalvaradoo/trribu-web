@@ -1,0 +1,48 @@
+{%- layout none -%}
+<!doctype html>
+<html lang="{{ request.locale.iso_code | default: 'es' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Tarjeta de regalo · {{ shop.name }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Hanken+Grotesk:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+  {{ 'gen.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer></script>
+  {{ content_for_header }}
+</head>
+<body>
+  <main class="gen-gift">
+    <div class="gen-gift__card">
+      <a href="{{ shop.url }}" aria-label="{{ shop.name }}">{% render 'wordmark', height: 26 %}</a>
+      <p class="eyebrow gen-gift__eyebrow">Tarjeta de regalo</p>
+      {%- if gift_card.expired or gift_card.enabled == false -%}
+        <p class="body-sm">{% if gift_card.expired %}Esta tarjeta venció el {{ gift_card.expires_on | date: format: 'date' }}.{% else %}Esta tarjeta está desactivada.{% endif %}</p>
+      {%- endif -%}
+      <div class="gen-gift__amount">{{ gift_card.balance | money_without_trailing_zeros }}</div>
+      {%- if gift_card.balance != gift_card.initial_value -%}
+        <p class="small">Saldo de {{ gift_card.initial_value | money_without_trailing_zeros }} iniciales</p>
+      {%- endif -%}
+      <div class="gen-gift__code" id="GiftCardCode">{{ gift_card.code | format_code }}</div>
+      <p class="small">Úsalo al finalizar tu compra.</p>
+      <div class="gen-gift__qr" id="GiftCardQR" data-identifier="{{ gift_card.qr_identifier }}" aria-hidden="true"></div>
+      {%- if gift_card.expires_on and gift_card.expired == false -%}
+        <p class="small">Vence el {{ gift_card.expires_on | date: format: 'date' }}</p>
+      {%- endif -%}
+      <div class="gen-actions">
+        <a href="{{ shop.url }}" class="btn btn--solid">Ir a la tienda</a>
+        {%- if gift_card.pass_url -%}<a href="{{ gift_card.pass_url }}" class="btn btn--line">Añadir a Apple Wallet</a>{%- endif -%}
+      </div>
+    </div>
+  </main>
+  <script>
+    window.addEventListener('load', function () {
+      var el = document.getElementById('GiftCardQR');
+      if (el && window.QRCode) new QRCode(el, { text: el.getAttribute('data-identifier'), width: 120, height: 120 });
+    });
+  </script>
+</body>
+</html>

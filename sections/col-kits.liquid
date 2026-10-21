@@ -1,0 +1,27 @@
+{{ 'col.css' | asset_url | stylesheet_tag }}
+<section class="col-kits" style="--col-kits-pb:{{ section.settings.padding_bottom }}px">
+  <div class="col-kits__box">
+    <div class="col-kits__copy">
+      {%- if section.settings.eyebrow != blank -%}<div class="col-kits__eyebrow">{{ section.settings.eyebrow }}</div>{%- endif -%}
+      <h2 class="col-kits__title">{{ section.settings.heading }}{% if section.settings.heading_strong != blank %}<br><span class="col-kits__strong">{{ section.settings.heading_strong }}</span>{% endif %}</h2>
+    </div>
+    {%- if section.settings.button_label != blank -%}
+      <a href="{{ section.settings.button_link | default: '/pages/kits' }}" class="col-kits__btn">{{ section.settings.button_label }}</a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Productos · banner kits",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "EL RITUAL COMPLETO" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Empieza tu reparación con el ritual completo." },
+    { "type": "text", "id": "heading_strong", "label": "Título · segunda línea (destacada)", "default": "Llévalo en kit." },
+    { "type": "text", "id": "button_label", "label": "Botón", "default": "VER LOS KITS" },
+    { "type": "url", "id": "button_link", "label": "Enlace del botón", "info": "Vacío = /pages/kits" },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 }
+  ],
+  "presets": [{ "name": "Banner kits (oscuro)" }]
+}
+{% endschema %}

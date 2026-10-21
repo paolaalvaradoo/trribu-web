@@ -1,0 +1,22 @@
+{{ 'tr.css' | asset_url | stylesheet_tag }}
+<div class="wrap tr-hero">
+  {%- if section.settings.eyebrow != blank -%}<p class="eyebrow tr-hero__eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+  <h1 class="tr-hero__title">{{ section.settings.title }}</h1>
+  {%- if section.settings.subtitle != blank -%}<p class="tr-hero__sub">{{ section.settings.subtitle }}</p>{%- endif -%}
+  {%- if section.settings.lede != blank -%}<p class="tr-hero__lede">{{ section.settings.lede }}</p>{%- endif -%}
+  {%- if section.settings.note != blank -%}<p class="tr-hero__note">{{ section.settings.note }}</p>{%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Transparencia · Hero",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "TRANSPARENCIA TOTAL" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Nada escondido detrás" },
+    { "type": "text", "id": "subtitle", "label": "Subtítulo (serif itálica)", "default": "de un nombre inventado." },
+    { "type": "textarea", "id": "lede", "label": "Texto", "default": "Los nombres comerciales y los científicos coinciden. Acá está la lista completa de lo que dejamos fuera, con el nombre técnico de cada cosa y la razón de haberla sacado. No para que nos creas: para que puedas comprobarlo." },
+    { "type": "textarea", "id": "note", "label": "Nota destacada", "default": "El porcentaje de origen natural de cada producto se publicará cuando la maquila entregue la verificación ISO 16128. Hasta entonces, no damos una cifra." }
+  ]
+}
+{% endschema %}

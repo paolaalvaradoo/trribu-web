@@ -1,0 +1,43 @@
+{{ 'sin.css' | asset_url | stylesheet_tag }}
+<section class="sin-sig wrap wrap--1240">
+  <div class="sin-sig__grid">
+    {%- for block in section.blocks -%}
+      <div class="sin-card" {{ block.shopify_attributes }}>
+        <div class="sin-card__num">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</div>
+        <div class="sin-card__title">{{ block.settings.title }}</div>
+        <p class="sin-card__text">{{ block.settings.text }}</p>
+      </div>
+    {%- endfor -%}
+    {%- if section.settings.cta_title != blank or section.settings.cta_label != blank -%}
+      <div class="sin-cta">
+        <div class="sin-cta__title">{{ section.settings.cta_title }}{% if section.settings.cta_strong != blank %} <span class="sin-strong">{{ section.settings.cta_strong }}</span>{% endif %}</div>
+        {%- if section.settings.cta_label != blank -%}
+          <a href="{{ section.settings.cta_link | default: settings.quiz_url }}" class="sin-cta__btn">{{ section.settings.cta_label }}</a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Síntomas · Señales",
+  "settings": [
+    { "type": "header", "content": "Tarjeta final (test)" },
+    { "type": "text", "id": "cta_title", "label": "Pregunta", "default": "¿Te reconoces en" },
+    { "type": "text", "id": "cta_strong", "label": "Pregunta · parte destacada", "default": "3 o más?" },
+    { "type": "text", "id": "cta_label", "label": "Botón · texto", "default": "Haz el test · 1 min" },
+    { "type": "url", "id": "cta_link", "label": "Botón · enlace", "info": "Vacío = página del quiz (Configuración del tema)" }
+  ],
+  "blocks": [
+    {
+      "type": "signal",
+      "name": "Señal",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Señal", "default": "Frizz" },
+        { "type": "textarea", "id": "text", "label": "Explicación", "default": "La cutícula se levanta y el aire hace el resto." }
+      ]
+    }
+  ]
+}
+{% endschema %}

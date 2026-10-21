@@ -1,0 +1,43 @@
+{%- comment -%}
+  Precio + botón de un kit. Precio y "antes" (compare_at_price) vienen de Shopify.
+  Si el producto kit no existe: sin precio y botón deshabilitado "Próximamente".
+  Uso: {% render 'kit-buy', kit: kp, part: 'price|button|save|badge', label: 'Añadir', soon: 'Próximamente', soldout: 'Agotado', class: 'kit-card__btn', save_label: 'Ahorras', badge_prefix: 'AHORRA', badge_pct: 20 %}
+{%- endcomment -%}
+{%- liquid
+  assign v = kit.selected_or_first_available_variant
+  assign has = false
+  if kit != blank and kit.id and v != blank
+    assign has = true
+  endif
+  assign compare = 0
+  if has and v.compare_at_price > v.price
+    assign compare = v.compare_at_price
+  endif
+-%}
+{%- case part -%}
+  {%- when 'price' -%}
+    {%- if has -%}
+      <span class="p">{{ v.price | money_without_trailing_zeros }}</span>
+      {%- if compare > 0 -%}<s>{{ compare | money_without_trailing_zeros }}</s>{%- endif -%}
+    {%- endif -%}
+  {%- when 'save' -%}
+    {%- if compare > 0 and save_label != blank -%}
+      <span class="kit-feat__save">{{ save_label }} {{ compare | minus: v.price | money_without_trailing_zeros }}</span>
+    {%- endif -%}
+  {%- when 'badge' -%}
+    {%- liquid
+      assign pct = badge_pct
+      if compare > 0
+        assign pct = compare | minus: v.price | times: 100.0 | divided_by: compare | round
+      endif
+    -%}
+    {%- if badge_prefix != blank and pct > 0 -%}<span class="kit-badge">{{ badge_prefix }} {{ pct }}%</span>{%- endif -%}
+  {%- when 'button' -%}
+    {%- if has and v.available -%}
+      <button type="button" class="kit-btn {{ class }}" data-add-to-cart="{{ v.id }}" data-open-drawer data-added-label="Añadido ✓">{{ label }}</button>
+    {%- elsif has -%}
+      <button type="button" class="kit-btn {{ class }}" disabled>{{ soldout | default: 'Agotado' }}</button>
+    {%- else -%}
+      <button type="button" class="kit-btn {{ class }}" disabled>{{ soon | default: 'Próximamente' }}</button>
+    {%- endif -%}
+{%- endcase -%}

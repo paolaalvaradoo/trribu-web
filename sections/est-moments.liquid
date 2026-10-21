@@ -1,0 +1,46 @@
+{{ 'est.css' | asset_url | stylesheet_tag }}
+<div class="est-moments">
+  <div class="wrap est-moments__inner">
+    <div class="est-moments__head">
+      {%- if section.settings.eyebrow != blank -%}<p class="est-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="est-h2">{{ section.settings.heading }}</h2>
+    </div>
+    <div class="est-grid3">
+      {%- for block in section.blocks -%}
+        <div class="est-moment" {{ block.shopify_attributes }}>
+          <div class="est-moment__label">{{ block.settings.label }}</div>
+          {%- if block.settings.when != blank -%}<div class="est-moment__when">{{ block.settings.when }}</div>{%- endif -%}
+          {%- assign items = block.settings.items | newline_to_br | split: '<br />' -%}
+          <ul class="est-moment__list">
+            {%- for item in items -%}
+              {%- assign it = item | strip -%}
+              {%- if it != blank -%}<li>{{ it }}</li>{%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Estudio · Los 3 momentos",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "LOS 3 MOMENTOS" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Qué medimos, y cuándo" }
+  ],
+  "blocks": [
+    {
+      "type": "moment",
+      "name": "Momento",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Momento", "default": "PRIMER USO" },
+        { "type": "text", "id": "when", "label": "Cuándo", "default": "Tras el 1.er lavado" },
+        { "type": "textarea", "id": "items", "label": "Qué medimos", "info": "Uno por línea.", "default": "Suavidad\nDesenredo\nFrizz" }
+      ]
+    }
+  ]
+}
+{% endschema %}

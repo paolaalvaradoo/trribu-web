@@ -1,0 +1,23 @@
+{{ 'sin.css' | asset_url | stylesheet_tag }}
+<section class="sin-bridge wrap wrap--900">
+  {%- if section.settings.eyebrow != blank -%}<div class="sin-eyebrow sin-bridge__eyebrow">{{ section.settings.eyebrow }}</div>{%- endif -%}
+  <h2 class="sin-bridge__title">{{ section.settings.title }}{% if section.settings.title_strong != blank %} <span class="sin-strong">{{ section.settings.title_strong }}</span>{% endif %}</h2>
+  {%- if section.settings.text != blank -%}<p class="sin-bridge__text">{{ section.settings.text }}</p>{%- endif -%}
+  {%- if section.settings.btn_label != blank -%}
+    <a href="{{ section.settings.btn_link | default: '/pages/sistema' }}" class="sin-pill">{{ section.settings.btn_label }}</a>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Síntomas · Puente",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "NO ES UN SOLO PROBLEMA" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Una causa." },
+    { "type": "text", "id": "title_strong", "label": "Título · parte destacada", "default": "Muchos frentes." },
+    { "type": "textarea", "id": "text", "label": "Texto", "default": "Después de los 40 tu pelo no tiene un solo problema: tiene una causa —la transición hormonal— que aparece a la vez en varios frentes. Por eso un producto suelto no alcanza." },
+    { "type": "text", "id": "btn_label", "label": "Botón · texto", "default": "Conoce el sistema" },
+    { "type": "url", "id": "btn_link", "label": "Botón · enlace", "info": "Vacío = /pages/sistema" }
+  ]
+}
+{% endschema %}

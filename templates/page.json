@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "gen-main-page",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

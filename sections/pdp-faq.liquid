@@ -1,0 +1,41 @@
+{{ 'pdp.css' | asset_url | stylesheet_tag }}
+{%- capture faqs -%}{%- render 'pdp-data', product: product, field: 'faqs' -%}{%- endcapture -%}
+{%- if faqs != blank -%}
+<section class="pdp-faq" style="{% render 'product-field', product: product, field: 'style' %}">
+  <div class="pdp-faq__head">
+    <div class="pdp-eyebrow">{{ section.settings.eyebrow }}</div>
+    <h2 class="pdp-faq__title">{{ section.settings.heading | replace: '[producto]', product.title }}</h2>
+  </div>
+  <div class="pdp-faq__list">
+    {%- assign items = faqs | split: '~~' -%}
+    {%- for it in items -%}
+      {%- assign f = it | split: '^^' -%}
+      {%- assign open = false -%}
+      {%- if forloop.first and section.settings.open_first -%}{%- assign open = true -%}{%- endif -%}
+      <div class="pdp-faq__item">
+        <button type="button" class="pdp-faq__q" aria-expanded="{{ open }}" aria-controls="PdpFaq-{{ section.id }}-{{ forloop.index }}" data-pdp-toggle data-pdp-group="faq-{{ section.id }}">
+          <span>{{ f[0] }}</span>
+          <span class="pdp-pm" aria-hidden="true"></span>
+        </button>
+        <div class="pdp-collapse{% if open %} is-open{% endif %}" id="PdpFaq-{{ section.id }}-{{ forloop.index }}">
+          <div class="pdp-collapse__in"><p class="pdp-faq__a">{{ f[1] }}</p></div>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Ficha · preguntas",
+  "tag": "div",
+  "class": "pdp-sec",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "PREGUNTAS FRECUENTES" },
+    { "type": "text", "id": "heading", "label": "Título ([producto] = nombre)", "default": "Sobre [producto]" },
+    { "type": "checkbox", "id": "open_first", "label": "Primera pregunta abierta", "default": true },
+    { "type": "paragraph", "content": "Las preguntas salen del metafield trribu.faqs de cada producto (JSON [{\"q\":\"…\",\"a\":\"…\"}])." }
+  ]
+}
+{% endschema %}

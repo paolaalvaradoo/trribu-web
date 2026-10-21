@@ -1,0 +1,77 @@
+{{ 'kit.css' | asset_url | stylesheet_tag }}
+<section class="kit-sec kit-more">
+  {%- if section.settings.eyebrow != blank or section.settings.title != blank -%}
+    <div class="kit-more__head">
+      {%- if section.settings.eyebrow != blank -%}<div class="kit-eyebrow">{{ section.settings.eyebrow }}</div>{%- endif -%}
+      <h2 class="kit-more__title">{{ section.settings.title }}{% if section.settings.title_accent != blank %} <span class="kit-strong">{{ section.settings.title_accent }}</span>{% endif %}</h2>
+    </div>
+  {%- endif -%}
+  <div class="kit-more__grid">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign b = block.settings
+        assign kp = b.product
+        if kp == blank and b.handle != blank
+          assign kp = all_products[b.handle]
+        endif
+        assign contents_txt = b.contents_text
+        if contents_txt == blank and b.contents != blank
+          assign contents_txt = b.contents | map: 'title' | join: ' + '
+        endif
+      -%}
+      <article class="kit-card" {{ block.shopify_attributes }}>
+        <div class="kit-card__shot" style="--kit-g1:{{ b.grad_from }};--kit-g2:{{ b.grad_to }}">
+          {% render 'kit-shot', image: b.image, kit: kp, contents: b.contents, handles: b.contents_handles, label: b.image_label, sizes: '(max-width: 900px) 100vw, 600px' %}
+          {% render 'kit-buy', kit: kp, part: 'badge', badge_prefix: b.badge_prefix, badge_pct: b.badge_pct %}
+        </div>
+        <div class="kit-card__body">
+          {%- if b.eyebrow != blank -%}<div class="kit-card__eyebrow">{{ b.eyebrow }}</div>{%- endif -%}
+          <h3 class="kit-card__name">{{ b.name }}</h3>
+          {%- if contents_txt != blank -%}<div class="kit-card__contents">{{ contents_txt }}</div>{%- endif -%}
+          {%- if b.text != blank -%}<p class="kit-card__text">{{ b.text }}</p>{%- endif -%}
+          <div class="kit-card__foot">
+            <div class="kit-card__price">{% render 'kit-buy', kit: kp, part: 'price' %}</div>
+            {% render 'kit-buy', kit: kp, part: 'button', label: b.button_label, soon: b.soon_label, class: 'kit-card__btn' %}
+          </div>
+        </div>
+      </article>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Kits · Más kits",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "MÁS KITS" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Empieza por donde" },
+    { "type": "text", "id": "title_accent", "label": "Título · parte destacada", "default": "tú quieras" }
+  ],
+  "blocks": [
+    {
+      "type": "kit",
+      "name": "Kit",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Producto kit", "info": "Precio y precio 'antes' vienen del producto. Sin producto, el botón dice 'Próximamente'." },
+        { "type": "text", "id": "handle", "label": "Handle de respaldo", "info": "Se usa si no eliges un producto (el-duo, kit-esencial…)." },
+        { "type": "product_list", "id": "contents", "label": "Contenido del kit", "limit": 8, "info": "Se dibujan como envases cuando no hay foto." },
+        { "type": "text", "id": "contents_handles", "label": "Contenido · handles de respaldo", "default": "el-shampoo, el-acondicionador" },
+        { "type": "image_picker", "id": "image", "label": "Foto del kit" },
+        { "type": "text", "id": "image_label", "label": "Qué foto va acá", "default": "El Dúo (Shampoo + Acondicionador)" },
+        { "type": "color", "id": "grad_from", "label": "Fondo · degradado desde", "default": "#FBF1EA" },
+        { "type": "color", "id": "grad_to", "label": "Fondo · degradado hasta", "default": "#F1E2D6" },
+        { "type": "text", "id": "badge_prefix", "label": "Etiqueta de ahorro", "default": "AHORRA", "info": "El % se calcula con el precio 'antes'. Vacío para ocultar." },
+        { "type": "number", "id": "badge_pct", "label": "% de respaldo", "default": 10 },
+        { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "DONDE EMPIEZA EL RITUAL" },
+        { "type": "text", "id": "name", "label": "Nombre", "default": "El Dúo" },
+        { "type": "text", "id": "contents_text", "label": "Contenido (texto)", "default": "El Shampoo + El Acondicionador", "info": "Vacío: se arma con los nombres del contenido." },
+        { "type": "textarea", "id": "text", "label": "Texto", "default": "Limpia sin resecar; repara al enjuagar. Donde empieza todo ritual." },
+        { "type": "text", "id": "button_label", "label": "Botón", "default": "Añadir" },
+        { "type": "text", "id": "soon_label", "label": "Botón sin producto", "default": "Próximamente" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Kits · Más kits", "blocks": [{ "type": "kit" }] }]
+}
+{% endschema %}

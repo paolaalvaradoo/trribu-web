@@ -1,0 +1,69 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "TRRIBÚ",
+    "theme_version": "1.0.0",
+    "theme_author": "GRUPO EKKA SAC",
+    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
+    "theme_support_url": "https://help.shopify.com/manual/online-store/themes"
+  },
+  {
+    "name": "Identidad",
+    "settings": [
+      {
+        "type": "select",
+        "id": "accent",
+        "label": "Color de acento",
+        "info": "Color de El Shampoo y de los detalles de marca. Prototipo: #BB7B73.",
+        "default": "#BB7B73",
+        "options": [
+          { "value": "#BB7B73", "label": "Rosa terracota · #BB7B73" },
+          { "value": "#B4603C", "label": "Terracota · #B4603C" },
+          { "value": "#7A2230", "label": "Burdeos · #7A2230" },
+          { "value": "#BA9772", "label": "Arena · #BA9772" }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "hero_veil",
+        "label": "Velo sobre fotos a sangre",
+        "default": "dense",
+        "options": [
+          { "value": "dense", "label": "Denso" },
+          { "value": "light", "label": "Ligero" },
+          { "value": "none", "label": "Sin velo" }
+        ]
+      },
+      { "type": "image_picker", "id": "favicon", "label": "Favicon" }
+    ]
+  },
+  {
+    "name": "Comercial",
+    "settings": [
+      { "type": "checkbox", "id": "show_tool_prices", "label": "Mostrar precios de herramientas", "default": true },
+      { "type": "number", "id": "free_shipping_threshold", "label": "Envío gratis desde (S/)", "default": 150, "info": "0 para ocultar la barra en el carrito. Configura la tarifa real en Envíos." },
+      { "type": "header", "content": "Descuento por cantidad · Arma tu ritual" },
+      { "type": "paragraph", "content": "El cobro lo hace un descuento automático de Shopify (Descuentos → Automático → Cantidad). Estos valores solo se usan para mostrarlo en vivo y deben coincidir." },
+      { "type": "number", "id": "tier1_min", "label": "Tramo 1 · desde (productos)", "default": 3 },
+      { "type": "number", "id": "tier1_pct", "label": "Tramo 1 · descuento (%)", "default": 10 },
+      { "type": "number", "id": "tier2_min", "label": "Tramo 2 · desde (productos)", "default": 5 },
+      { "type": "number", "id": "tier2_pct", "label": "Tramo 2 · descuento (%)", "default": 15 },
+      { "type": "checkbox", "id": "show_tier_hint", "label": "Mostrar en el carrito cuánto falta para el siguiente tramo", "default": true },
+      { "type": "header", "content": "Despacho" },
+      { "type": "text", "id": "dispatch_days", "label": "Días de despacho", "default": "Lunes, Miércoles, Viernes", "info": "Separados por coma. Se guardan en el pedido como \"Día de despacho\". Vacío para ocultar." },
+      { "type": "header", "content": "Enlaces clave" },
+      { "type": "text", "id": "quiz_url", "label": "Página del quiz", "default": "/pages/quiz" },
+      { "type": "text", "id": "ritual_url", "label": "Página Arma tu ritual", "default": "/pages/arma-tu-ritual" }
+    ]
+  },
+  {
+    "name": "Integraciones",
+    "settings": [
+      { "type": "header", "content": "Klaviyo" },
+      { "type": "text", "id": "klaviyo_public_key", "label": "Public API key (company ID)", "info": "6 caracteres. Klaviyo → Configuración → API keys. Es pública: no uses la private key." },
+      { "type": "text", "id": "klaviyo_list_id", "label": "ID de la lista principal", "info": "Lista a la que se suscriben quienes completan el quiz y dejan su correo." },
+      { "type": "header", "content": "Análisis" },
+      { "type": "url", "id": "analytics_webhook_url", "label": "Webhook de respuestas (Airtable / Make / Zapier)", "info": "Recibe una copia en JSON de cada quiz completado. Sin credenciales: usa un webhook de automatización." }
+    ]
+  }
+]

@@ -1,0 +1,152 @@
+{{ 'rit.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'rit.js' | asset_url }}" defer></script>
+{%- liquid
+  assign s = section.settings
+  if s.products.size > 0
+    assign p_handles = s.products | map: 'handle' | join: ','
+  else
+    assign p_handles = s.products_handles
+  endif
+  if s.tools.size > 0
+    assign t_handles = s.tools | map: 'handle' | join: ','
+  else
+    assign t_handles = s.tools_handles
+  endif
+  assign idx = 0
+  assign json_items = ''
+  assign ship = settings.free_shipping_threshold | times: 100 | money_without_trailing_zeros
+-%}
+<section class="rit" data-rit id="rit-{{ section.id }}">
+  {%- if request.design_mode -%}
+    <div class="rit-note">
+      <strong>Solo visible en el editor ·</strong> este resumen solo <em>muestra</em> el descuento por cantidad
+      ({{ settings.tier1_pct }} % desde {{ settings.tier1_min }} productos · {{ settings.tier2_pct }} % desde {{ settings.tier2_min }}),
+      con los valores de Configuración del tema → Tienda. El cobro real lo hace un descuento automático de Shopify
+      (Descuentos → Crear descuento → Monto de descuento en productos, automático, con requisito de cantidad mínima de artículos).
+      Ambos deben coincidir.
+    </div>
+  {%- endif -%}
+
+  <div class="rit__picker">
+    {%- for g in (1..2) -%}
+      {%- liquid
+        if g == 1
+          assign hs = p_handles | split: ','
+          assign kind = 'product'
+          assign step = s.step_products
+        else
+          assign hs = t_handles | split: ','
+          assign kind = 'tool'
+          assign step = s.step_tools
+        endif
+      -%}
+      {%- if step != blank -%}<div class="rit__step{% if g == 2 %} rit__step--2{% endif %}">{{ step }}</div>{%- endif -%}
+      <div class="rit__grid">
+        {%- for h in hs -%}
+          {%- assign hh = h | strip -%}
+          {%- assign p = all_products[hh] -%}
+          {%- if p != blank and p.id -%}
+            {%- liquid
+              assign v = p.selected_or_first_available_variant
+              capture num
+                render 'product-field', product: p, field: 'number'
+              endcapture
+            -%}
+            {%- capture item -%}{"id":{{ v.id | json }},"title":{{ p.title | json }},"price":{{ v.price | json }},"num":{{ num | json }},"kind":{{ kind | json }},"available":{{ v.available | json }}}{%- endcapture -%}
+            {%- if idx > 0 -%}{%- assign json_items = json_items | append: ',' -%}{%- endif -%}
+            {%- assign json_items = json_items | append: item -%}
+            {% render 'rit-card', product: p, index: idx, kind: kind %}
+            {%- assign idx = idx | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <aside class="rit-sum" id="rit-sum-{{ section.id }}" aria-label="{{ s.sum_title | escape }}">
+    <h2 class="rit-sum__title">{{ s.sum_title }}</h2>
+    <div class="rit-sum__count" data-rit-count aria-live="polite">{{ s.count_zero }}</div>
+    <div class="rit-sum__empty" data-rit-empty>{{ s.empty_text }}</div>
+    <ul class="rit-sum__lines" data-rit-lines hidden></ul>
+    <div class="rit-sum__totals" data-rit-totals hidden>
+      <div class="rit-sum__row"><span>{{ s.subtotal_label }}</span><span data-rit-subtotal></span></div>
+      <div class="rit-sum__row rit-sum__row--disc" data-rit-disc-row hidden><span data-rit-disc-label></span><span data-rit-disc></span></div>
+      <div class="rit-sum__row rit-sum__row--total"><span>{{ s.total_label }}</span><span data-rit-total></span></div>
+    </div>
+    <div class="rit-sum__nudge" data-rit-nudge hidden>
+      <span data-rit-nudge-txt></span>
+      {%- if s.show_meter -%}<div class="rit-sum__meter" aria-hidden="true"><span data-rit-meter></span></div>{%- endif -%}
+    </div>
+    <button type="button" class="rit-cta" data-rit-cta disabled>{{ s.cta_empty }}</button>
+    <div class="rit-sum__err" data-rit-err role="alert" hidden></div>
+    {%- if settings.free_shipping_threshold > 0 and s.ship_text != blank -%}
+      <div class="rit-sum__ship"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>{{ s.ship_text | replace: '[amount]', ship }}</span></div>
+    {%- endif -%}
+    {%- if s.fine_print != blank -%}<div class="rit-sum__fine">{{ s.fine_print }}</div>{%- endif -%}
+  </aside>
+
+  <div class="rit-bar" data-rit-bar aria-hidden="true">
+    <div class="rit-bar__txt"><span data-rit-bar-count></span><span class="rit-bar__total" data-rit-bar-total></span></div>
+    <a href="#rit-sum-{{ section.id }}" class="rit-bar__btn" tabindex="-1">{{ s.bar_button }}</a>
+  </div>
+
+  <script type="application/json" data-rit-data>
+    {
+      "items": [{{ json_items }}],
+      "text": {
+        "countZero": {{ s.count_zero | json }},
+        "countOne": {{ s.count_one | json }},
+        "countMany": {{ s.count_many | json }},
+        "itemOne": {{ s.item_one | json }},
+        "itemMany": {{ s.item_many | json }},
+        "discLabel": {{ s.disc_label | json }},
+        "nudgeFirst": {{ s.nudge_first | json }},
+        "nudgeNext": {{ s.nudge_next | json }},
+        "nudgeMax": {{ s.nudge_max | json }},
+        "nudgeMasc": {{ s.nudge_masc | json }},
+        "cta": {{ s.cta_label | json }},
+        "ctaEmpty": {{ s.cta_empty | json }},
+        "added": {{ s.added_label | json }}
+      }
+    }
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "Ritual · Armador",
+  "tag": "div",
+  "settings": [
+    { "type": "header", "content": "Productos" },
+    { "type": "text", "id": "step_products", "label": "Paso 1 · título", "default": "1 · EL SISTEMA" },
+    { "type": "product_list", "id": "products", "label": "El sistema", "limit": 8 },
+    { "type": "text", "id": "products_handles", "label": "El sistema · handles de respaldo", "default": "el-shampoo, el-acondicionador, la-mascarilla, el-acondicionador-sin-enjuague", "info": "Se usan si la lista está vacía." },
+    { "type": "text", "id": "step_tools", "label": "Paso 2 · título", "default": "2 · LAS HERRAMIENTAS" },
+    { "type": "product_list", "id": "tools", "label": "Herramientas", "limit": 8 },
+    { "type": "text", "id": "tools_handles", "label": "Herramientas · handles de respaldo", "default": "el-peine, la-toalla, el-gorro, las-pinzas" },
+    { "type": "header", "content": "Resumen" },
+    { "type": "paragraph", "content": "En los textos: [n] = cantidad, [items] = ítem/ítems, [pct] = descuento (−10%), [total] = total. Los tramos se leen de Configuración del tema." },
+    { "type": "text", "id": "sum_title", "label": "Título", "default": "Tu ritual" },
+    { "type": "text", "id": "count_zero", "label": "Contador · vacío", "default": "Aún no has elegido nada" },
+    { "type": "text", "id": "count_one", "label": "Contador · 1", "default": "[n] ítem en tu set" },
+    { "type": "text", "id": "count_many", "label": "Contador · varios", "default": "[n] ítems en tu set" },
+    { "type": "text", "id": "item_one", "label": "Palabra singular", "default": "ítem" },
+    { "type": "text", "id": "item_many", "label": "Palabra plural", "default": "ítems" },
+    { "type": "textarea", "id": "empty_text", "label": "Texto vacío", "default": "Empieza a sumar productos y verás tu set aquí." },
+    { "type": "text", "id": "subtotal_label", "label": "Subtotal", "default": "Subtotal" },
+    { "type": "text", "id": "disc_label", "label": "Descuento", "default": "Descuento [pct]" },
+    { "type": "text", "id": "total_label", "label": "Total", "default": "Total" },
+    { "type": "text", "id": "nudge_first", "label": "Aviso · hacia el primer tramo", "default": "Suma [n] [items] más y obtén [pct]." },
+    { "type": "text", "id": "nudge_next", "label": "Aviso · hacia el siguiente tramo", "default": "Suma [n] [items] más para llegar a [pct]." },
+    { "type": "text", "id": "nudge_max", "label": "Aviso · tramo máximo", "default": "¡Máximo descuento desbloqueado! [pct] aplicado." },
+    { "type": "text", "id": "nudge_masc", "label": "Aviso · falta La Mascarilla", "default": "Completa la reparación profunda: añade La Mascarilla.", "info": "Aparece con El Shampoo y El Acondicionador elegidos y sin La Mascarilla. Vacío para desactivar." },
+    { "type": "checkbox", "id": "show_meter", "label": "Mostrar barra de progreso al siguiente tramo", "default": true },
+    { "type": "text", "id": "cta_label", "label": "Botón", "default": "Añadir al carrito · [total]" },
+    { "type": "text", "id": "cta_empty", "label": "Botón · vacío", "default": "Elige tus productos" },
+    { "type": "text", "id": "added_label", "label": "Botón · añadido", "default": "Añadido ✓" },
+    { "type": "text", "id": "ship_text", "label": "Envío gratis", "default": "Envío gratis desde [amount]", "info": "[amount] = monto de Configuración del tema." },
+    { "type": "text", "id": "fine_print", "label": "Nota al pie", "default": "Precios referenciales" },
+    { "type": "text", "id": "bar_button", "label": "Barra móvil · botón", "default": "Ver mi ritual" }
+  ]
+}
+{% endschema %}

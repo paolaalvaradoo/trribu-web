@@ -1,0 +1,30 @@
+{{ 'est.css' | asset_url | stylesheet_tag }}
+<div class="wrap est-define">
+  <div class="est-pair">
+    {%- for block in section.blocks -%}
+      <div class="est-card" {{ block.shopify_attributes }}>
+        <div class="est-label" style="color:{{ block.settings.label_color }}">{{ block.settings.label }}</div>
+        <div class="est-text">{{ block.settings.text }}</div>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Estudio · Qué es",
+  "tag": "section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Tarjeta",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Rótulo", "default": "QUÉ ES" },
+        { "type": "color", "id": "label_color", "label": "Color del rótulo", "default": "#191813" },
+        { "type": "richtext", "id": "text", "label": "Texto", "default": "<p>Un estudio de autopercepción: mujeres de 40+ prueban el sistema TRRIBÚ y responden encuestas.</p>" }
+      ]
+    }
+  ]
+}
+{% endschema %}

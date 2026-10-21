@@ -1,0 +1,201 @@
+/* ==========================================================================
+   TRRIBÚ · Transparencia (prefijo tr-)
+   Recreado desde "TRRIBÚ Transparencia.dc.html".
+   ========================================================================== */
+
+.tr-w1080 { max-width: 1080px; }
+.tr-w1180 { max-width: 1180px; }
+.tr-w900 { max-width: 900px; }
+
+.tr-h2 { font-family: var(--f-display); font-weight: 300; font-size: 38px; line-height: 1.14; margin: 0; }
+.tr-p { font-size: 15.5px; line-height: 1.75; color: var(--muted); margin: 18px 0 0; }
+
+/* Scroll horizontal propio para tablas anchas en móvil */
+.tr-scroll { width: 100%; }
+
+/* --------------------------------------------------------------------------
+   Hero
+   -------------------------------------------------------------------------- */
+.tr-hero { max-width: 900px; padding-top: 96px; padding-bottom: 84px; text-align: center; }
+.tr-hero__eyebrow { margin-bottom: 30px; }
+.tr-hero__title { font-family: var(--f-display); font-weight: 300; font-size: 52px; line-height: 1.1; letter-spacing: -.015em; margin: 0; }
+.tr-hero__sub { font-family: var(--f-serif); font-style: italic; font-weight: 400; font-size: 42px; line-height: 1.15; margin: 6px 0 0; }
+.tr-hero__lede { font-size: 16.5px; line-height: 1.8; color: var(--muted); max-width: 640px; margin: 34px auto 0; }
+.tr-hero__note {
+  font-size: 13.5px; line-height: 1.75; color: var(--muted); max-width: 600px; margin: 28px auto 0;
+  padding: 16px 20px; background: var(--paper-2); border-left: 2px solid var(--ac-ink); text-align: left;
+}
+
+/* --------------------------------------------------------------------------
+   Punto de partida · comparación
+   -------------------------------------------------------------------------- */
+.tr-compare { border-top: 1px solid var(--line); }
+.tr-compare__inner { padding-top: 84px; padding-bottom: 84px; }
+.tr-compare__head { max-width: 660px; margin-bottom: 44px; }
+.tr-compare__intro p { font-size: 15.5px; line-height: 1.75; color: var(--muted); margin: 16px 0 0; }
+.tr-compare__intro p:first-child { margin-top: 20px; }
+.tr-compare__table { border-top: 1px solid var(--ink); }
+.tr-compare__row {
+  display: grid; grid-template-columns: 1fr 1.15fr 1.15fr; gap: 28px;
+  padding: 22px 4px; border-bottom: 1px solid var(--line-2); align-items: start;
+}
+.tr-compare__row--head { padding: 14px 4px; align-items: stretch; }
+.tr-compare__col { font-family: var(--f-display); font-size: 10.5px; letter-spacing: .22em; color: var(--muted); }
+.tr-compare__col--ours { color: var(--ink); }
+.tr-compare__label { font-family: var(--f-display); font-size: 16px; color: var(--ink); }
+.tr-compare__ours, .tr-compare__theirs { font-size: 14.5px; line-height: 1.65; color: var(--ink); }
+.tr-compare__theirs { color: var(--muted); }
+.tr-compare__foot { font-size: 14px; line-height: 1.75; color: var(--muted); max-width: 660px; margin: 28px 0 0; }
+
+/* --------------------------------------------------------------------------
+   Acordeón (sello + FAQ)
+   -------------------------------------------------------------------------- */
+.tr-acc { border-top: 1px solid var(--line-2); }
+.tr-acc__item { border-bottom: 1px solid var(--line-2); }
+.tr-acc__head {
+  display: grid; grid-template-columns: 52px 1fr auto auto; gap: 16px; align-items: center;
+  width: 100%; padding: 20px 8px; margin: 0; border: 0; background: none; text-align: left;
+  cursor: pointer; color: var(--ink); transition: background .2s ease;
+}
+.tr-acc__head:hover { background: var(--paper-2); }
+.tr-acc__num { font-family: var(--f-serif); font-size: 16px; color: var(--muted); }
+.tr-acc__title { font-family: var(--f-display); font-size: 18px; color: var(--ink); }
+.tr-acc__icon { font-family: var(--f-display); font-size: 19px; line-height: 1; color: var(--muted); width: 20px; text-align: center; }
+.tr-acc__icon::before { content: "+"; }
+.tr-acc__item.is-open .tr-acc__icon::before { content: "\2212"; }
+.tr-acc__panel { max-height: 0; overflow: hidden; transition: max-height .4s ease; }
+.tr-acc__item.is-open > .tr-acc__panel { max-height: none; }
+.tr-acc__body { display: grid; grid-template-columns: 52px 1fr; gap: 16px; padding: 0 8px 26px; }
+.tr-acc__content { max-width: 720px; min-width: 0; }
+
+/* FAQ: columnas más angostas */
+.tr-acc--faq .tr-acc__head { grid-template-columns: 44px 1fr auto; gap: 14px; padding: 22px 8px; }
+.tr-acc--faq .tr-acc__num { font-size: 15px; }
+.tr-acc--faq .tr-acc__title { font-size: 17px; }
+.tr-acc--faq .tr-acc__body { grid-template-columns: 44px 1fr; gap: 14px; }
+.tr-acc--faq .tr-acc__content { max-width: 700px; }
+
+/* --------------------------------------------------------------------------
+   El Sello TRRIBÚ
+   -------------------------------------------------------------------------- */
+.tr-sello { background: var(--paper-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.tr-sello__inner { padding-top: 84px; padding-bottom: 84px; }
+.tr-sello__head { max-width: 640px; }
+.tr-sello__callout {
+  display: flex; align-items: flex-start; gap: 22px; margin: 38px 0 30px; padding: 24px 26px;
+  background: #fff; border: 1px solid var(--line-2);
+}
+.tr-sello__callout svg { flex: none; width: 34px; height: 34px; margin-top: 2px; }
+.tr-sello__ctitle { font-family: var(--f-display); font-size: 17px; color: var(--ink); }
+.tr-sello__ctext { font-size: 14.5px; line-height: 1.65; color: var(--muted); margin: 6px 0 0; }
+.tr-sello__ctext p { margin: 0; }
+.tr-sello__ctext p + p { margin-top: 10px; }
+.tr-sello__ctext strong { font-weight: 500; color: var(--ink); }
+.tr-sello__tag { font-family: var(--f-display); font-size: 10.5px; letter-spacing: .14em; color: var(--muted); border: 1px solid #D8D3C9; padding: 5px 9px; white-space: nowrap; }
+.tr-sello__tag--diff { font-size: 9.5px; letter-spacing: .18em; color: var(--ac-ink); border-color: var(--ac-soft); padding: 5px 10px; }
+.tr-sello__label { font-family: var(--f-display); font-size: 11px; letter-spacing: .2em; color: var(--muted); margin-bottom: 7px; }
+.tr-sello__txt { font-size: 14.5px; line-height: 1.7; color: var(--muted); margin: 0 0 18px; }
+.tr-sello__txt--last { margin: 0; }
+.tr-sello__fine { margin-top: 20px; padding: 18px 20px; background: #fff; border-left: 2px solid var(--ac-ink); }
+.tr-sello__fine p { font-size: 13.5px; line-height: 1.75; color: var(--muted); margin: 0; }
+
+/* --------------------------------------------------------------------------
+   TRRIBOND a la vista · tabla INCI
+   -------------------------------------------------------------------------- */
+.tr-inci__inner { padding-top: 88px; padding-bottom: 88px; }
+.tr-inci__head { max-width: 620px; margin-bottom: 46px; }
+.tr-inci__table { width: 100%; border-collapse: collapse; text-align: left; }
+.tr-inci__table th {
+  font-family: var(--f-display); font-weight: 400; font-size: 10.5px; letter-spacing: .24em; color: var(--muted);
+  padding: 0 16px 12px 0; border-bottom: 1px solid var(--ink); text-align: left;
+}
+.tr-inci__table th:last-child { padding: 0 0 12px; }
+.tr-inci__table td { padding: 20px 16px 20px 0; border-bottom: 1px solid var(--line); vertical-align: top; transition: background .2s ease; }
+.tr-inci__table tr:hover td { background: var(--paper-2); }
+.tr-inci__table td.tr-inci__c1 { width: 34%; }
+.tr-inci__table td.tr-inci__c2 { width: 44%; font-size: 14.5px; line-height: 1.6; color: var(--muted); }
+.tr-inci__table td.tr-inci__c3 { padding: 20px 0; font-size: 13.5px; line-height: 1.6; color: var(--muted); }
+.tr-inci__name { font-family: var(--f-display); font-size: 16px; color: var(--ink); }
+.tr-inci__inci { font-size: 12px; line-height: 1.5; color: var(--muted); margin-top: 4px; font-style: italic; }
+.tr-inci__foot { font-size: 13.5px; line-height: 1.7; color: var(--muted); margin: 26px 0 0; }
+.tr-inci__foot p { margin: 0; }
+.tr-inci__foot strong { font-weight: 500; color: var(--ink); }
+
+/* --------------------------------------------------------------------------
+   Dos filtros (fondo oscuro)
+   -------------------------------------------------------------------------- */
+.tr-filters { background: var(--ink); color: #F5F3EF; }
+.tr-filters__inner { padding-top: 88px; padding-bottom: 88px; }
+.tr-filters__head { max-width: 640px; margin-bottom: 52px; }
+.tr-filters__eyebrow { color: var(--muted-3); }
+.tr-filters__lede { color: var(--muted-3); }
+.tr-filters__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-top: 1px solid #33302A; }
+.tr-filters__item { padding: 40px 0 40px 44px; }
+.tr-filters__item:nth-child(odd) { border-right: 1px solid #33302A; padding: 40px 44px 40px 0; }
+.tr-filters__title { font-family: var(--f-display); font-size: 22px; margin-bottom: 12px; }
+.tr-filters__quote { font-family: var(--f-serif); font-style: italic; font-size: 20px; line-height: 1.4; color: #D8CFC4; margin: 0 0 20px; }
+.tr-filters__body { font-size: 14.5px; line-height: 1.7; color: var(--muted-3); margin: 0 0 14px; }
+.tr-filters__origin { font-size: 13.5px; line-height: 1.7; color: var(--muted-3); margin: 0; }
+
+/* --------------------------------------------------------------------------
+   FAQ
+   -------------------------------------------------------------------------- */
+.tr-faq__inner { padding-top: 88px; padding-bottom: 88px; }
+.tr-faq__head { margin-bottom: 40px; }
+.tr-faq__a { font-size: 14.5px; line-height: 1.75; color: var(--muted); }
+.tr-faq__a p { margin: 0; }
+.tr-faq__a p + p { margin-top: 14px; }
+.tr-faq__a a { color: var(--ac-ink); }
+.tr-faq__note { font-size: 13.5px; line-height: 1.7; color: var(--muted); margin: 14px 0 0; }
+
+/* --------------------------------------------------------------------------
+   Lo que no decimos
+   -------------------------------------------------------------------------- */
+.tr-claims { background: var(--paper-2); border-top: 1px solid var(--line); }
+.tr-claims__inner { padding-top: 88px; padding-bottom: 88px; }
+.tr-claims__head { max-width: 640px; margin-bottom: 46px; }
+.tr-claims__list { border-top: 1px solid var(--line-2); }
+.tr-claims__row {
+  display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.4fr); gap: 40px;
+  padding: 26px 0; border-bottom: 1px solid var(--line-2);
+}
+.tr-claims__title { font-family: var(--f-display); font-size: 18px; color: var(--ink); }
+.tr-claims__text { font-size: 14.5px; line-height: 1.7; color: var(--muted); margin: 0; }
+.tr-claims__ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 48px; }
+.tr-claims__ctas .btn { padding: 15px 36px; }
+
+/* --------------------------------------------------------------------------
+   Móvil
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .tr-hero, .tr-compare__inner, .tr-sello__inner, .tr-inci__inner,
+  .tr-filters__inner, .tr-faq__inner, .tr-claims__inner { padding-top: 52px; padding-bottom: 52px; }
+
+  .tr-hero__title { font-size: 33px; line-height: 1.14; }
+  .tr-hero__sub, .tr-h2 { font-size: 27px; line-height: 1.18; }
+
+  /* Tablas anchas: se desplazan dentro de su propio contenedor */
+  .tr-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tr-compare__table { min-width: 640px; }
+  .tr-inci__table { min-width: 620px; }
+
+  /* Acordeón: número · título · ícono; la etiqueta baja bajo el título */
+  .tr-acc__head, .tr-acc--faq .tr-acc__head { grid-template-columns: 36px minmax(0, 1fr) 20px; gap: 8px 12px; }
+  .tr-acc__icon { grid-column: 3; grid-row: 1; }
+  .tr-sello__tag { grid-column: 2; grid-row: 2; justify-self: start; white-space: normal; }
+  .tr-acc__body, .tr-acc--faq .tr-acc__body { grid-template-columns: minmax(0, 1fr); gap: 0; padding-left: 56px; }
+  .tr-acc__body > .tr-acc__spacer, .tr-acc__notag { display: none; }
+
+  .tr-sello__callout { gap: 16px; padding: 20px; }
+
+  .tr-filters__grid { grid-template-columns: minmax(0, 1fr); }
+  .tr-filters__item, .tr-filters__item:nth-child(odd) { border-right: 0; padding: 32px 0; border-bottom: 1px solid #33302A; }
+  .tr-filters__item:last-child { border-bottom: 0; padding-bottom: 0; }
+
+  .tr-claims__row { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .tr-claims__ctas { margin-top: 36px; }
+}
+@media (max-width: 480px) {
+  .tr-hero__title { font-size: 29px; }
+  .tr-acc__body, .tr-acc--faq .tr-acc__body { padding-left: 8px; }
+}

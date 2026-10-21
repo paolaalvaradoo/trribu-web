@@ -1,0 +1,22 @@
+{{ 'est.css' | asset_url | stylesheet_tag }}
+<div class="wrap est-hero">
+  {%- if section.settings.eyebrow != blank -%}<p class="est-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+  <h1 class="est-hero__title">
+    {{- section.settings.title -}}
+    {%- if section.settings.title_strong != blank -%}<br><strong>{{ section.settings.title_strong }}</strong>{%- endif -%}
+  </h1>
+  {%- if section.settings.lede != blank -%}<p class="est-hero__lede">{{ section.settings.lede }}</p>{%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Estudio · Hero",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "NUESTRO ESTUDIO" },
+    { "type": "text", "id": "title", "label": "Título · línea 1", "default": "No inventamos los números." },
+    { "type": "text", "id": "title_strong", "label": "Título · línea 2 (peso medio)", "default": "Te decimos cómo los medimos." },
+    { "type": "textarea", "id": "lede", "label": "Texto", "default": "Nuestros claims salen de un estudio de autopercepción con mujeres reales de nuestra comunidad — no de un laboratorio que nunca vieron." }
+  ]
+}
+{% endschema %}

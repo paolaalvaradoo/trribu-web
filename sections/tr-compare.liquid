@@ -1,0 +1,57 @@
+{{ 'tr.css' | asset_url | stylesheet_tag }}
+<div class="tr-compare">
+  <div class="wrap tr-w1080 tr-compare__inner">
+    <div class="tr-compare__head">
+      {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="tr-h2">{{ section.settings.heading }}</h2>
+      {%- if section.settings.intro != blank -%}<div class="tr-compare__intro">{{ section.settings.intro }}</div>{%- endif -%}
+    </div>
+
+    <div class="tr-scroll">
+      <div class="tr-compare__table" role="table" aria-label="{{ section.settings.heading | escape }}">
+        <div class="tr-compare__row tr-compare__row--head" role="row">
+          <div role="columnheader"><span class="visually-hidden">{{ section.settings.col_label | escape }}</span></div>
+          <div class="tr-compare__col tr-compare__col--ours" role="columnheader">{{ section.settings.col_ours }}</div>
+          <div class="tr-compare__col" role="columnheader">{{ section.settings.col_theirs }}</div>
+        </div>
+        {%- for block in section.blocks -%}
+          <div class="tr-compare__row" role="row" {{ block.shopify_attributes }}>
+            <div class="tr-compare__label" role="rowheader">{{ block.settings.label }}</div>
+            <div class="tr-compare__ours" role="cell">{{ block.settings.ours }}</div>
+            <div class="tr-compare__theirs" role="cell">{{ block.settings.theirs }}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- if section.settings.foot != blank -%}<p class="tr-compare__foot">{{ section.settings.foot }}</p>{%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Transp. · Comparación",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "NUESTRO PUNTO DE PARTIDA" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "De dónde salimos, y dónde nos pasamos." },
+    { "type": "richtext", "id": "intro", "label": "Texto", "default": "<p>«Clean» no tiene definición legal en ningún país. Cuando empezamos, tomamos como referencia el estándar más conocido del mercado —el de Clean at Sephora en Estados Unidos, una lista de más de 50 ingredientes— y desde ahí construimos el nuestro.</p><p>Coincidimos en lo esencial: sin parabenos, sin ftalatos, sin sulfatos, sin formaldehído ni sus liberadores, sin PFAS.</p><p>Y nos pasamos en seis cosas. No porque ese estándar esté mal — es de los mejores que existen. Sino porque nuestra clienta está en una etapa que pide más.</p>" },
+    { "type": "header", "content": "Encabezados de la tabla" },
+    { "type": "text", "id": "col_label", "label": "Primera columna (solo lectores de pantalla)", "default": "Criterio" },
+    { "type": "text", "id": "col_ours", "label": "Columna TRRIBÚ", "default": "NOSOTRAS" },
+    { "type": "text", "id": "col_theirs", "label": "Columna del otro estándar", "default": "ESE ESTÁNDAR" },
+    { "type": "textarea", "id": "foot", "label": "Nota final", "default": "No decimos esto para competir con nadie. Lo decimos para que sepas exactamente dónde está nuestra vara — y puedas compararla con la de cualquier otra." }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Fila",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Criterio", "default": "Siliconas" },
+        { "type": "textarea", "id": "ours", "label": "Nosotras", "default": "Ninguna. Ni cíclicas ni lineales." },
+        { "type": "textarea", "id": "theirs", "label": "Ese estándar", "default": "Solo restringe las cíclicas. Un acondicionador con Dimethicone puede llevar el sello." }
+      ]
+    }
+  ]
+}
+{% endschema %}

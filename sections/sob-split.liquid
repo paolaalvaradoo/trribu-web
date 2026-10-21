@@ -1,0 +1,27 @@
+{%- comment -%} Título a la izquierda, texto a la derecha (El nombre · El método). {%- endcomment -%}
+{{ 'sob.css' | asset_url | stylesheet_tag }}
+<section class="sob-split{% if section.settings.paper %} sob-split--paper{% endif %}">
+  <div class="sob-split__in">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}<p class="sob-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="sob-h2 sob-h2--38">{{ section.settings.title }}{% if section.settings.title_2 != blank %}<br>{{ section.settings.title_2 }}{% endif %}</h2>
+    </div>
+    <div class="sob-split__text sob-body{% if section.settings.ink_last %} sob-split__text--ink-last{% endif %}">{{ section.settings.text }}</div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Nosotros · título + texto",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "El nombre" },
+    { "type": "inline_richtext", "id": "title", "label": "Título · línea 1", "default": "De dónde sale TRRIBÚ." },
+    { "type": "inline_richtext", "id": "title_2", "label": "Título · línea 2" },
+    { "type": "richtext", "id": "text", "label": "Texto", "default": "<p>Texto.</p>" },
+    { "type": "checkbox", "id": "ink_last", "label": "Último párrafo en tinta", "default": false },
+    { "type": "checkbox", "id": "paper", "label": "Fondo crema", "default": false }
+  ],
+  "presets": [{ "name": "Nosotros · título + texto" }]
+}
+{% endschema %}

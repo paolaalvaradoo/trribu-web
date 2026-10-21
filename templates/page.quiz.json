@@ -1,0 +1,36 @@
+{
+  "sections": {
+    "main": {
+      "type": "qz-main",
+      "settings": {
+        "intro_kicker": "Para el pelo que está cambiando.",
+        "intro_title": "¿Qué le pasa a tu pelo?",
+        "intro_text": "<p>Ocho preguntas. Al final vas a entender qué está pasando con tu pelo hoy — y qué ritual le corresponde. Sin diagnósticos inventados: solo lo que tú misma observas, leído con criterio.</p>",
+        "start_label": "EMPEZAR",
+        "step_label": "PREGUNTA {i} DE {n}",
+        "back_label": "← Atrás",
+        "next_label": "CONTINUAR",
+        "next_last_label": "VER MI RITUAL",
+        "multi_hint": "Puedes elegir varias",
+        "result_eyebrow": "TU RESULTADO",
+        "signals_title": "SEÑALES QUE VAMOS A TRABAJAR",
+        "tools_eyebrow": "Y CÓMO LO TRATAS",
+        "tools_title": "La fórmula es la mitad.",
+        "tools_text": "Se puede quebrar una fibra reforzada si la secas a fricción y duermes sobre algodón. Según lo que nos contaste, estas te suman:",
+        "price_label": "{n} productos · ahorras {pct}% en kit",
+        "price_label_plain": "{n} productos",
+        "use_kits": true,
+        "add_label": "AÑADIR MI RITUAL",
+        "adjust_label": "AJUSTARLO",
+        "restart_label": "REPETIR EL TEST",
+        "show_capture": true,
+        "capture_title": "Guarda tu diagnóstico",
+        "capture_text": "Te lo enviamos por correo con la guía de uso de tu ritual — y te avisamos cuando abramos la venta.",
+        "email_placeholder": "tu@correo.com",
+        "send_label": "ENVIAR",
+        "config_override": ""
+      }
+    }
+  },
+  "order": ["main"]
+}

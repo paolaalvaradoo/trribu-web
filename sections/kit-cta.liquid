@@ -1,0 +1,32 @@
+{{ 'kit.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign t1 = '−' | append: settings.tier1_pct | append: '%'
+  assign t2 = '−' | append: settings.tier2_pct | append: '%'
+  assign text = section.settings.text | replace: '[t1_pct]', t1 | replace: '[t2_pct]', t2 | replace: '[t1_min]', settings.tier1_min | replace: '[t2_min]', settings.tier2_min
+  assign link = section.settings.button_url | default: settings.ritual_url
+-%}
+<section class="kit-sec kit-cta">
+  <div class="kit-cta__box">
+    <div>
+      <h3 class="kit-cta__title">{{ section.settings.title }}</h3>
+      {%- if text != blank -%}<p class="kit-cta__text">{{ text }}</p>{%- endif -%}
+    </div>
+    {%- if section.settings.button_label != blank -%}
+      <a href="{{ link }}" class="kit-cta__btn">{{ section.settings.button_label }}</a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Kits · Arma el tuyo",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Título", "default": "¿Prefieres elegir pieza por pieza?" },
+    { "type": "text", "id": "text", "label": "Texto", "default": "Arma el tuyo libre: más sumas, más ahorras — [t1_pct] desde [t1_min] ítems · [t2_pct] desde [t2_min].", "info": "[t1_pct] [t1_min] [t2_pct] [t2_min] se reemplazan por los tramos de Configuración del tema." },
+    { "type": "text", "id": "button_label", "label": "Botón", "default": "Arma el tuyo aquí" },
+    { "type": "url", "id": "button_url", "label": "Enlace del botón", "info": "Vacío: página Arma tu ritual de Configuración del tema." }
+  ],
+  "presets": [{ "name": "Kits · Arma el tuyo" }]
+}
+{% endschema %}

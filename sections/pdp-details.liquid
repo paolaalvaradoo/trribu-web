@@ -1,0 +1,116 @@
+{{ 'pdp.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  capture actives
+    render 'pdp-data', product: product, field: 'actives'
+  endcapture
+  capture inci
+    render 'pdp-data', product: product, field: 'inci'
+  endcapture
+  capture ritual_title
+    render 'pdp-data', product: product, field: 'ritual_title'
+  endcapture
+  capture steps
+    render 'pdp-data', product: product, field: 'steps'
+  endcapture
+  capture tip
+    render 'pdp-data', product: product, field: 'tip'
+  endcapture
+-%}
+<section class="pdp-det" style="{% render 'product-field', product: product, field: 'style' %}">
+  <div class="pdp-det__wrap">
+    <div>
+      <button type="button" class="pdp-det__head" aria-expanded="false" aria-controls="PdpDentro-{{ section.id }}" data-pdp-toggle>
+        <span>
+          <span class="pdp-eyebrow">{{ section.settings.inside_eyebrow }}</span>
+          <span class="pdp-h2">{{ section.settings.inside_title }}</span>
+        </span>
+        <span class="pdp-pm pdp-pm--lg" aria-hidden="true"></span>
+      </button>
+      <div class="pdp-collapse" id="PdpDentro-{{ section.id }}">
+        <div class="pdp-collapse__in">
+          <div class="pdp-det__actives">
+            {%- assign items = actives | split: '~~' -%}
+            {%- for it in items -%}
+              {%- assign f = it | split: '^^' -%}
+              <div class="pdp-det__active">
+                <span class="pdp-det__n">{{ f[0] }}</span>
+                <div>
+                  <div class="pdp-det__name">{{ f[1] }}</div>
+                  <div class="pdp-det__role">{{ f[3] }}</div>
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+      {%- if inci != blank -%}
+        <button type="button" class="pdp-det__inci-h" aria-expanded="false" aria-controls="PdpInci-{{ section.id }}" data-pdp-toggle>
+          <span>{{ section.settings.inci_label }}</span>
+          <span class="pdp-pm" aria-hidden="true"></span>
+        </button>
+        <div class="pdp-collapse" id="PdpInci-{{ section.id }}">
+          <div class="pdp-collapse__in">
+            <p class="pdp-det__inci">{{ inci | newline_to_br }}</p>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div>
+      <div class="pdp-eyebrow pdp-eyebrow--use">{{ section.settings.use_eyebrow }}</div>
+      <h2 class="pdp-h2 pdp-det__rtitle">{{ ritual_title }}</h2>
+      <div class="pdp-card pdp-card--steps">
+        {%- assign st = steps | split: '~~' -%}
+        {%- for s in st -%}
+          <div class="pdp-step">
+            <span class="pdp-step__n">{{ forloop.index }}</span>
+            <p>{{ s }}</p>
+          </div>
+        {%- endfor -%}
+        {%- if tip != blank -%}<div class="pdp-step__tip">{{ tip }}</div>{%- endif -%}
+      </div>
+      {%- assign free_blocks = section.blocks | where: 'type', 'free' -%}
+      {%- if free_blocks.size > 0 -%}
+        <div class="pdp-card pdp-card--sm">
+          <div class="pdp-card__label">{{ section.settings.free_label }}</div>
+          <div class="pdp-free">
+            {%- for block in free_blocks -%}<span {{ block.shopify_attributes }}>{{ block.settings.text }}</span>{%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+      {%- if section.settings.caution != blank -%}
+        <div class="pdp-card pdp-card--sm">
+          <div class="pdp-card__label">{{ section.settings.caution_label }}</div>
+          <p class="pdp-card__p">{{ section.settings.caution }}</p>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ficha · ingredientes",
+  "tag": "div",
+  "class": "pdp-sec",
+  "settings": [
+    { "type": "text", "id": "inside_eyebrow", "label": "Antetítulo ingredientes", "default": "TRRIBOND A LA VISTA" },
+    { "type": "text", "id": "inside_title", "label": "Título ingredientes", "default": "Qué hay dentro" },
+    { "type": "text", "id": "inci_label", "label": "Desplegable INCI", "default": "Ver todos los ingredientes (INCI)" },
+    { "type": "text", "id": "use_eyebrow", "label": "Antetítulo uso", "default": "CÓMO USARLO" },
+    { "type": "text", "id": "free_label", "label": "Libre de · título", "default": "FÓRMULA SIEMPRE LIBRE DE" },
+    { "type": "text", "id": "caution_label", "label": "Precauciones · título", "default": "PRECAUCIONES" },
+    { "type": "textarea", "id": "caution", "label": "Precauciones · texto", "default": "Uso externo. Evita el contacto con los ojos; si ocurre, enjuaga con agua. Si aparece irritación, suspende su uso. Mantén fuera del alcance de los niños." },
+    { "type": "paragraph", "content": "Activos, INCI, pasos y nota salen de los metafields trribu.actives, trribu.inci, trribu.ritual_title, trribu.how_to y trribu.tip de cada producto." }
+  ],
+  "blocks": [
+    {
+      "type": "free",
+      "name": "Libre de",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Ingrediente", "default": "sulfatos" }
+      ]
+    }
+  ]
+}
+{% endschema %}

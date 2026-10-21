@@ -1,0 +1,45 @@
+{{ 'pdp.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  capture loves
+    render 'pdp-data', product: product, field: 'loves'
+  endcapture
+  capture soft_bg
+    render 'pdp-data', product: product, field: 'soft_bg'
+  endcapture
+  assign img = product.metafields.trribu.loves_image.value | default: section.settings.image
+-%}
+{%- if loves != blank -%}
+<section class="pdp-loves">
+  <div class="pdp-loves__txt">
+    <div class="pdp-loves__in">
+      <div class="pdp-loves__eyebrow">{{ section.settings.eyebrow }}</div>
+      <div class="pdp-loves__list">
+        {%- assign items = loves | split: '~~' -%}
+        {%- for it in items -%}
+          {%- assign f = it | split: '^^' -%}
+          <div>
+            <div class="pdp-loves__t">{{ f[0] }}{% if f[2] == '1' %}<sup>6</sup>{% endif %}</div>
+            <div class="pdp-loves__s">{{ f[1] }}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+  <div class="pdp-loves__img">
+    {% render 'media', image: img, label: 'Foto editorial · pelo en detalle', sizes: '(max-width: 900px) 100vw, 50vw', bg: soft_bg %}
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Ficha · por qué la amamos",
+  "tag": "div",
+  "class": "pdp-sec",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "POR QUÉ LA AMAMOS" },
+    { "type": "image_picker", "id": "image", "label": "Foto editorial", "info": "Cada producto puede tener la suya en el metafield trribu.loves_image." },
+    { "type": "paragraph", "content": "Los textos salen del metafield trribu.loves de cada producto (o del prototipo si está vacío)." }
+  ]
+}
+{% endschema %}

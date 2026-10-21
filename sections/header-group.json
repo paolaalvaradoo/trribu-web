@@ -1,0 +1,9 @@
+{
+  "type": "header",
+  "name": "Grupo header",
+  "sections": {
+    "announcement": { "type": "announcement-bar", "settings": { "text": "Envío gratis en pedidos desde S/ 150", "link": "" } },
+    "header": { "type": "header", "settings": { "menu": "main-menu", "logo_height": 22, "cta_label": "Comprar" } }
+  },
+  "order": ["announcement", "header"]
+}

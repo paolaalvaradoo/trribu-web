@@ -1,0 +1,141 @@
+{{ 'col.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'col.js' | asset_url }}" defer></script>
+{%- comment -%}
+  Filtros + listado de productos de la colección.
+  Filtro por categoría en el navegador: cada producto lleva en data-cats las
+  categorías que coinciden con sus etiquetas (tags) — p. ej. `limpieza`,
+  `reparacion`, `sin-enjuague`. Si un producto no tiene ninguna, se usa su
+  handle (el-shampoo → limpieza; el-acondicionador / la-mascarilla →
+  reparacion; el-acondicionador-sin-enjuague → sin-enjuague).
+{%- endcomment -%}
+{%- liquid
+  assign keys = ' '
+  for block in section.blocks
+    if block.type == 'filter' and block.settings.link == blank
+      assign k = block.settings.category | handleize
+      if k != blank and k != 'todo'
+        assign keys = keys | append: k | append: ' '
+      endif
+    endif
+  endfor
+-%}
+<div class="col-list" data-col-list>
+  {%- if section.blocks.size > 0 -%}
+    <section class="col-filters" aria-label="{{ section.settings.filters_label | escape }}">
+      <div class="col-filters__row">
+        {%- assign first_on = false -%}
+        {%- for block in section.blocks -%}
+          {%- assign k = block.settings.category | handleize | default: 'todo' -%}
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}" class="col-chip" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
+          {%- else -%}
+            {%- liquid
+              assign on = false
+              if first_on == false and k == 'todo'
+                assign on = true
+                assign first_on = true
+              endif
+            -%}
+            <button type="button" class="col-chip{% if on %} is-on{% endif %}" data-col-filter="{{ k }}" aria-pressed="{{ on }}" {{ block.shopify_attributes }}>{{ block.settings.label }}</button>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  <section class="col-grid-sec" data-f="todo">
+    {%- paginate collection.products by 24 -%}
+      {%- if collection.products.size > 0 -%}
+        <div class="col-grid" data-col-grid>
+          {%- for p in collection.products -%}
+            {%- liquid
+              assign tagstr = ' '
+              for tag in p.tags
+                assign t = tag | handleize
+                assign tagstr = tagstr | append: t | append: ' '
+              endfor
+              assign cats = ''
+              assign klist = keys | strip | split: ' '
+              for k in klist
+                assign needle = ' ' | append: k | append: ' '
+                if tagstr contains needle
+                  assign cats = cats | append: k | append: ' '
+                endif
+              endfor
+              if cats == blank
+                case p.handle
+                  when 'el-shampoo', 'shampoo'
+                    assign cats = 'limpieza'
+                  when 'el-acondicionador', 'acondicionador', 'la-mascarilla', 'mascarilla'
+                    assign cats = 'reparacion'
+                  when 'el-acondicionador-sin-enjuague', 'acondicionador-sin-enjuague', 'sin-enjuague'
+                    assign cats = 'sin-enjuague sinenjuague'
+                endcase
+              endif
+            -%}
+            {% render 'col-card', product: p, cats: cats, button_label: section.settings.button_label, added_label: section.settings.added_label, sold_out_label: section.settings.sold_out_label %}
+          {%- endfor -%}
+        </div>
+        <p class="col-grid__none" data-col-none hidden>{{ section.settings.filter_empty }}</p>
+
+        {%- if paginate.pages > 1 -%}
+          <nav class="col-pag" aria-label="{{ section.settings.pagination_label | escape }}">
+            {%- if paginate.previous -%}<a class="col-pag__a" href="{{ paginate.previous.url }}" aria-label="Anterior">←</a>{%- endif -%}
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}
+                <a class="col-pag__a" href="{{ part.url }}">{{ part.title }}</a>
+              {%- elsif part.title == paginate.current_page -%}
+                <span class="col-pag__a is-on" aria-current="page">{{ part.title }}</span>
+              {%- else -%}
+                <span class="col-pag__a">{{ part.title }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if paginate.next -%}<a class="col-pag__a" href="{{ paginate.next.url }}" aria-label="Siguiente">→</a>{%- endif -%}
+          </nav>
+        {%- endif -%}
+      {%- else -%}
+        <div class="col-empty">
+          <h2 class="col-empty__title">{{ section.settings.empty_heading }}</h2>
+          {%- if section.settings.empty_text != blank -%}<p class="col-empty__text">{{ section.settings.empty_text }}</p>{%- endif -%}
+          {%- if section.settings.empty_label != blank -%}
+            <a class="col-empty__btn" href="{{ section.settings.empty_link | default: routes.all_products_collection_url }}">{{ section.settings.empty_label }}</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Productos · listado",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "header", "content": "Tarjetas" },
+    { "type": "text", "id": "button_label", "label": "Botón añadir", "default": "AÑADIR AL CARRITO" },
+    { "type": "text", "id": "added_label", "label": "Botón tras añadir", "default": "AÑADIDO ✓" },
+    { "type": "text", "id": "sold_out_label", "label": "Botón sin stock", "default": "AGOTADO" },
+    { "type": "header", "content": "Filtros" },
+    { "type": "paragraph", "content": "Cada filtro muestra los productos cuya etiqueta (tag) coincide con su categoría, p. ej. limpieza, reparacion, sin-enjuague. El primer filtro sin enlace (TODO, categoría vacía) muestra todo. Un filtro con enlace lleva a otra página." },
+    { "type": "text", "id": "filters_label", "label": "Nombre accesible de los filtros", "default": "Filtrar productos" },
+    { "type": "text", "id": "filter_empty", "label": "Texto si un filtro no tiene productos", "default": "No hay productos en esta categoría por ahora." },
+    { "type": "text", "id": "pagination_label", "label": "Nombre accesible de la paginación", "default": "Páginas" },
+    { "type": "header", "content": "Colección vacía" },
+    { "type": "text", "id": "empty_heading", "label": "Título", "default": "Aún no hay productos aquí." },
+    { "type": "textarea", "id": "empty_text", "label": "Texto", "default": "Estamos preparando esta colección. Mientras tanto, mira las cuatro fórmulas del sistema." },
+    { "type": "text", "id": "empty_label", "label": "Botón", "default": "VER TODOS LOS PRODUCTOS" },
+    { "type": "url", "id": "empty_link", "label": "Enlace del botón", "default": "/collections/all" }
+  ],
+  "blocks": [
+    {
+      "type": "filter",
+      "name": "Filtro",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Texto", "default": "LIMPIEZA" },
+        { "type": "text", "id": "category", "label": "Categoría (etiqueta de producto)", "info": "Ej.: limpieza, reparacion, sin-enjuague. Vacío o \"todo\" = mostrar todo." },
+        { "type": "url", "id": "link", "label": "Enlace", "info": "Si lo llenas, el filtro lleva a esa página en vez de filtrar (p. ej. Kits, Herramientas)." }
+      ]
+    }
+  ]
+}
+{% endschema %}

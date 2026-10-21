@@ -1,0 +1,51 @@
+{%- comment -%}
+  Envase dibujado en CSS (tapa blanca, etiqueta beige, cuadro de color),
+  igual que en el prototipo. Se usa mientras no haya foto de producto.
+  Uso: {% render 'bottle', product: p, size: 'sm' %}   size: sm (tarjetas) | lg (ficha)
+  Forma: metafield trribu.shape (bottle | tall | jar) o, si falta, según el handle.
+{%- endcomment -%}
+{%- liquid
+  assign shape = product.metafields.trribu.shape.value
+  if shape == blank
+    case product.handle
+      when 'la-mascarilla', 'mascarilla'
+        assign shape = 'jar'
+      when 'el-acondicionador-sin-enjuague', 'acondicionador-sin-enjuague', 'sin-enjuague'
+        assign shape = 'tall'
+      when 'el-shampoo', 'shampoo', 'el-acondicionador', 'acondicionador'
+        assign shape = 'bottle'
+      else
+        assign shape = 'none'
+    endcase
+  endif
+  assign sz = size | default: 'sm'
+-%}
+{%- capture color -%}{%- render 'product-field', product: product, field: 'color' -%}{%- endcapture -%}
+{%- capture num -%}{%- render 'product-field', product: product, field: 'number' -%}{%- endcapture -%}
+{%- if shape == 'none' -%}
+  {%- comment -%} Herramientas, kits u otros: sin envase dibujado, solo el nombre en el editor. {%- endcomment -%}
+  {%- if request.design_mode -%}<div class="media__ph media__ph--editor" style="position:absolute;inset:0">{{ product.title }} · foto de producto</div>{%- endif -%}
+{%- else -%}
+<div class="btl btl--{{ shape }} btl--{{ sz }}" style="--btl-c:{{ color }}" aria-hidden="true">
+  <div class="btl__cap">{%- if shape == 'jar' and sz == 'sm' -%}<span class="btl__caplogo">{% render 'wordmark', height: 10 %}</span>{%- endif -%}</div>
+  {%- unless shape == 'jar' -%}<div class="btl__collar"></div>{%- endunless -%}
+  <div class="btl__body">
+    {%- if sz == 'sm' -%}
+      <div class="btl__sq"></div>
+      {%- unless shape == 'jar' -%}<div class="btl__logo">{% render 'wordmark', height: 10 %}</div>{%- endunless -%}
+      <div class="btl__name">{{ product.title }}</div>
+    {%- else -%}
+      {%- unless shape == 'jar' -%}
+        <div class="btl__top">{% render 'wordmark', height: 24 %}<div class="btl__sub">SISTEMA REPARADOR</div></div>
+      {%- endunless -%}
+      <div class="btl__label">
+        <div class="btl__badge">{{ num }}</div>
+        <div class="btl__lname">{{ product.title }}</div>
+        <div class="btl__verbs">{%- render 'product-field', product: product, field: 'verbs' -%}</div>
+        <div class="btl__ml">{%- render 'product-field', product: product, field: 'size' -%}</div>
+      </div>
+    {%- endif -%}
+    <div class="btl__shine"></div>
+  </div>
+</div>
+{%- endif -%}

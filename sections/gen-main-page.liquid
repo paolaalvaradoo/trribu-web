@@ -1,0 +1,16 @@
+{{ 'gen.css' | asset_url | stylesheet_tag }}
+<section class="sec">
+  <div class="wrap wrap--820">
+    <header class="gen-head">
+      <h1 class="h2">{{ page.title }}</h1>
+    </header>
+    <div class="rte gen-rte">{{ page.content }}</div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Página · contenido",
+  "tag": "div"
+}
+{% endschema %}

@@ -1,0 +1,57 @@
+{{ 'hm.css' | asset_url | stylesheet_tag }}
+<div class="hm-split hm-split--system">
+  <div class="hm-split__media">
+    {% render 'media', image: section.settings.image, label: 'Foto de textura · detalle de pelo · sin rostro', sizes: '(max-width: 900px) 100vw, 52vw', class: 'hm-fill' %}
+  </div>
+  <div class="hm-split__text bg-paper-2">
+    <div class="hm-split__inner">
+      {%- if section.settings.eyebrow != blank -%}<div class="eyebrow">{{ section.settings.eyebrow }}</div>{%- endif -%}
+      <h2 class="h2 hm-split__title">{{ section.settings.heading }}</h2>
+      {%- if section.settings.lede != blank -%}<p class="lede-serif hm-split__lede">{{ section.settings.lede }}</p>{%- endif -%}
+      {%- if section.settings.body != blank -%}<div class="hm-split__body">{{ section.settings.body }}</div>{%- endif -%}
+      {%- if section.blocks.size > 0 -%}
+        <div class="hm-split__tags">
+          {%- for block in section.blocks -%}<span class="tag-ac" {{ block.shopify_attributes }}>{{ block.settings.text }}</span>{%- endfor -%}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.note != blank -%}<p class="hm-split__note">{{ section.settings.note }}</p>{%- endif -%}
+      <div class="hm-split__links">
+        {%- if section.settings.link1_label != blank -%}<a href="{{ section.settings.link1_url | default: '/pages/sintomas' }}" class="txt-link">{{ section.settings.link1_label }}</a>{%- endif -%}
+        {%- if section.settings.link2_label != blank -%}<a href="{{ section.settings.link2_url | default: '/pages/sistema' }}" class="txt-link">{{ section.settings.link2_label }}</a>{%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Split · El Sistema",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Foto", "info": "Textura · detalle de pelo · sin rostro." },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "El Sistema" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "No es un producto." },
+    { "type": "text", "id": "lede", "label": "Frase en cursiva", "default": "Es un sistema." },
+    { "type": "richtext", "id": "body", "label": "Texto", "default": "<p>La mayoría de las marcas formulan para un problema aislado. TRRIBÚ no. Formula para el pelo que está cambiando.</p>" },
+    { "type": "text", "id": "note", "label": "Frase bajo las señales", "default": "TRRIBOND vive en cada paso del ritual." },
+    { "type": "header", "content": "Enlaces" },
+    { "type": "text", "id": "link1_label", "label": "Enlace 1 · texto", "default": "Ver las 10 señales" },
+    { "type": "url", "id": "link1_url", "label": "Enlace 1 · URL" },
+    { "type": "text", "id": "link2_label", "label": "Enlace 2 · texto", "default": "Conoce el sistema" },
+    { "type": "url", "id": "link2_url", "label": "Enlace 2 · URL" }
+  ],
+  "blocks": [
+    { "type": "tag", "name": "Señal", "settings": [ { "type": "text", "id": "text", "label": "Texto", "default": "Más frizz" } ] }
+  ],
+  "presets": [
+    {
+      "name": "Split · El Sistema",
+      "blocks": [
+        { "type": "tag", "settings": { "text": "Más frizz" } },
+        { "type": "tag", "settings": { "text": "Más sequedad" } },
+        { "type": "tag", "settings": { "text": "Menos cuerpo" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

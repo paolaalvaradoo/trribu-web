@@ -1,0 +1,63 @@
+{{ 'tr.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'tr.js' | asset_url }}" defer></script>
+<div class="tr-faq">
+  <div class="wrap tr-w900 tr-faq__inner">
+    <div class="tr-faq__head">
+      {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="tr-h2">{{ section.settings.heading }}</h2>
+    </div>
+    <div class="tr-acc tr-acc--faq" data-tr-acc>
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign open = false
+          if forloop.first and section.settings.first_open
+            assign open = true
+          endif
+          assign n = forloop.index | prepend: '0' | slice: -2, 2
+          if forloop.index > 99
+            assign n = forloop.index
+          endif
+        -%}
+        <div class="tr-acc__item{% if open %} is-open{% endif %}" data-tr-acc-item {{ block.shopify_attributes }}>
+          <button type="button" class="tr-acc__head" data-tr-acc-btn aria-expanded="{{ open }}" aria-controls="TrFaq-{{ block.id }}">
+            <span class="tr-acc__num">{{ n }}</span>
+            <span class="tr-acc__title">{{ block.settings.question }}</span>
+            <span class="tr-acc__icon" aria-hidden="true"></span>
+          </button>
+          <div class="tr-acc__panel" id="TrFaq-{{ block.id }}" data-tr-acc-panel{% unless open %} inert{% endunless %}>
+            <div class="tr-acc__body">
+              <span class="tr-acc__spacer"></span>
+              <div class="tr-acc__content">
+                <div class="tr-faq__a">{{ block.settings.answer }}</div>
+                {%- if block.settings.note != blank -%}<p class="tr-faq__note">{{ block.settings.note }}</p>{%- endif -%}
+              </div>
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Transparencia · Preguntas",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "PREGUNTAS FRECUENTES" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Lo que más nos preguntan." },
+    { "type": "checkbox", "id": "first_open", "label": "Primera pregunta abierta al cargar", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Pregunta",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Pregunta", "default": "¿Cómo sé que lo que dicen es cierto?" },
+        { "type": "richtext", "id": "answer", "label": "Respuesta", "default": "<p>Cada producto publica su INCI completo, sin abreviar y en orden de concentración. Puedes tomar esa lista y verificarla contra cualquiera de las exclusiones de esta página. Ese es el punto.</p>" },
+        { "type": "textarea", "id": "note", "label": "Nota (opcional)" }
+      ]
+    }
+  ]
+}
+{% endschema %}

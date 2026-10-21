@@ -1,0 +1,105 @@
+{
+  "sections": {
+    "main": {
+      "type": "faq-main",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "category": "",
+            "question": "¿De verdad un solo sistema atiende todas las señales?",
+            "answer": "<p>Sí. Trabajamos la fibra del pelo en cada paso, no un problema aislado. Por eso es un sistema, no un producto estrella: cada fórmula lleva TRRIBOND y cubre su parte de las señales de la transición.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "category": "",
+            "question": "¿Puedo usarlo si estoy o estuve en tratamiento oncológico?",
+            "answer": "<p>Formulamos con criterio de precaución: excluimos ingredientes clasificados como carcinógenos por IARC, FDA, EMA y EWG, además de disruptores endocrinos, fragancias sintéticas, siliconas, parabenos y fenoxietanol. No es una afirmación médica: comparte nuestra lista de ingredientes (INCI) con tu médico antes de usarlo.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "category": "",
+            "question": "¿Qué significa que no tenga hormonas ni fitoestrógenos añadidos?",
+            "answer": "<p>Que formulamos sin disruptores endocrinos ni fitoestrógenos añadidos. No hacemos nada hormonal — simplemente dejamos fuera lo que podría interferir con tu equilibrio.</p>"
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "category": "",
+            "question": "¿Es para todo tipo de pelo, incluso rizado?",
+            "answer": "<p>Sí, sin importar la forma del rizo. El sistema trabaja la fibra en cualquier tipo de pelo que esté cambiando.</p>"
+          }
+        },
+        "q5": {
+          "type": "question",
+          "settings": {
+            "category": "",
+            "question": "¿Sirve si me tiño o tengo canas?",
+            "answer": "<p>Sí, es color-safe. Cuidamos y protegemos tu color — no lo cubrimos ni lo tratamos. El pelo con canas es más poroso, y el sistema ayuda a que el color se apague más lento.</p>"
+          }
+        },
+        "q6": {
+          "type": "question",
+          "settings": {
+            "category": "",
+            "question": "¿TRRIBÚ hace crecer el pelo, o el romero ayuda con la caída?",
+            "answer": "<p>No. TRRIBÚ es cosmética capilar: no promete crecimiento ni actúa sobre el folículo. Solo trabajamos la caída por quiebre, la que nace en la fibra. El romero está por su acción antioxidante, no como anticaída.</p>"
+          }
+        },
+        "q7": {
+          "type": "question",
+          "settings": {
+            "category": "",
+            "question": "¿Necesito los 4 productos?",
+            "answer": "<p>Funciona mejor como sistema completo, pero puedes empezar por el dúo (Shampoo + Acondicionador) e ir sumando el Crema y la Mascarilla.</p>"
+          }
+        },
+        "q8": {
+          "type": "question",
+          "settings": {
+            "category": "",
+            "question": "¿En cuánto tiempo veo resultados?",
+            "answer": "<p>El desenredo y el control de frizz se perciben desde el primer uso; el refuerzo de la fibra es progresivo con el uso continuo del sistema.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6",
+        "q7",
+        "q8"
+      ],
+      "settings": {
+        "eyebrow": "Preguntas frecuentes",
+        "title": "Lo que más <strong>nos preguntan</strong>",
+        "lede": "Sin rodeos y sin promesas que no podamos cumplir. Si te queda una duda, escríbenos.",
+        "open_first": true,
+        "all_label": "Todas",
+        "schema_markup": true
+      }
+    },
+    "cta": {
+      "type": "faq-cta",
+      "settings": {
+        "title": "¿Otra duda? Escríbenos y te <strong>contamos con transparencia.</strong>",
+        "btn1_label": "Ver Transparencia",
+        "btn1_link": "/pages/transparencia",
+        "btn2_label": "Conoce el estudio",
+        "btn2_link": "/pages/estudio"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "cta"
+  ]
+}

@@ -1,0 +1,34 @@
+{{ 'gen.css' | asset_url | stylesheet_tag }}
+<section class="sec">
+  <div class="wrap wrap--1320">
+    <header class="gen-head">
+      {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h1 class="h2">{{ section.settings.title }}</h1>
+    </header>
+    <div class="gen-cols">
+      {%- for collection in collections -%}
+        {%- if collection.all_products_count > 0 -%}
+          {%- assign img = collection.featured_image | default: collection.products.first.featured_media.preview_image -%}
+          <a href="{{ collection.url }}" class="gen-col">
+            <div class="gen-col__shot">
+              {% render 'media', image: img, label: collection.title, sizes: '(max-width: 900px) 100vw, 33vw' %}
+            </div>
+            <div class="gen-col__name">{{ collection.title }}</div>
+            <div class="gen-col__count">{{ collection.all_products_count }} {% if collection.all_products_count == 1 %}producto{% else %}productos{% endif %}</div>
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lista de colecciones",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Colecciones" },
+    { "type": "text", "id": "title", "label": "Título", "default": "Todo TRRIBÚ" }
+  ]
+}
+{% endschema %}

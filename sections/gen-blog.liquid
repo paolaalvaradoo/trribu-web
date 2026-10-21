@@ -1,0 +1,52 @@
+{{ 'gen.css' | asset_url | stylesheet_tag }}
+{%- paginate blog.articles by section.settings.per_page -%}
+<section class="sec">
+  <div class="wrap wrap--1240">
+    <header class="gen-head">
+      {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h1 class="h2">{{ blog.title }}{% if current_tags %} · <span class="serif-i">{{ current_tags | join: ', ' }}</span>{% endif %}</h1>
+    </header>
+
+    {%- if section.settings.show_tags and blog.all_tags.size > 0 -%}
+      <nav class="gen-tags" aria-label="Temas">
+        <a href="{{ blog.url }}" class="pill{% unless current_tags %} is-on{% endunless %}">Todo</a>
+        {%- for tag in blog.all_tags -%}
+          <a href="{{ blog.url }}/tagged/{{ tag | handleize }}" class="pill{% if current_tags contains tag %} is-on{% endif %}">{{ tag }}</a>
+        {%- endfor -%}
+      </nav>
+    {%- endif -%}
+
+    {%- if blog.articles_count == 0 -%}
+      <p class="body center">Pronto publicaremos aquí.</p>
+    {%- else -%}
+      <div class="gen-posts">
+        {%- for article in blog.articles -%}
+          <a href="{{ article.url }}" class="gen-post">
+            {%- if section.settings.show_image -%}
+              <div class="gen-post__shot">{% render 'media', image: article.image, label: 'Foto del artículo', sizes: '(max-width: 900px) 100vw, 33vw' %}</div>
+            {%- endif -%}
+            <div class="gen-post__meta">{{ article.published_at | date: format: 'date' }}</div>
+            <h2 class="gen-post__title">{{ article.title }}</h2>
+            {%- assign ex = article.excerpt | default: article.content | strip_html | truncatewords: 24 -%}
+            {%- if ex != blank -%}<p class="gen-post__ex">{{ ex | strip_html }}</p>{%- endif -%}
+          </a>
+        {%- endfor -%}
+      </div>
+      {% render 'gen-pagination', paginate: paginate %}
+    {%- endif -%}
+  </div>
+</section>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Blog",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Diario TRRIBÚ" },
+    { "type": "checkbox", "id": "show_tags", "label": "Mostrar filtros por tema", "default": true },
+    { "type": "checkbox", "id": "show_image", "label": "Mostrar imágenes", "default": true },
+    { "type": "range", "id": "per_page", "label": "Artículos por página", "min": 3, "max": 24, "step": 3, "default": 9 }
+  ]
+}
+{% endschema %}

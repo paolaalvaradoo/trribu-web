@@ -1,0 +1,14 @@
+{{ 'sis.css' | asset_url | stylesheet_tag }}
+<section class="sis-photo">
+  {% render 'media', image: section.settings.image, label: section.settings.label, sizes: '100vw' %}
+</section>
+
+{% schema %}
+{
+  "name": "Sistema · Foto a sangre",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Foto" },
+    { "type": "text", "id": "label", "label": "Indicación (solo editor)", "default": "Foto a sangre · detalle de pelo en luz natural · sin rostro" }
+  ]
+}
+{% endschema %}

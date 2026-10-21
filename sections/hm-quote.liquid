@@ -1,0 +1,30 @@
+{{ 'hm.css' | asset_url | stylesheet_tag }}
+<div class="hm-bleed hm-quote">
+  {% render 'media', image: section.settings.image, label: 'Foto a sangre · retrato o detalle, tono cálido', sizes: '100vw', bg: '#DED8D0' %}
+  <div class="hm-bleed__overlay" style="background:rgba(20,18,15,{{ section.settings.overlay | divided_by: 100.0 }})"></div>
+  <div class="hm-bleed__center">
+    <div class="hm-quote__inner">
+      {%- if section.settings.eyebrow != blank -%}<div class="eyebrow hm-quote__eyebrow">{{ section.settings.eyebrow }}</div>{%- endif -%}
+      <p class="hm-quote__text">{{ section.settings.quote }}</p>
+      {%- if section.settings.btn_label != blank -%}
+        <a href="{{ section.settings.btn_url | default: '/pages/sintomas' }}" class="btn btn--ghost-light hm-quote__btn">{{ section.settings.btn_label }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Cita a sangre",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Foto a sangre", "info": "Retrato o detalle, tono cálido." },
+    { "type": "range", "id": "overlay", "label": "Oscurecer foto", "min": 0, "max": 90, "step": 2, "unit": "%", "default": 54 },
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Para mujeres de 40+" },
+    { "type": "textarea", "id": "quote", "label": "Cita", "default": "Tu pelo está cambiando. Y no es tu imaginación." },
+    { "type": "text", "id": "btn_label", "label": "Botón · texto", "default": "Ver las 10 señales" },
+    { "type": "url", "id": "btn_url", "label": "Botón · enlace" }
+  ],
+  "presets": [{ "name": "Cita a sangre" }]
+}
+{% endschema %}

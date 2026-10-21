@@ -1,0 +1,54 @@
+{{ 'pdp.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  if section.settings.products != blank
+    assign handles = section.settings.products | map: 'handle'
+  else
+    assign handles = 'el-shampoo,el-acondicionador,la-mascarilla,el-acondicionador-sin-enjuague' | split: ','
+  endif
+-%}
+<section class="pdp-rel">
+  <div class="pdp-rel__head">
+    <div class="pdp-eyebrow">{{ section.settings.eyebrow }}</div>
+    <h2 class="pdp-rel__title">{{ section.settings.heading }} <span>{{ section.settings.heading_em }}</span></h2>
+  </div>
+  <div class="pdp-rel__grid">
+    {%- for h in handles -%}
+      {%- assign p = all_products[h] -%}
+      {%- if p == blank or p.id == blank -%}{%- continue -%}{%- endif -%}
+      {%- capture soft -%}{%- render 'pdp-data', product: p, field: 'soft_bg' -%}{%- endcapture -%}
+      {%- capture short -%}{%- render 'pdp-data', product: p, field: 'short' -%}{%- endcapture -%}
+      {%- capture c -%}{%- render 'product-field', product: p, field: 'color' -%}{%- endcapture -%}
+      <a href="{{ p.url }}" class="pdp-rel__card thumb"{% if p.id == product.id %} aria-current="page"{% endif %}>
+        <div class="pdp-rel__shot" style="background:{{ soft }}">
+          {%- if section.settings.show_images and p.featured_media -%}
+            {{ p.featured_media | image_url: width: 600 | image_tag: widths: '300, 450, 600', sizes: '(max-width: 900px) 50vw, 280px', loading: 'lazy', alt: p.title | escape }}
+          {%- else -%}
+            <div class="pdp-rel__short" style="color:{{ c }}">{{ short }}</div>
+          {%- endif -%}
+        </div>
+        <div class="pdp-rel__name">{{ p.title }}</div>
+        <div class="pdp-rel__price">{{ p.selected_or_first_available_variant.price | money_without_trailing_zeros }}</div>
+      </a>
+    {%- endfor -%}
+  </div>
+  {%- if section.settings.button_label != blank -%}
+    <div class="pdp-rel__cta"><a href="{{ section.settings.button_url | default: '/pages/kits' }}" class="pdp-rel__btn btn-add">{{ section.settings.button_label }}</a></div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Ficha · completa ritual",
+  "tag": "div",
+  "class": "pdp-sec",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "COMPLETA TU RITUAL" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Funciona mejor en" },
+    { "type": "text", "id": "heading_em", "label": "Título · palabra destacada", "default": "sistema" },
+    { "type": "product_list", "id": "products", "label": "Productos", "limit": 8, "info": "Vacío: el cuarteto." },
+    { "type": "checkbox", "id": "show_images", "label": "Usar la foto del producto si existe", "default": false },
+    { "type": "text", "id": "button_label", "label": "Botón · texto", "default": "Llévalo en kit" },
+    { "type": "text", "id": "button_url", "label": "Botón · URL", "default": "/pages/kits" }
+  ]
+}
+{% endschema %}

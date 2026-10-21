@@ -1,0 +1,146 @@
+{
+  "sections": {
+    "hero": {
+      "type": "est-hero",
+      "settings": {
+        "eyebrow": "NUESTRO ESTUDIO",
+        "title": "No inventamos los números.",
+        "title_strong": "Te decimos cómo los medimos.",
+        "lede": "Nuestros claims salen de un estudio de autopercepción con mujeres reales de nuestra comunidad — no de un laboratorio que nunca vieron."
+      }
+    },
+    "define": {
+      "type": "est-define",
+      "settings": {},
+      "blocks": {
+        "card_1": {
+          "type": "card",
+          "settings": {
+            "label": "QUÉ ES",
+            "label_color": "#3E7A54",
+            "text": "<p>Un estudio de autopercepción: mujeres de 40+ prueban el sistema TRRIBÚ y responden encuestas. Medimos lo que <strong>ellas sienten</strong> en su propio pelo, en su rutina real.</p>"
+          }
+        },
+        "card_2": {
+          "type": "card",
+          "settings": {
+            "label": "QUÉ NO ES",
+            "label_color": "#191813",
+            "text": "<p>No es un ensayo de laboratorio in vitro ni una medición con máquinas. No te damos un dato clínico: te decimos lo que las mujeres percibieron.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "card_1",
+        "card_2"
+      ]
+    },
+    "moments": {
+      "type": "est-moments",
+      "settings": {
+        "eyebrow": "LOS 3 MOMENTOS",
+        "heading": "Qué medimos, y cuándo"
+      },
+      "blocks": {
+        "moment_1": {
+          "type": "moment",
+          "settings": {
+            "label": "PRIMER USO",
+            "when": "Tras el 1.er lavado",
+            "items": "Suavidad\nDesenredo\nFrizz"
+          }
+        },
+        "moment_2": {
+          "type": "moment",
+          "settings": {
+            "label": "1 SEMANA",
+            "when": "A los 7 días",
+            "items": "Hidratación\nBrillo\nCuerpo\nManejabilidad"
+          }
+        },
+        "moment_3": {
+          "type": "moment",
+          "settings": {
+            "label": "4 SEMANAS",
+            "when": "A los 28 días",
+            "items": "Menos quiebre\nPorosidad\nSuavidad sostenida"
+          }
+        }
+      },
+      "block_order": [
+        "moment_1",
+        "moment_2",
+        "moment_3"
+      ]
+    },
+    "results": {
+      "type": "est-results",
+      "settings": {
+        "eyebrow": "RESULTADOS",
+        "heading": "Lo que ellas",
+        "heading_strong": "notaron",
+        "foot": "Estudio de autopercepción, N mujeres 40+, tras X semanas de uso del sistema TRRIBÚ. Cifras pendientes de panel."
+      },
+      "blocks": {
+        "moment_1": {
+          "type": "moment",
+          "settings": {
+            "label": "PRIMER USO",
+            "stat_1_value": "—%",
+            "stat_1_label": "notó su pelo más suave",
+            "stat_2_value": "—%",
+            "stat_2_label": "lo sintió más sedoso",
+            "stat_3_value": "—%",
+            "stat_3_label": "percibió menos frizz"
+          }
+        },
+        "moment_2": {
+          "type": "moment",
+          "settings": {
+            "label": "A LA SEMANA",
+            "stat_1_value": "—%",
+            "stat_1_label": "lo notó más manejable",
+            "stat_2_value": "—%",
+            "stat_2_label": "percibió más brillo",
+            "stat_3_value": "—%",
+            "stat_3_label": "sintió más cuerpo"
+          }
+        },
+        "moment_3": {
+          "type": "moment",
+          "settings": {
+            "label": "A LAS 4 SEMANAS",
+            "stat_1_value": "—%",
+            "stat_1_label": "notó menos quiebre",
+            "stat_2_value": "—%",
+            "stat_2_label": "vio las puntas más selladas",
+            "stat_3_value": "—%",
+            "stat_3_label": "notó que la suavidad se mantiene"
+          }
+        }
+      },
+      "block_order": [
+        "moment_1",
+        "moment_2",
+        "moment_3"
+      ]
+    },
+    "method": {
+      "type": "est-method",
+      "settings": {
+        "method_label": "CÓMO SACAMOS EL %",
+        "method_text": "<p>Sumamos las respuestas <strong>\"Muy de acuerdo\" + \"De acuerdo\"</strong> y las dividimos entre el total, por cien. Sin redondeos hacia arriba.</p>",
+        "formula": "(Muy de acuerdo + De acuerdo) ÷ total × 100",
+        "note_label": "NUESTRA NOTA DE HONESTIDAD",
+        "note_text": "<p>Percepción, no laboratorio: te decimos lo que las mujeres notaron, no lo que una máquina midió. Cuando tengamos data de laboratorio, también te la mostraremos.</p>"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "define",
+    "moments",
+    "results",
+    "method"
+  ]
+}

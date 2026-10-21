@@ -1,0 +1,248 @@
+{{ 'qz.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'qz.js' | asset_url }}" defer></script>
+{%- liquid
+  assign product_handles = 'el-shampoo,el-acondicionador,la-mascarilla,el-acondicionador-sin-enjuague' | split: ','
+  assign tool_handles = 'el-peine,la-toalla,el-gorro,las-pinzas' | split: ','
+  assign kit_handles = 'el-duo,kit-esencial,el-kit-completo' | split: ','
+  assign all_handles = product_handles | concat: tool_handles | concat: kit_handles
+-%}
+<div class="qz" data-qz>
+  <div class="qz__bar" data-qz-bar role="progressbar" aria-label="{{ section.settings.progress_label | escape }}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+    <div class="qz__fill" data-qz-fill></div>
+  </div>
+
+  {%- comment -%} INTRO {%- endcomment -%}
+  <section class="qz__intro" data-qz-stage="intro">
+    <div class="qz__intro-in">
+      {%- if section.settings.intro_kicker != blank -%}<div class="qz__kicker">{{ section.settings.intro_kicker }}</div>{%- endif -%}
+      <h1 class="qz__h1">{{ section.settings.intro_title }}</h1>
+      <div class="qz__lede">{{ section.settings.intro_text }}</div>
+      <button type="button" class="btn btn--solid qz__start" data-qz-start>{{ section.settings.start_label }}</button>
+      <p class="qz__resume" data-qz-resume hidden>
+        {{ section.settings.resume_text }}
+        <button type="button" class="qz__linkbtn" data-qz-show-last>{{ section.settings.resume_label }}</button>
+      </p>
+    </div>
+  </section>
+
+  {%- comment -%} PREGUNTA {%- endcomment -%}
+  <section class="qz__quiz" data-qz-stage="quiz" hidden>
+    <div class="qz__quiz-in">
+      <div class="qz__top">
+        <span class="qz__step" data-qz-step></span>
+        <button type="button" class="qz__back" data-qz-back>{{ section.settings.back_label }}</button>
+      </div>
+      <h2 class="qz__q" id="QzTitle-{{ section.id }}" data-qz-title tabindex="-1"></h2>
+      <p class="qz__help" data-qz-help></p>
+      <div class="qz__opts" data-qz-opts aria-labelledby="QzTitle-{{ section.id }}"></div>
+      <div class="qz__foot">
+        <button type="button" class="qz__next" data-qz-next aria-disabled="true"></button>
+        <span class="qz__hint" data-qz-hint>{{ section.settings.multi_hint }}</span>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} RESULTADO {%- endcomment -%}
+  <section class="qz__result" data-qz-stage="result" hidden>
+    <div class="qz__result-in">
+      <div class="qz__rhead">
+        <div class="eyebrow qz__eyebrow">{{ section.settings.result_eyebrow }}</div>
+        <h2 class="qz__rtitle" data-qz-r-title tabindex="-1"></h2>
+        <p class="qz__rsub" data-qz-r-sub></p>
+        <p class="qz__rbody" data-qz-r-body></p>
+      </div>
+
+      <div class="qz__signals-wrap">
+        <div class="qz__label">{{ section.settings.signals_title }}</div>
+        <ul class="qz__signals" data-qz-r-signals></ul>
+      </div>
+
+      <div class="qz__pgrid" data-qz-r-products></div>
+
+      <div class="qz__tools" data-qz-r-toolswrap>
+        <div class="qz__thead">
+          <div class="eyebrow qz__eyebrow qz__eyebrow--sm">{{ section.settings.tools_eyebrow }}</div>
+          <h3 class="qz__ttitle">{{ section.settings.tools_title }}</h3>
+          <p class="qz__ttext">{{ section.settings.tools_text }}</p>
+        </div>
+        <div class="qz__tgrid" data-qz-r-tools></div>
+      </div>
+
+      <div class="qz__buy">
+        <div>
+          <div class="qz__plabel" data-qz-r-label></div>
+          <div class="qz__prices">
+            <span class="qz__total" data-qz-r-total></span>
+            <s class="qz__was" data-qz-r-was></s>
+            <span class="qz__save" data-qz-r-save></span>
+          </div>
+        </div>
+        <div class="qz__actions">
+          <button type="button" class="btn btn--solid" data-qz-add>{{ section.settings.add_label }}</button>
+          <a href="{{ settings.ritual_url | default: '/pages/arma-tu-ritual' }}" class="btn btn--line qz__adjust" data-qz-adjust>{{ section.settings.adjust_label }}</a>
+        </div>
+      </div>
+
+      {%- if section.settings.show_capture -%}
+        <div class="qz__capture" id="QzCapture" data-qz-capture>
+          <div>
+            <div class="qz__ctitle">{{ section.settings.capture_title }}</div>
+            <p class="qz__ctext">{{ section.settings.capture_text }}</p>
+          </div>
+          <div>
+            {%- form 'customer', id: 'QzCaptureForm', class: 'qz__form', data-qz-form: '' -%}
+              <input type="hidden" name="contact[tags]" value="quiz">
+              <label for="QzEmail-{{ section.id }}" class="visually-hidden">{{ section.settings.email_label }}</label>
+              <input type="email" id="QzEmail-{{ section.id }}" name="contact[email]" class="qz__email" placeholder="{{ section.settings.email_placeholder | escape }}" autocomplete="email" required>
+              <button type="submit" class="btn btn--solid qz__send">{{ section.settings.send_label }}</button>
+              {%- if form.posted_successfully? -%}<span data-qz-posted hidden></span>{%- endif -%}
+              <p class="qz__msg{% if form.errors %} is-err{% endif %}" data-qz-msg role="status" aria-live="polite"{% if form.errors == blank %} hidden{% endif %}>
+                {%- if form.errors -%}{{ form.errors | default_errors }}{%- endif -%}
+              </p>
+            {%- endform -%}
+            {%- if section.settings.consent_text != blank -%}
+              <div class="qz__consent">{{ section.settings.consent_text }}</div>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      <div class="qz__again">
+        <button type="button" class="qz__restart" data-qz-restart>{{ section.settings.restart_label }}</button>
+      </div>
+
+      {%- if section.settings.disclaimer != blank -%}
+        <p class="qz__disclaimer">{{ section.settings.disclaimer }}</p>
+      {%- endif -%}
+    </div>
+  </section>
+
+  {%- comment -%} Tarjetas que el JS clona según el resultado (precio y foto desde Shopify) {%- endcomment -%}
+  {%- for h in product_handles -%}
+    {%- assign p = all_products[h] -%}
+    {%- if p != blank and p.id -%}
+      {%- assign v = p.selected_or_first_available_variant -%}
+      {%- assign p_alt = p.title -%}
+      <template data-qz-product="{{ h }}">
+        <a href="{{ p.url }}" class="qz__pcard" style="{% render 'product-field', product: p, field: 'style' %}">
+          <div class="qz__pshot">
+            {%- if p.featured_media -%}
+              {{ p.featured_media | image_url: width: 900 | image_tag: widths: '360, 540, 720, 900', sizes: '(max-width: 900px) 100vw, 25vw', loading: 'lazy', alt: p_alt, class: 'qz__pimg' }}
+            {%- else -%}
+              <div class="qz__pbtl">{% render 'bottle', product: p, size: 'sm' %}</div>
+            {%- endif -%}
+            <div class="qz__pnum">{% render 'product-field', product: p, field: 'number' %}</div>
+            <div class="qz__ptag" data-qz-tag></div>
+          </div>
+          <div class="qz__pbar"></div>
+          <div class="qz__pname">{{ p.title }}</div>
+          <div class="qz__pverbs">{% render 'product-field', product: p, field: 'verbs' %}</div>
+          <div class="qz__pprice"><span>{{ v.price | money_without_trailing_zeros }}</span><span class="qz__psize">{% render 'product-field', product: p, field: 'size' %}</span></div>
+        </a>
+      </template>
+    {%- endif -%}
+  {%- endfor -%}
+  {%- for h in tool_handles -%}
+    {%- assign p = all_products[h] -%}
+    {%- if p != blank and p.id -%}
+      {%- assign p_alt = p.title -%}
+      <template data-qz-tool="{{ h }}">
+        <a href="{{ p.url }}" class="qz__tcard">
+          <div class="qz__tshot">
+            {%- if p.featured_media -%}
+              {{ p.featured_media | image_url: width: 600 | image_tag: widths: '240, 480, 600', sizes: '240px', loading: 'lazy', alt: p_alt, class: 'qz__timg' }}
+            {%- else -%}
+              {% render 'media', label: p.title, class: 'qz__tmedia', bg: 'transparent' %}
+            {%- endif -%}
+          </div>
+          <div class="qz__tname">{{ p.title }}</div>
+          <p class="qz__twhy" data-qz-why></p>
+          {%- if settings.show_tool_prices -%}
+            <div class="qz__tprice">{{ p.selected_or_first_available_variant.price | money_without_trailing_zeros }}</div>
+          {%- endif -%}
+        </a>
+      </template>
+    {%- endif -%}
+  {%- endfor -%}
+
+  <script type="application/json" data-qz-catalog>
+    {
+    {%- for h in all_handles -%}
+      {%- assign p = all_products[h] -%}
+      {%- if p != blank and p.id -%}
+        {%- assign v = p.selected_or_first_available_variant -%}
+        {{ h | json }}: {"id": {{ p.id }}, "variant": {{ v.id | json }}, "price": {{ v.price | json }}, "compare": {{ v.compare_at_price | default: 0 | json }}, "available": {{ v.available | json }}, "title": {{ p.title | json }}, "url": {{ p.url | json }}},
+      {%- endif -%}
+    {%- endfor -%}
+    "_": null
+    }
+  </script>
+  <script type="application/json" data-qz-config>{% render 'qz-config' %}</script>
+  {%- if section.settings.config_override != blank -%}
+    <script type="application/json" data-qz-config-override>{{ section.settings.config_override }}</script>
+  {%- endif -%}
+  <script type="application/json" data-qz-copy>
+    {
+      "step_label": {{ section.settings.step_label | json }},
+      "next": {{ section.settings.next_label | json }},
+      "next_last": {{ section.settings.next_last_label | json }},
+      "price_label": {{ section.settings.price_label | json }},
+      "price_label_plain": {{ section.settings.price_label_plain | json }},
+      "use_kits": {{ section.settings.use_kits | json }},
+      "added": {{ section.settings.added_label | json }},
+      "thanks": {{ section.settings.thanks_text | json }},
+      "error": {{ section.settings.error_text | json }}
+    }
+  </script>
+</div>
+
+{% schema %}
+{
+  "name": "Quiz de diagnóstico",
+  "tag": "div",
+  "class": "qz-section",
+  "settings": [
+    { "type": "header", "content": "Intro" },
+    { "type": "text", "id": "intro_kicker", "label": "Frase superior", "default": "Para el pelo que está cambiando." },
+    { "type": "text", "id": "intro_title", "label": "Título", "default": "¿Qué le pasa a tu pelo?" },
+    { "type": "richtext", "id": "intro_text", "label": "Texto", "default": "<p>Ocho preguntas. Al final vas a entender qué está pasando con tu pelo hoy — y qué ritual le corresponde. Sin diagnósticos inventados: solo lo que tú misma observas, leído con criterio.</p>" },
+    { "type": "text", "id": "start_label", "label": "Botón empezar", "default": "EMPEZAR" },
+    { "type": "text", "id": "resume_text", "label": "Aviso de resultado guardado", "default": "Ya hiciste el test en este dispositivo." },
+    { "type": "text", "id": "resume_label", "label": "Enlace al resultado guardado", "default": "Ver mi último resultado" },
+    { "type": "header", "content": "Preguntas" },
+    { "type": "text", "id": "step_label", "label": "Contador", "default": "PREGUNTA {i} DE {n}", "info": "{i} = pregunta actual, {n} = total" },
+    { "type": "text", "id": "back_label", "label": "Atrás", "default": "← Atrás" },
+    { "type": "text", "id": "next_label", "label": "Continuar", "default": "CONTINUAR" },
+    { "type": "text", "id": "next_last_label", "label": "Continuar (última pregunta)", "default": "VER MI RITUAL" },
+    { "type": "text", "id": "multi_hint", "label": "Ayuda en preguntas de varias opciones", "default": "Puedes elegir varias" },
+    { "type": "text", "id": "progress_label", "label": "Barra de progreso (lector de pantalla)", "default": "Progreso del quiz" },
+    { "type": "header", "content": "Resultado" },
+    { "type": "text", "id": "result_eyebrow", "label": "Antetítulo", "default": "TU RESULTADO" },
+    { "type": "text", "id": "signals_title", "label": "Título de señales", "default": "SEÑALES QUE VAMOS A TRABAJAR" },
+    { "type": "text", "id": "tools_eyebrow", "label": "Herramientas · antetítulo", "default": "Y CÓMO LO TRATAS" },
+    { "type": "text", "id": "tools_title", "label": "Herramientas · título", "default": "La fórmula es la mitad." },
+    { "type": "textarea", "id": "tools_text", "label": "Herramientas · texto", "default": "Se puede quebrar una fibra reforzada si la secas a fricción y duermes sobre algodón. Según lo que nos contaste, estas te suman:" },
+    { "type": "text", "id": "price_label", "label": "Etiqueta de precio (con ahorro)", "default": "{n} productos · ahorras {pct}% en kit", "info": "{n} = productos, {pct} = % de ahorro real" },
+    { "type": "text", "id": "price_label_plain", "label": "Etiqueta de precio (sin ahorro)", "default": "{n} productos" },
+    { "type": "checkbox", "id": "use_kits", "label": "Usar el kit cuando el resultado coincide", "default": true, "info": "Si el ritual es exactamente El Dúo o el Kit Esencial y el kit está disponible, se añade el kit (precio propio). Si no, se añaden los productos sueltos y aplica el descuento por cantidad." },
+    { "type": "text", "id": "add_label", "label": "Botón añadir", "default": "AÑADIR MI RITUAL" },
+    { "type": "text", "id": "added_label", "label": "Botón añadir · confirmación", "default": "Añadido ✓" },
+    { "type": "text", "id": "adjust_label", "label": "Botón ajustar (va a Arma tu ritual)", "default": "AJUSTARLO" },
+    { "type": "text", "id": "restart_label", "label": "Repetir", "default": "REPETIR EL TEST" },
+    { "type": "textarea", "id": "disclaimer", "label": "Aviso", "default": "Este diagnóstico es orientativo y se basa en lo que tú misma observas — no sustituye la evaluación de un dermatólogo o tricólogo. Si notas caída importante desde la raíz, picazón persistente o cambios bruscos, consulta con un profesional de la salud." },
+    { "type": "header", "content": "Captura de correo" },
+    { "type": "checkbox", "id": "show_capture", "label": "Mostrar", "default": true },
+    { "type": "text", "id": "capture_title", "label": "Título", "default": "Guarda tu diagnóstico" },
+    { "type": "textarea", "id": "capture_text", "label": "Texto", "default": "Te lo enviamos por correo con la guía de uso de tu ritual — y te avisamos cuando abramos la venta." },
+    { "type": "text", "id": "email_label", "label": "Etiqueta del campo (lector de pantalla)", "default": "Tu correo" },
+    { "type": "text", "id": "email_placeholder", "label": "Placeholder", "default": "tu@correo.com" },
+    { "type": "text", "id": "send_label", "label": "Botón", "default": "ENVIAR" },
+    { "type": "richtext", "id": "consent_text", "label": "Consentimiento", "default": "<p>Al enviar aceptas recibir correos de TRRIBÚ con tu diagnóstico, consejos y novedades. Puedes darte de baja cuando quieras. Ver <a href=\"/policies/privacy-policy\" title=\"Política de privacidad\">política de privacidad</a>.</p>" },
+    { "type": "text", "id": "thanks_text", "label": "Mensaje de éxito", "default": "¡Listo! Te enviamos tu diagnóstico." },
+    { "type": "text", "id": "error_text", "label": "Mensaje de error", "default": "No pudimos enviarlo. Inténtalo de nuevo." },
+    { "type": "paragraph", "content": "Con Klaviyo configurado (Configuración del tema → Integraciones) el correo se suscribe a la lista con las propiedades del quiz. Sin Klaviyo, se guarda como cliente de Shopify con etiquetas quiz-*." },
+    { "type": "header", "content": "Avanzado" },
+    { "type": "textarea", "id": "config_override", "label": "Configuración del quiz (JSON)", "info": "Vacío = configuración por defecto (snippets/qz-config.liquid). Pega aquí un JSON completo con el mismo formato para cambiar preguntas, puntajes, umbrales o textos del diagnóstico." }
+  ]
+}
+{% endschema %}

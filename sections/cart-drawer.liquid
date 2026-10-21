@@ -1,0 +1,134 @@
+{%- comment -%}
+  Carrito lateral. Se vuelve a renderizar con la Section Rendering API
+  después de cada cambio (theme.js → TRRIBU.cart).
+  - Barra de envío gratis (umbral en Configuración del tema).
+  - Descuento por cantidad: lo aplica el descuento automático de Shopify;
+    acá se muestra lo ya aplicado y cuánto falta para el siguiente tramo.
+  - Día de despacho: atributo del carrito "Día de despacho", llega al pedido.
+{%- endcomment -%}
+<div data-cart-inner class="drawer__inner" style="display:contents">
+  {%- liquid
+    assign threshold = settings.free_shipping_threshold | times: 100
+    assign remaining = threshold | minus: cart.total_price
+    assign hair_count = 0
+    assign original_total = 0
+    for item in cart.items
+      assign hair_count = hair_count | plus: item.quantity
+      assign original_total = original_total | plus: item.original_line_price
+    endfor
+  -%}
+  <div class="drawer__head">
+    <span class="drawer__title" id="CartDrawerTitle">Tu ritual{% if cart.item_count > 0 %} · {{ cart.item_count }}{% endif %}</span>
+    <button type="button" class="icon-btn" data-cart-close aria-label="Cerrar carrito">{% render 'icon', name: 'close' %}</button>
+  </div>
+
+  <div class="drawer__body">
+    {%- if cart.item_count == 0 -%}
+      <div class="empty-cart">
+        <p class="h4" style="font-size:24px">Tu ritual está vacío.</p>
+        <p class="body-sm" style="margin:12px 0 26px">¿No sabes por dónde empezar? El test te lo dice en un minuto.</p>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <a href="{{ settings.quiz_url | default: '/pages/quiz' }}" class="btn btn--solid">Haz el test · 1 min</a>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn--line">Ver productos</a>
+        </div>
+      </div>
+    {%- else -%}
+      {%- if settings.free_shipping_threshold > 0 -%}
+        <div class="ship-meter">
+          <div class="ship-meter__txt">
+            {%- if remaining > 0 -%}
+              Te faltan <strong style="color:var(--ink);font-weight:500">{{ remaining | money_without_trailing_zeros }}</strong> para el envío gratis.
+            {%- else -%}
+              Tu envío es gratis.
+            {%- endif -%}
+          </div>
+          {%- assign pct = cart.total_price | times: 100 | divided_by: threshold | at_most: 100 -%}
+          <div class="ship-meter__bar"><div class="ship-meter__fill" style="width:{{ pct }}%"></div></div>
+        </div>
+      {%- endif -%}
+
+      {%- for item in cart.items -%}
+        <div class="cline">
+          <a href="{{ item.url }}" class="cline__img" style="{% render 'product-field', product: item.product, field: 'style' %}">
+            {%- if item.image -%}{{ item.image | image_url: width: 200 | image_tag: loading: 'lazy', alt: item.product.title | escape }}{%- endif -%}
+          </a>
+          <div>
+            <a href="{{ item.url }}" class="cline__name">{{ item.product.title }}</a>
+            {%- unless item.product.has_only_default_variant -%}<div class="cline__meta">{{ item.variant.title }}</div>{%- endunless -%}
+            {%- capture size -%}{%- render 'product-field', product: item.product, field: 'size' -%}{%- endcapture -%}
+            {%- if size != blank -%}<div class="cline__meta">{{ size }}</div>{%- endif -%}
+            {%- for d in item.line_level_discount_allocations -%}
+              <div class="cline__meta" style="color:var(--ac-ink)">{{ d.discount_application.title }}</div>
+            {%- endfor -%}
+            <div class="qty">
+              <button type="button" data-cart-qty="{{ item.quantity | minus: 1 }}" data-key="{{ item.key }}" aria-label="Quitar uno">−</button>
+              <span>{{ item.quantity }}</span>
+              <button type="button" data-cart-qty="{{ item.quantity | plus: 1 }}" data-key="{{ item.key }}" aria-label="Sumar uno">+</button>
+            </div>
+          </div>
+          <div class="cline__price">
+            {%- if item.original_line_price > item.final_line_price -%}<s>{{ item.original_line_price | money_without_trailing_zeros }}</s>{%- endif -%}
+            {{ item.final_line_price | money_without_trailing_zeros }}
+            <button type="button" class="cline__rm" data-cart-qty="0" data-key="{{ item.key }}">Quitar</button>
+          </div>
+        </div>
+      {%- endfor -%}
+
+      {%- comment -%} Siguiente tramo del descuento por cantidad {%- endcomment -%}
+      {%- liquid
+        assign next_min = 0
+        assign next_pct = 0
+        if hair_count < settings.tier1_min
+          assign next_min = settings.tier1_min
+          assign next_pct = settings.tier1_pct
+        elsif hair_count < settings.tier2_min
+          assign next_min = settings.tier2_min
+          assign next_pct = settings.tier2_pct
+        endif
+      -%}
+      {%- if settings.show_tier_hint and next_min > 0 -%}
+        {%- assign missing = next_min | minus: hair_count -%}
+        <p class="small" style="padding:16px 0 4px;margin:0">
+          Suma {{ missing }} {% if missing == 1 %}producto{% else %}productos{% endif %} más y tu ritual baja <strong style="color:var(--ac-ink);font-weight:500">−{{ next_pct }} %</strong>.
+          <a href="{{ settings.ritual_url | default: '/pages/arma-tu-ritual' }}" style="color:var(--ink)">Arma tu ritual</a>
+        </p>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+
+  {%- if cart.item_count > 0 -%}
+    <form class="drawer__foot" action="{{ routes.cart_url }}" method="post">
+      {%- if settings.dispatch_days != blank -%}
+        {%- assign days = settings.dispatch_days | split: ',' -%}
+        {%- assign current_day = cart.attributes['Día de despacho'] -%}
+        <div class="dispatch">
+          <label for="DispatchDay">Día de despacho</label>
+          <select id="DispatchDay" name="attributes[Día de despacho]" data-cart-attribute="Día de despacho">
+            <option value="">Lo antes posible</option>
+            {%- for d in days -%}
+              {%- assign dd = d | strip -%}
+              <option value="{{ dd | escape }}"{% if current_day == dd %} selected{% endif %}>{{ dd }}</option>
+            {%- endfor -%}
+          </select>
+        </div>
+      {%- endif -%}
+      <div class="totals"><span>Subtotal</span><span>{{ original_total | money_without_trailing_zeros }}</span></div>
+      {%- for d in cart.cart_level_discount_applications -%}
+        <div class="totals totals--disc"><span>{{ d.title }}</span><span>−{{ d.total_allocated_amount | money_without_trailing_zeros }}</span></div>
+      {%- endfor -%}
+      {%- if cart.total_discount > 0 -%}
+        <div class="totals totals--disc"><span>Ahorras</span><span>−{{ cart.total_discount | money_without_trailing_zeros }}</span></div>
+      {%- endif -%}
+      <div class="totals totals--main"><span>Total</span><span>{{ cart.total_price | money_without_trailing_zeros }}</span></div>
+      <button type="submit" name="checkout" class="btn btn--solid btn--block">Finalizar compra</button>
+      <p class="small" style="text-align:center;margin:12px 0 0;font-size:11.5px;color:var(--muted-2)">Impuestos incluidos. El envío se calcula al pagar.</p>
+    </form>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Carrito lateral",
+  "class": "cart-drawer-section"
+}
+{% endschema %}

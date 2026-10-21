@@ -1,0 +1,22 @@
+{{ 'sob.css' | asset_url | stylesheet_tag }}
+<header class="sob-hero">
+  <div class="sob-hero__in">
+    {%- if section.settings.eyebrow != blank -%}<p class="sob-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+    <h1 class="sob-h1">{{ section.settings.title }}{% if section.settings.title_2 != blank %}<br>{{ section.settings.title_2 }}{% endif %}</h1>
+    {%- if section.settings.lede != blank -%}<p class="sob-hero__lede">{{ section.settings.lede }}</p>{%- endif -%}
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Nosotros · portada",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Antetítulo", "default": "Sobre TRRIBÚ" },
+    { "type": "inline_richtext", "id": "title", "label": "Título · línea 1", "default": "No soy química." },
+    { "type": "inline_richtext", "id": "title_2", "label": "Título · línea 2", "info": "Usa negrita para la parte destacada.", "default": "<strong>Soy la clienta.</strong>" },
+    { "type": "textarea", "id": "lede", "label": "Bajada", "default": "No soy química, no soy farmacéutica, no soy ingeniera. Soy administradora con marketing — y soy investigadora desde siempre." }
+  ],
+  "presets": [{ "name": "Nosotros · portada" }]
+}
+{% endschema %}

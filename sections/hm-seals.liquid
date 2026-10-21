@@ -1,0 +1,78 @@
+{{ 'hm.css' | asset_url | stylesheet_tag }}
+<div class="hm-seals">
+  <div class="wrap wrap--1520 hm-seals__inner">
+    <div class="hm-seals__grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign is_rr6 = false
+          if block.settings.icon == 'rr6'
+            assign is_rr6 = true
+          endif
+          assign tag = 'div'
+          if block.settings.url != blank
+            assign tag = 'a'
+          endif
+        -%}
+        <{{ tag }}{% if tag == 'a' %} href="{{ block.settings.url }}"{% endif %} class="hm-seal" {{ block.shopify_attributes }}>
+          {%- if is_rr6 -%}
+            <div class="hm-seal__ring hm-seal__ring--rr6"><span class="hm-seal__rr6">RR<sup>6</sup></span></div>
+          {%- else -%}
+            <div class="hm-seal__ring{% if block.settings.accent %} hm-seal__ring--accent{% endif %}">{% render 'icon', name: block.settings.icon %}</div>
+          {%- endif -%}
+          <div class="hm-seal__txt{% if is_rr6 %} hm-seal__txt--rr6{% endif %}">{{ block.settings.text }}</div>
+        </{{ tag }}>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sello · franja de claims",
+  "tag": "section",
+  "max_blocks": 12,
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Claim",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Ícono",
+          "default": "drop",
+          "options": [
+            { "value": "rr6", "label": "Sello RR⁶ (círculo negro)" },
+            { "value": "drop", "label": "Gota" },
+            { "value": "no", "label": "Prohibido" },
+            { "value": "leaf", "label": "Hoja" },
+            { "value": "paw", "label": "Huella" },
+            { "value": "palette", "label": "Paleta" },
+            { "value": "peru", "label": "Perú" },
+            { "value": "flask", "label": "Matraz" },
+            { "value": "check", "label": "Check" }
+          ]
+        },
+        { "type": "text", "id": "text", "label": "Texto", "default": "Vegano" },
+        { "type": "checkbox", "id": "accent", "label": "Anillo de acento", "default": false },
+        { "type": "url", "id": "url", "label": "Enlace (opcional)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sello · franja de claims",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "rr6", "text": "El Sello TRRIBÚ" } },
+        { "type": "item", "settings": { "icon": "drop", "text": "Pensado para el pelo en transición hormonal" } },
+        { "type": "item", "settings": { "icon": "no", "text": "Sin fitoestrógenos añadidos", "accent": true } },
+        { "type": "item", "settings": { "icon": "leaf", "text": "Vegano" } },
+        { "type": "item", "settings": { "icon": "paw", "text": "Cruelty-free" } },
+        { "type": "item", "settings": { "icon": "palette", "text": "Color-safe" } },
+        { "type": "item", "settings": { "icon": "peru", "text": "Hecho en Perú" } },
+        { "type": "item", "settings": { "icon": "flask", "text": "Low tox" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

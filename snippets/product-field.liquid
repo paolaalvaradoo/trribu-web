@@ -1,0 +1,93 @@
+{%- comment -%}
+  Devuelve un dato de marca de un producto TRRIBÚ.
+  Lee primero el metafield `trribu.<campo>`; si no existe, usa el valor del
+  prototipo según el handle. Así el tema se ve bien desde el primer día y
+  el equipo puede cambiar todo desde Shopify sin tocar código.
+
+  Uso:  {%- render 'product-field', product: p, field: 'verbs' -%}
+
+  Campos:
+    number   01 · 02 · 03 · 04
+    color    color de producto (barra, botón)
+    ink      color de producto legible sobre blanco
+    tint     fondo de la foto
+    verbs    LIMPIA · EQUILIBRA · REPARA
+    size     300 ml
+    badge    EL PASO 1
+    style    las tres variables CSS juntas: --pc, --pc-ink, --pc-tint
+
+  Metafields esperados (Configuración → Datos personalizados → Productos):
+    trribu.number (texto) · trribu.color (color) · trribu.ink (color)
+    trribu.tint (color) · trribu.verbs (texto) · trribu.size (texto)
+    trribu.badge (texto)
+{%- endcomment -%}
+{%- liquid
+  assign h = product.handle
+  assign mf = product.metafields.trribu
+
+  case h
+    when 'el-shampoo', 'shampoo'
+      assign d_number = '01'
+      assign d_color = '#BB7B73'
+      assign d_ink = '#8E524B'
+      assign d_tint = '#F4EFE9'
+      assign d_verbs = 'Limpia · Equilibra · Repara'
+      assign d_size = '300 ml'
+      assign d_badge = 'El paso 1'
+    when 'el-acondicionador', 'acondicionador'
+      assign d_number = '02'
+      assign d_color = '#BA9772'
+      assign d_ink = '#7A5F3F'
+      assign d_tint = '#EDF3F3'
+      assign d_verbs = 'Nutre · Repara · Desenreda'
+      assign d_size = '300 ml'
+      assign d_badge = 'El paso 2'
+    when 'la-mascarilla', 'mascarilla'
+      assign d_number = '03'
+      assign d_color = '#7A2230'
+      assign d_ink = '#7A2230'
+      assign d_tint = '#F6EEF1'
+      assign d_verbs = 'Repara · Hidrata · Fortalece'
+      assign d_size = '300 ml'
+      assign d_badge = 'Tratamiento'
+    when 'el-acondicionador-sin-enjuague', 'acondicionador-sin-enjuague', 'sin-enjuague'
+      assign d_number = '04'
+      assign d_color = '#795448'
+      assign d_ink = '#795448'
+      assign d_tint = '#F2F4EB'
+      assign d_verbs = 'Controla frizz · Protege · Repara'
+      assign d_size = '150 ml'
+      assign d_badge = 'Sin enjuague'
+    else
+      assign d_number = ''
+      assign d_color = '#191813'
+      assign d_ink = '#191813'
+      assign d_tint = '#F4EFE9'
+      assign d_verbs = ''
+      assign d_size = ''
+      assign d_badge = ''
+  endcase
+
+  assign v_color = mf.color.value | default: d_color
+  assign v_ink = mf.ink.value | default: d_ink
+  assign v_tint = mf.tint.value | default: d_tint
+
+  case field
+    when 'number'
+      echo mf.number.value | default: d_number
+    when 'color'
+      echo v_color
+    when 'ink'
+      echo v_ink
+    when 'tint'
+      echo v_tint
+    when 'verbs'
+      echo mf.verbs.value | default: d_verbs
+    when 'size'
+      echo mf.size.value | default: d_size
+    when 'badge'
+      echo mf.badge.value | default: d_badge
+    when 'style'
+      echo '--pc:' | append: v_color | append: ';--pc-ink:' | append: v_ink | append: ';--pc-tint:' | append: v_tint | append: ';'
+  endcase
+-%}
