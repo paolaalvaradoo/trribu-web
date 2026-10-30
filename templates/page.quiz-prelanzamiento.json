@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "qp-main",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}
