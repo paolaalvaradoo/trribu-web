@@ -67,3 +67,15 @@ for (const c of E.SIM_CASES) {
     assert.equal(E.rutina(c.a).join(','), rutina);
   });
 }
+
+test('Propiedades llevan los textos del resultado para el correo', () => {
+  const a = { ...base, signos: ['quiebre', 'puntas'], tratamientos: ['mechas'] };
+  const p = E.properties(a, { fecha: 'X' });
+  const w = E.why(a);
+  assert.equal(p.quiz_porque_1_titulo, w[0].title);
+  assert.equal(p.quiz_porque_2_texto, w[1].text);
+  assert.equal(p.quiz_porque_3_titulo, '');
+  assert.equal(p.quiz_resultado_parrafo, E.parrafo(a));
+  assert.equal(p.quiz_notando, 'quiebre · puntas secas');
+  assert.equal(p.quiz_nota_quiebre, true);
+});

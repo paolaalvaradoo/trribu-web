@@ -268,7 +268,16 @@
     var r = motor(a);
     var tags = segmento(a).concat(['waitlist', 'socia_fundadora']);
     if (opts.panel) tags.push('panel_si');
-    return {
+    // Textos del resultado tal como se ven en pantalla, para el correo de Klaviyo.
+    var w = why(a), texts = {};
+    for (var i = 0; i < 3; i++) {
+      texts['quiz_porque_' + (i + 1) + '_titulo'] = w[i] ? w[i].title : '';
+      texts['quiz_porque_' + (i + 1) + '_texto'] = w[i] ? w[i].text : '';
+    }
+    texts.quiz_resultado_parrafo = parrafo(a);
+    texts.quiz_notando = senales(a).join(' · ');
+    texts.quiz_nota_quiebre = showBreakage(a);
+    return Object.assign(texts, {
       quiz_version: VERSION, quiz_fecha: opts.fecha || new Date().toISOString(),
       quiz_senales: a.signos || [], quiz_porosidad: a.porosidad || '', quiz_tratamientos: a.tratamientos || [],
       quiz_calor: a.calor || '', quiz_tipo: a.tipo || '', quiz_grosor: a.grosor || '', quiz_cuero: a.cuero || '',
@@ -276,8 +285,8 @@
       quiz_eje: [r.needMask ? 'eje_reparacion' : null, r.needCrema ? 'eje_proteccion' : null].filter(Boolean),
       quiz_buyer: (pri(a, 'prevenir') || sig(a, 'bien')) ? 'buyer_A' : '', quiz_recomendacion: rutina(a),
       quiz_panel: !!opts.panel, quiz_tags: tags, quiz_resultado_titular: headline(a),
-      quiz_resultado_explicaciones: why(a).map(function (x) { return x.id; }), quiz_signos_multiples: nSignos(a) >= 3
-    };
+      quiz_resultado_explicaciones: w.map(function (x) { return x.id; }), quiz_signos_multiples: nSignos(a) >= 3
+    });
   }
 
   /* Selección: «solo» es excluyente, «max» limita (igual que pick() de V25). */
