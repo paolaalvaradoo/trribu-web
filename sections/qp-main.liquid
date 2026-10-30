@@ -1,0 +1,186 @@
+{{ 'qp.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'qp.js' | asset_url }}" defer></script>
+{%- comment -%}
+  Quiz de prelanzamiento V25. Preguntas, puntos y textos del resultado viven en
+  assets/qp.js (fuente: TRRIBU_Quiz_V25). Aquí: intro, lista de espera y avisos.
+{%- endcomment -%}
+<div class="qp" data-qp
+  {%- if section.settings.klaviyo_list_id != blank %} data-qp-list="{{ section.settings.klaviyo_list_id | escape }}"{% endif -%}
+  {%- if section.settings.enable_simulator %} data-qp-sim{% endif -%}>
+  <script type="application/json" data-qp-copy>
+    {
+      "next": {{ section.settings.next_label | json }},
+      "next_last": {{ section.settings.next_last_label | json }},
+      "multi_hint": {{ section.settings.multi_hint | json }},
+      "max_hint": {{ section.settings.max_hint | json }},
+      "saving": {{ section.settings.msg_saving | json }},
+      "thanks": {{ section.settings.msg_thanks | json }},
+      "error": {{ section.settings.msg_error | json }},
+      "mock": {{ section.settings.msg_mock | json }}
+    }
+  </script>
+
+  <div class="qp__bar" data-qp-bar role="progressbar" aria-label="Progreso del quiz" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+    <div class="qp__fill" data-qp-fill></div>
+  </div>
+
+  <div class="qp__wrap">
+    {%- comment -%} INTRO {%- endcomment -%}
+    <section class="qp__intro" data-qp-stage="intro">
+      <h1 class="qp__h1">{{ section.settings.intro_title }}</h1>
+      <hr class="qp__rule">
+      <div class="qp__lede">{{ section.settings.intro_text }}</div>
+      <div class="qp__intro-cta">
+        <button type="button" class="btn btn--solid" data-qp-start>{{ section.settings.start_label }}</button>
+        <span class="eyebrow qp__meta">{{ section.settings.intro_meta }}</span>
+      </div>
+    </section>
+
+    {%- comment -%} PREGUNTA {%- endcomment -%}
+    <section class="qp__quiz" data-qp-stage="quiz" hidden>
+      <div class="qp__step" data-qp-step></div>
+      <span class="eyebrow qp__sec" data-qp-sec></span>
+      <h2 class="qp__q" id="QpTitle-{{ section.id }}" data-qp-title tabindex="-1"></h2>
+      <p class="qp__help" data-qp-help></p>
+      <div class="qp__opts" data-qp-opts aria-labelledby="QpTitle-{{ section.id }}"></div>
+      <div class="qp__nav">
+        <button type="button" class="qp__link" data-qp-back>{{ section.settings.back_label }}</button>
+        <span class="qp__hint" data-qp-hint></span>
+        <div class="qp__nav-r">
+          <button type="button" class="qp__link" data-qp-skip hidden>{{ section.settings.skip_label }}</button>
+          <button type="button" class="btn btn--solid qp__next" data-qp-next disabled></button>
+        </div>
+      </div>
+    </section>
+
+    {%- comment -%} RESULTADO {%- endcomment -%}
+    <section class="qp__result" data-qp-stage="result" hidden>
+      <div class="qp__rhead">
+        <span class="eyebrow">{{ section.settings.result_eyebrow }}</span>
+        <h2 class="qp__rtitle" data-qp-r-title tabindex="-1">{{ section.settings.result_title }}</h2>
+        <p class="qp__rsub" data-qp-r-sub></p>
+        <p class="qp__rpar" data-qp-r-par></p>
+      </div>
+
+      <div class="qp__why">
+        <h3 class="qp__why-title">{{ section.settings.why_title }}</h3>
+        <div data-qp-r-why></div>
+      </div>
+
+      <p class="qp__breakage" data-qp-r-breakage hidden>
+        ¿Ves más pelo en el cepillo? Puede tratarse de hebras que se quiebran o de pelo que se desprende desde la raíz; no son lo mismo. El cuidado reparador puede ayudar con el quiebre de la fibra, pero no sustituye una evaluación de la caída desde la raíz. Si la caída es abundante, repentina o persistente, consulta con un dermatólogo.
+        {%- if section.settings.breakage_url != blank %} <a class="txt-link" href="{{ section.settings.breakage_url }}">{{ section.settings.breakage_link_label }}</a>{% endif %}
+      </p>
+
+      <div class="qp__signals-wrap">
+        <span class="eyebrow">{{ section.settings.signals_title }}</span>
+        <ul class="qp__pills" data-qp-r-signals></ul>
+      </div>
+
+      <div class="qp__need">
+        <div class="qp__needbox">
+          <span class="eyebrow">{{ section.settings.sealed_title }}</span>
+          <div class="qp__tiles" aria-hidden="true">
+            {%- for i in (1..4) -%}<div class="qp__tile"><div class="qp__tile-n">0{{ i }}</div><span class="qp__blur"></span></div>{%- endfor -%}
+          </div>
+          <p class="qp__sealed-text">{{ section.settings.sealed_text }}</p>
+        </div>
+        <button type="button" class="btn btn--solid btn--block" data-qp-to-list>{{ section.settings.to_list_label }}</button>
+        <button type="button" class="btn btn--line btn--block qp__restart" data-qp-restart>{{ section.settings.restart_label }}</button>
+      </div>
+
+      {%- comment -%} LISTA DE ESPERA {%- endcomment -%}
+      <div class="qp__capture" data-qp-capture>
+        <span class="eyebrow">{{ section.settings.capture_eyebrow }}</span>
+        <h2 class="qp__ctitle">{{ section.settings.capture_title }}</h2>
+        <p class="qp__ctext">{{ section.settings.capture_text }}</p>
+        <form class="qp__form" data-qp-form novalidate>
+          <label class="qp__label" for="QpName-{{ section.id }}">NOMBRE</label>
+          <input class="field" id="QpName-{{ section.id }}" name="nombre" type="text" placeholder="¿Cómo te llamas?" autocomplete="given-name">
+          <label class="qp__label" for="QpEmail-{{ section.id }}">CORREO</label>
+          <input class="field" id="QpEmail-{{ section.id }}" name="email" type="email" placeholder="tu@correo.com" autocomplete="email">
+          <label class="qp__label" for="QpWa-{{ section.id }}">WHATSAPP (OPCIONAL)</label>
+          <div class="qp__wa"><span>+51</span><input class="field" id="QpWa-{{ section.id }}" name="whatsapp" type="tel" inputmode="numeric" placeholder="9XX XXX XXX" autocomplete="tel-national"></div>
+
+          <label class="check qp__check"><input type="checkbox" name="c_datos">
+            <span>Acepto la {% if section.settings.privacy_url != blank %}<a class="txt-link" href="{{ section.settings.privacy_url }}" target="_blank" rel="noopener">política de privacidad</a>{% else %}política de privacidad{% endif %} {{ section.settings.consent_data }}</span></label>
+          <label class="check qp__check"><input type="checkbox" name="c_correo"><span>{{ section.settings.consent_email }}</span></label>
+          <label class="check qp__check"><input type="checkbox" name="c_whatsapp"><span>{{ section.settings.consent_whatsapp }}</span></label>
+          <label class="check qp__check"><input type="checkbox" name="c_panel"><span>{{ section.settings.consent_panel }}</span></label>
+          <p class="qp__legal">{{ section.settings.legal_text }}</p>
+          <button type="submit" class="btn btn--solid btn--block">{{ section.settings.submit_label }}</button>
+          <p class="qp__msg" data-qp-msg role="status" aria-live="polite" hidden></p>
+        </form>
+        {%- if section.settings.founder_text != blank -%}
+          <div class="qp__founder"><span aria-hidden="true">✦</span><div><span class="qp__flabel">{{ section.settings.founder_label }}</span>{{ section.settings.founder_text }}</div></div>
+        {%- endif -%}
+      </div>
+
+      <p class="qp__nota">{{ section.settings.disclaimer }}</p>
+    </section>
+  </div>
+
+  {%- if section.settings.enable_simulator -%}
+    <div class="qp__sim" data-qp-sim hidden>
+      <strong>TRRIBÚ · Simulador interno</strong>
+      <p>Casos de prueba. No envía datos.</p>
+      <select aria-label="Caso"></select>
+      <button type="button" data-qp-sim-run>Simular caso</button>
+      <button type="button" data-qp-sim-close>Cerrar</button>
+      <pre></pre>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Quiz prelanzamiento",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Intro" },
+    { "type": "text", "id": "intro_title", "label": "Título", "default": "Hablemos de tu pelo. Del que tienes hoy." },
+    { "type": "richtext", "id": "intro_text", "label": "Texto", "default": "<p>El pelo puede cambiar. Y también puede cambiar lo que necesita.</p><p>Cuéntanos cómo es tu pelo, qué estás notando y qué te gustaría cuidar primero. Al final te compartiremos una orientación personalizada.</p>" },
+    { "type": "text", "id": "start_label", "label": "Botón empezar", "default": "CONVERSEMOS" },
+    { "type": "text", "id": "intro_meta", "label": "Nota bajo el botón", "default": "DIEZ PREGUNTAS · A TU RITMO" },
+    { "type": "header", "content": "Preguntas" },
+    { "type": "text", "id": "back_label", "label": "Atrás", "default": "← ATRÁS" },
+    { "type": "text", "id": "skip_label", "label": "Saltar", "default": "SALTAR" },
+    { "type": "text", "id": "next_label", "label": "Continuar", "default": "CONTINUAR" },
+    { "type": "text", "id": "next_last_label", "label": "Último botón", "default": "VER MI RESULTADO" },
+    { "type": "text", "id": "multi_hint", "label": "Ayuda selección múltiple", "default": "Puedes elegir varias" },
+    { "type": "text", "id": "max_hint", "label": "Ayuda con máximo", "info": "{n} = número máximo", "default": "Hasta {n}" },
+    { "type": "header", "content": "Resultado" },
+    { "type": "text", "id": "result_eyebrow", "label": "Antetítulo", "default": "TU RESULTADO" },
+    { "type": "text", "id": "result_title", "label": "Título", "default": "Lo que necesita tu pelo" },
+    { "type": "text", "id": "why_title", "label": "Título de explicaciones", "default": "Por qué puede estar pasando" },
+    { "type": "text", "id": "breakage_url", "label": "URL artículo «Caída vs quiebre»", "info": "Si está vacío, no se muestra el enlace." },
+    { "type": "text", "id": "breakage_link_label", "label": "Texto del enlace", "default": "Conoce la diferencia entre caída y quiebre." },
+    { "type": "text", "id": "signals_title", "label": "Título de señales", "default": "LO QUE ESTÁS NOTANDO" },
+    { "type": "text", "id": "sealed_title", "label": "Título casillas", "default": "TU RECOMENDACIÓN ESTÁ LISTA" },
+    { "type": "textarea", "id": "sealed_text", "label": "Texto casillas", "default": "Los cuatro productos siguen sellados por ahora. Si te sumas a la lista, te contaremos cuándo podrás conocer tu recomendación completa." },
+    { "type": "text", "id": "to_list_label", "label": "Botón ir a la lista", "default": "ENTRAR A LA LISTA" },
+    { "type": "text", "id": "restart_label", "label": "Botón repetir", "default": "VOLVER A EMPEZAR" },
+    { "type": "header", "content": "Lista de espera" },
+    { "type": "text", "id": "capture_eyebrow", "label": "Antetítulo", "default": "SI QUIERES SEGUIR CON NOSOTRAS" },
+    { "type": "text", "id": "capture_title", "label": "Título", "default": "Esta conversación continúa contigo." },
+    { "type": "textarea", "id": "capture_text", "label": "Texto", "default": "Te avisaremos cuando llegue el momento de conocer tu recomendación y las novedades de TRRIBÚ. Inscribirte no te obliga a comprar." },
+    { "type": "text", "id": "privacy_url", "label": "URL política de privacidad", "info": "Obligatorio antes de publicar." },
+    { "type": "textarea", "id": "consent_data", "label": "Consentimiento de datos (tras «Acepto la política de privacidad»)", "default": "y que TRRIBÚ use mis datos para gestionar mi inscripción en la lista de espera." },
+    { "type": "textarea", "id": "consent_email", "label": "Consentimiento correo", "default": "Quiero recibir correos de TRRIBÚ con novedades y consejos para mi pelo." },
+    { "type": "textarea", "id": "consent_whatsapp", "label": "Consentimiento WhatsApp", "default": "Quiero recibir mensajes de TRRIBÚ por WhatsApp." },
+    { "type": "textarea", "id": "consent_panel", "label": "Panel de prueba", "default": "Me gustaría probar TRRIBÚ antes del lanzamiento." },
+    { "type": "textarea", "id": "legal_text", "label": "Texto legal", "default": "GRUPO EKKA SAC tratará tus datos para gestionar la lista de espera y guardar tu orientación del quiz. Los mensajes comerciales solo se enviarán si los autorizas. Revisa la política de privacidad." },
+    { "type": "text", "id": "submit_label", "label": "Botón enviar", "default": "QUIERO ESTAR EN LA LISTA" },
+    { "type": "text", "id": "founder_label", "label": "Etiqueta fundadora", "default": "SOCIA FUNDADORA" },
+    { "type": "textarea", "id": "founder_text", "label": "Texto fundadora", "default": "Queremos compartir contigo las novedades del lanzamiento. Los beneficios de Socia Fundadora se confirmarán antes de publicar." },
+    { "type": "text", "id": "msg_saving", "label": "Mensaje guardando", "default": "Estamos guardando tu inscripción…" },
+    { "type": "text", "id": "msg_thanks", "label": "Mensaje éxito", "default": "Tu solicitud fue recibida. Te escribiremos cuando tengamos novedades." },
+    { "type": "text", "id": "msg_error", "label": "Mensaje error", "default": "No pudimos guardar tu inscripción. Intenta nuevamente." },
+    { "type": "text", "id": "msg_mock", "label": "Mensaje simulación", "default": "Simulación: los datos NO se enviaron a Klaviyo." },
+    { "type": "textarea", "id": "disclaimer", "label": "Nota final", "default": "Este resultado es orientativo y se basa en lo que tú misma observas. No determina porosidad, causas médicas ni diagnostica alteraciones capilares; no sustituye la evaluación de un dermatólogo o tricólogo. Si notas caída importante desde la raíz, picazón persistente o cambios bruscos, consulta con un profesional de la salud." },
+    { "type": "header", "content": "Klaviyo" },
+    { "type": "text", "id": "klaviyo_list_id", "label": "ID de la lista de espera", "info": "Si está vacío, usa la lista principal de la configuración del tema. La clave pública también viene de ahí." },
+    { "type": "checkbox", "id": "enable_simulator", "label": "Permitir simulador interno (?simulador=1)", "info": "Con ?simulador=1 no se envía nada a Klaviyo. Desactivar al publicar.", "default": false }
+  ]
+}
+{% endschema %}
