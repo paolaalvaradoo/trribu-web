@@ -11,7 +11,8 @@
     "show_tier_hint": true,
     "dispatch_days": "Lunes, Miércoles, Viernes",
     "quiz_url": "/pages/quiz",
-    "ritual_url": "/pages/arma-tu-ritual"
+    "ritual_url": "/pages/arma-tu-ritual",
+    "klaviyo_public_key": "YqAKEF"
   },
   "presets": {}
 }
