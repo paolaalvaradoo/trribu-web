@@ -252,6 +252,7 @@
   function propiedades(b){
     var mo=motor(), routine='SA'+(mo.needMask?'M':'')+(mo.needCrema?'C':''), seg=segmento();
     var tags=seg.concat(['waitlist']); if(b.consent.panel) tags.push('panel_si');
+    var hz=hallazgos();
     var edadT=seg.find(function(t){return t.indexOf('edad_')===0;}), edad=edadT?edadT.slice(5):'';
     return {quiz_version:'prelanzamiento_v41',quiz_modo:'prelanzamiento',quiz_fecha:new Date().toISOString(),quiz_submission_id:b.submission_id,
       quiz_senales:answers.signos||[],quiz_porosidad:answers.porosidad||'',quiz_tratamientos:answers.tratamientos||[],quiz_calor:answers.calor||'',
@@ -259,7 +260,7 @@
       quiz_edad:edad,quiz_edad_min:edad===''?null:(edad==='m35'?0:Number(edad)),quiz_canas:seg.find(function(t){return t.indexOf('canas_')===0;})||'',
       quiz_eje:seg.filter(function(t){return t.indexOf('eje_')===0;}),quiz_buyer:seg.indexOf('buyer_A')>=0?'buyer_A':'',quiz_routine_code:routine,
       quiz_recomendacion:rutina().map(function(i){return P[i].id;}),quiz_result_needs:needsVisual(),quiz_result_findings:hallazgos().map(function(x){return x[0];}),
-      quiz_score_mask:mo.m,quiz_score_crema:mo.c,quiz_panel:!!b.consent.panel,quiz_tags:tags,consent_whatsapp:!!b.consent.whatsapp,quiz_origen:'pagina_prueba_shopify',quiz_otro_senales:(b.otros||{}).signos||'',quiz_otro_tratamientos:(b.otros||{}).tratamientos||'',quiz_otro_futuros:(b.otros||{}).futuros||''};
+      quiz_score_mask:mo.m,quiz_score_crema:mo.c,quiz_panel:!!b.consent.panel,quiz_tags:tags,consent_whatsapp:!!b.consent.whatsapp,quiz_origen:'pagina_prueba_shopify',quiz_otro_senales:(b.otros||{}).signos||'',quiz_otro_tratamientos:(b.otros||{}).tratamientos||'',quiz_otro_futuros:(b.otros||{}).futuros||'',quiz_hallazgo_1_titulo:(hz[0]||[])[0]||'',quiz_hallazgo_1_texto:(hz[0]||[])[1]||'',quiz_hallazgo_2_titulo:(hz[1]||[])[0]||'',quiz_hallazgo_2_texto:(hz[1]||[])[1]||'',quiz_hallazgo_3_titulo:(hz[2]||[])[0]||'',quiz_hallazgo_3_texto:(hz[2]||[])[1]||''};
   }
   window.fetch=function(url,opts){
     var u=String(url);
