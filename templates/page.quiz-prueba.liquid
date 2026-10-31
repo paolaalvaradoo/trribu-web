@@ -187,7 +187,7 @@
 <style>.tr-wants[hidden]{display:none!important}.tr-needs{margin:18px 0 26px}.tr-need{padding:13px 17px;font-size:15px}.tr-panel .tr-fbody{line-height:1.55}.tr-result .tr-small{line-height:1.5}</style><style>
 .tr-panel{max-width:690px;padding:31px 27px}.tr-panel h1{margin:11px 0 15px}.tr-panel h2{font-size:22px}.tr-panel p{line-height:1.48}.tr-needs{margin:14px 0 19px}.tr-need{padding:12px 16px;font-size:15px}.tr-rule{margin:24px 0}.tr-finding{margin:8px 0}.tr-finding summary{padding:14px}.tr-fbody{line-height:1.48;padding:0 18px 16px 50px}.tr-close{padding:22px 19px;margin-top:24px}.tr-close h3{margin:8px 0}.tr-close .eyebrow{font-size:11px}.tr-tiles{margin:15px 0 0}.tr-tile{min-height:80px}.tr-join{margin-top:26px}.tr-disclaimer{margin-top:23px}.tr-tagline{margin:18px 0}
 @media(max-width:520px){.tr-panel{padding:22px 17px}.tr-needs{gap:7px}.tr-need{font-size:13px;padding:9px 12px}.tr-tiles{gap:6px}.tr-tile{min-height:69px}.tr-fbody{padding-left:42px}}
-</style><style id="v33">.tr-prods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:16px 0 10px}.tr-prod{background:#fff;border:1px solid #ded8cd;border-top:3px solid var(--c);padding:14px}.tr-prod i{font:italic 13px Georgia,serif;color:var(--c)}.tr-prod b{display:block;font-weight:600;font-size:15px;margin-top:4px}.tr-prod small{color:#8C887E;font-size:12px}.tr-prod p{font-size:13.5px!important;line-height:1.45!important;margin:8px 0}.tr-prod em{font-style:normal;font-weight:600;font-size:14px}.tr-tot{text-align:right;font-size:15px}.tr-modo{font:11px ui-monospace,monospace;color:#B8B2A6;text-align:center;margin-top:18px}.tr-modo a{color:inherit}</style><style id="v36">.tr-close h3{letter-spacing:normal!important;font-family:Georgia,serif!important;font-size:23px!important;color:#262521!important;font-weight:400!important}.tr-scalp{border-left:3px solid #8A5049;background:#fff;padding:13px 16px;font-size:14px;line-height:1.5;margin:14px 0 0}.tr-psc{font-size:12.5px!important;color:#8A5049;line-height:1.4!important}</style><style id="v40">.tr-gift{background:#F6E9E5;padding:12px 14px;font-size:13.5px!important;line-height:1.5!important}</style></head>
+</style><style id="v33">.tr-prods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:16px 0 10px}.tr-prod{background:#fff;border:1px solid #ded8cd;border-top:3px solid var(--c);padding:14px}.tr-prod i{font:italic 13px Georgia,serif;color:var(--c)}.tr-prod b{display:block;font-weight:600;font-size:15px;margin-top:4px}.tr-prod small{color:#8C887E;font-size:12px}.tr-prod p{font-size:13.5px!important;line-height:1.45!important;margin:8px 0}.tr-prod em{font-style:normal;font-weight:600;font-size:14px}.tr-tot{text-align:right;font-size:15px}.tr-modo{font:11px ui-monospace,monospace;color:#B8B2A6;text-align:center;margin-top:18px}.tr-modo a{color:inherit}</style><style id="v36">.tr-close h3{letter-spacing:normal!important;font-family:Georgia,serif!important;font-size:23px!important;color:#262521!important;font-weight:400!important}.tr-scalp{border-left:3px solid #8A5049;background:#fff;padding:13px 16px;font-size:14px;line-height:1.5;margin:14px 0 0}.tr-psc{font-size:12.5px!important;color:#8A5049;line-height:1.4!important}</style><style id="otro">.otro-in{grid-column:1/-1}.otro-in input{width:100%;box-sizing:border-box;border:1px solid #c9c3b8;padding:13px;font-size:16px;background:#fff}</style><style id="v40">.tr-gift{background:#F6E9E5;padding:12px 14px;font-size:13.5px!important;line-height:1.5!important}</style></head>
 <body>
 
 <nav>
@@ -252,6 +252,7 @@
   function propiedades(b){
     var mo=motor(), routine='SA'+(mo.needMask?'M':'')+(mo.needCrema?'C':''), seg=segmento();
     var tags=seg.concat(['waitlist']); if(b.consent.panel) tags.push('panel_si');
+    var hz=hallazgos();
     var edadT=seg.find(function(t){return t.indexOf('edad_')===0;}), edad=edadT?edadT.slice(5):'';
     return {quiz_version:'prelanzamiento_v41',quiz_modo:'prelanzamiento',quiz_fecha:new Date().toISOString(),quiz_submission_id:b.submission_id,
       quiz_senales:answers.signos||[],quiz_porosidad:answers.porosidad||'',quiz_tratamientos:answers.tratamientos||[],quiz_calor:answers.calor||'',
@@ -259,7 +260,7 @@
       quiz_edad:edad,quiz_edad_min:edad===''?null:(edad==='m35'?0:Number(edad)),quiz_canas:seg.find(function(t){return t.indexOf('canas_')===0;})||'',
       quiz_eje:seg.filter(function(t){return t.indexOf('eje_')===0;}),quiz_buyer:seg.indexOf('buyer_A')>=0?'buyer_A':'',quiz_routine_code:routine,
       quiz_recomendacion:rutina().map(function(i){return P[i].id;}),quiz_result_needs:needsVisual(),quiz_result_findings:hallazgos().map(function(x){return x[0];}),
-      quiz_score_mask:mo.m,quiz_score_crema:mo.c,quiz_panel:!!b.consent.panel,quiz_tags:tags,consent_whatsapp:!!b.consent.whatsapp,quiz_origen:'pagina_prueba_shopify'};
+      quiz_score_mask:mo.m,quiz_score_crema:mo.c,quiz_panel:!!b.consent.panel,quiz_tags:tags,consent_whatsapp:!!b.consent.whatsapp,quiz_origen:'pagina_prueba_shopify',quiz_otro_senales:(b.otros||{}).signos||'',quiz_otro_tratamientos:(b.otros||{}).tratamientos||'',quiz_otro_futuros:(b.otros||{}).futuros||'',quiz_hallazgo_1_titulo:(hz[0]||[])[0]||'',quiz_hallazgo_1_texto:(hz[0]||[])[1]||'',quiz_hallazgo_2_titulo:(hz[1]||[])[0]||'',quiz_hallazgo_2_texto:(hz[1]||[])[1]||'',quiz_hallazgo_3_titulo:(hz[2]||[])[0]||'',quiz_hallazgo_3_texto:(hz[2]||[])[1]||''};
   }
   window.fetch=function(url,opts){
     var u=String(url);
@@ -445,7 +446,7 @@ const QS = [
    title:'¿Qué has notado en tu pelo últimamente?', help:'Elige todo lo que aplique.',
    options:[
      {v:'enredo',     l:'Difícil de desenredar',         s:'Se enreda más, cuesta peinar'},
-     {v:'quiebre',    l:'Veo hebras cortas o partidas', s:'No solo pelo completo que queda en el cepillo'},
+     {v:'quiebre',    l:'Se me cae más pelo', s:'Lo veo en el cepillo, la almohada o la ducha'},
      {v:'puntas',     l:'Puntas secas',                  s:'El largo está bien, las puntas no'},
      {v:'cuerpo',     l:'Con menos volumen',   s:'Lo noto más plano o con menos cuerpo'},
      {v:'opaco', hot:true,      l:'Opaco o sin brillo',            s:'Apagado, sin luminosidad'},
@@ -453,6 +454,7 @@ const QS = [
      {v:'textura', hot:true,    l:'Con otra textura',              s:'Más ondulado, o más lacio, que antes'},
      {v:'canas', hot:true,      l:'Con canas', s:'Ese pelo se siente distinto al resto'},
      {v:'frizz', hot:true,      l:'Con frizz',                     s:'Se esponja o se levantan pelitos cortos'},
+     {v:'otro',       l:'Otro', s:'Cuéntanos qué notas', otro:true},
      {v:'bien',       l:'Está bastante bien',            s:'Quiero cuidarlo y prevenir', solo:true}
    ]},
   {id:'porosidad', sec:'TU PELO', multi:false, cols:3,
@@ -469,7 +471,8 @@ const QS = [
      {v:'tinteRaices', l:'Tinte en las raíces',               s:'Para cubrir canas'},
      {v:'tinteTodo',   l:'Tinte en todo el largo'},
      {v:'mechas',      l:'Mechas, balayage o decoloración'},
-     {v:'keratina',    l:'Alisado o keratina'}
+     {v:'keratina',    l:'Alisado o keratina'},
+     {v:'otro',        l:'Otro', s:'Cuéntanos cuál', otro:true}
    ]},
   {id:'calor', sec:'TU RUTINA', multi:false, cols:2,
    title:'¿Cómo secas y peinas tu pelo?', help:'Piensa en una semana normal.',
@@ -526,6 +529,7 @@ const QS = [
      {v:'densidad',  l:'Veo menos densidad en la coronilla o las entradas', s:'Se ve más el cuero cabelludo al peinarme o con cierta luz'},
      {v:'puntasDia', l:'Al final del día mis puntas se ven secas',          s:'Y no quiero lavarme otra vez para que vuelva el brillo'},
      {v:'cueroPica', l:'Me pica o se me descama el cuero',                  s:'Molestia, tirantez o escamas cada cierto tiempo'},
+     {v:'otro',      l:'Otra cosa', s:'Cuéntanos qué', otro:true},
      {v:'nada',      l:'Nada de esto por ahora', solo:true}
    ]},
   {id:'edad', sec:'TU TRIBU', multi:false, cols:4, optional:true,
@@ -536,19 +540,19 @@ const QS = [
    ]}
 ];
 
-let step = 0, answers = {};
+let step = 0, answers = {}, OTROS = {};
 const ORDEN = {};  // orden barajado por sesión (excluyentes al final)
 function ordenar(q, opts){
   if(!q.shuffle) return opts;
   if(!ORDEN[q.id]){
     const sh=arr=>{ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; };
-    const frias=sh(q.options.filter(o=>!o.solo && !o.hot).map(o=>o.v));
-    const calientes=sh(q.options.filter(o=>!o.solo && o.hot).map(o=>o.v));
+    const frias=sh(q.options.filter(o=>!o.solo && !o.otro && !o.hot).map(o=>o.v));
+    const calientes=sh(q.options.filter(o=>!o.solo && !o.otro && o.hot).map(o=>o.v));
     /* las más marcadas (hot) nunca ocupan las dos primeras posiciones */
     ORDEN[q.id]=frias.slice(0,2).concat(sh(frias.slice(2).concat(calientes)));
   }
   const pos=v=>{ const i=ORDEN[q.id].indexOf(v); return i<0?999:i; };
-  return opts.slice().sort((x,y)=>(x.solo?1:0)-(y.solo?1:0) || pos(x.v)-pos(y.v));
+  return opts.slice().sort((x,y)=>(x.solo?2:x.otro?1:0)-(y.solo?2:y.otro?1:0) || pos(x.v)-pos(y.v));
 }
 const has = v => (answers.tratamientos||[]).indexOf(v) >= 0;
 const sig = v => (answers.signos||[]).indexOf(v) >= 0;
@@ -608,7 +612,7 @@ function segmento(){
 /* ══ RENDER ══ */
 function start(){ step=0; show('quiz'); render(); }
 function restart(){ submissionId='';
-  step=0; answers={}; for(const k in ORDEN) delete ORDEN[k];
+  step=0; answers={}; OTROS={}; for(const k in ORDEN) delete ORDEN[k];
   ['nombre','mail','wa'].forEach(id=>{ const el=document.getElementById(id); if(el){ el.value=''; el.disabled=false; }});
   ['c1','c2','c3','c4'].forEach(id=>{const el=document.getElementById(id);if(el)el.checked=false;});
   const m=document.getElementById('mailmsg'); if(m) m.textContent='';
@@ -639,6 +643,11 @@ function render(){
       ${q.img ? `<div class="pic">${o.pic}</div>` : `<div class="mark${q.multi?'':' round'}">${on?'✓':''}</div>`}
       <div><b>${o.l}</b>${o.s?`<em>${o.s}</em>`:''}</div></div>`;
   }).join('');
+  const ot=q.options.find(o=>o.otro);
+  if(ot && Array.isArray(a) && a.indexOf(ot.v)>=0){
+    box.querySelector('.opt[data-v="'+ot.v+'"]').insertAdjacentHTML('afterend','<div class="otro-in"><input id="qotro" maxlength="80" autocomplete="off" placeholder="Escríbelo aquí (opcional)"></div>');
+    const inp=document.getElementById('qotro'); inp.value=OTROS[q.id]||''; inp.oninput=()=>{ OTROS[q.id]=inp.value.slice(0,80); };
+  }
   box.querySelectorAll('.opt').forEach(el=> el.onclick = ()=>pick(q, el.dataset.v));
   chk();
 }
@@ -654,7 +663,7 @@ function pick(q, v){
       if(q.max && arr.length>=q.max) return;
       arr = arr.concat(v);
     }
-    answers[q.id] = arr; render();
+    answers[q.id] = arr; render(); if(opt.otro && arr.indexOf(v)>=0){ const i=document.getElementById('qotro'); if(i) i.focus(); }
   } else { answers[q.id] = v; render(); }
 }
 function chk(){ const q = QS[step], a = answers[q.id]; document.getElementById('qnext').disabled = q.multi ? !(a&&a.length) : !a; }
@@ -667,6 +676,7 @@ function skip(){ delete answers[QS[step].id]; advance(); }
 function setCb(id,on){ const el=document.getElementById(id); if(el)el.checked=on; }
 function cb(id){ return !!document.getElementById(id)?.checked; }
 function tg(e,id){ e.preventDefault(); setCb(id, !cb(id)); }
+function otrosTexto(){ const o={}; ['signos','tratamientos','futuros'].forEach(k=>{ const t=(OTROS[k]||'').trim().slice(0,80); if(t && (answers[k]||[]).indexOf('otro')>=0) o[k]=t; }); return o; }
 function guardar(){
   const msg = document.getElementById('mailmsg');
   const nombre = document.getElementById('nombre').value.trim();
@@ -683,7 +693,7 @@ function guardar(){
   const tags = segmento().concat(MODO==='launch'?[]:['waitlist']); if(cb('c4')) tags.push('panel_si');
   const canas = sig('canas') ? (has('tinteRaices')||has('tinteTodo') ? 'canas_cubre' : 'canas_natural') : '';
   const {needMask, needCrema} = motor();
-  const payload = { evento:'Quiz completado', nombre, email: mail, whatsapp: wa ? '+51'+wa : null, consent:{datos:true, correo:cb('c2'), whatsapp:cb('c3'), panel:cb('c4')}, answers, submission_id:quizSubmissionId(), modo:(MODO==='launch'?'lanzamiento':'prelanzamiento'), website:(document.getElementById('tr-website')||{}).value||'',
+  const payload = { evento:'Quiz completado', nombre, email: mail, whatsapp: wa ? '+51'+wa : null, consent:{datos:true, correo:cb('c2'), whatsapp:cb('c3'), panel:cb('c4')}, answers, otros:otrosTexto(), submission_id:quizSubmissionId(), modo:(MODO==='launch'?'lanzamiento':'prelanzamiento'), website:(document.getElementById('tr-website')||{}).value||'',
     propiedades:{ quiz_version:(MODO==='launch'?'lanzamiento_v41':'prelanzamiento_v41'), quiz_fecha:new Date().toISOString(), quiz_submission_id:quizSubmissionId(), quiz_schema_version:'v33_10preguntas', quiz_scoring_version:'v38', quiz_result_needs:needsVisual(), quiz_result_findings:hallazgos(), quiz_score_mask:motor().m, quiz_score_crema:motor().c, quiz_routine_code:(!needMask&&!needCrema?'SA':needMask&&!needCrema?'SAM':!needMask&&needCrema?'SAC':'SAMC'),
       quiz_senales:answers.signos||[], quiz_porosidad:answers.porosidad||'', quiz_tratamientos:answers.tratamientos||[],
       quiz_calor:answers.calor||'', quiz_tipo:answers.tipo||'', quiz_grosor:answers.grosor||'', quiz_cuero:answers.cuero||'',
@@ -778,9 +788,9 @@ function hallazgos(){
  else if(has('tinteRaices'))
   put('chem',85,'Retocas tus raíces','Cada retoque también toca parte del largo y lo va resecando. Por eso necesita reparación suave y un lavado que cuide el color.');
  if(sig('quiebre'))
-  put('break',98,'Ves hebras cortas o partidas','Tu pelo está más frágil y se quiebra a media hebra. Por eso necesita fuerza y reparación.');
+  put('break',98,'Notas que se te cae más pelo','Mira el pelo que queda en el cepillo. Si son hebras cortas o partidas, sin la bolita blanca en la punta, es quiebre: tu pelo está frágil, y eso sí lo podemos cuidar. Si son pelos completos, con la bolita blanca de la raíz, y en cantidad, consúltalo con un dermatólogo.');
  if(pri('quiebre')&&!sig('quiebre'))
-  put('brush',85,'Te preocupa el pelo que ves en el cepillo','Si son hebras cortas o partidas, es quiebre, y eso se puede cuidar. Si salen pelos completos y en cantidad, consúltalo con un dermatólogo.');
+  put('brush',85,'Te preocupa el pelo que ves en el cepillo','Si son hebras cortas o partidas, sin la bolita blanca en la punta, es quiebre, y eso se puede cuidar. Si son pelos completos, con la bolita blanca de la raíz, y en cantidad, consúltalo con un dermatólogo.');
  if(poros)
   put('poros',95,'Tu pelo pierde la suavidad rápido','Tu pelo absorbe el agua rápido, pero también la pierde rápido. Por eso necesita hidratación y reparación.');
  if(sig('secoTodo'))
@@ -807,6 +817,7 @@ function hallazgos(){
   put('body',60,sig('cuerpo')?'Notas menos volumen':'Quieres más cuerpo','Cada hebra puede nacer más delgada, y los productos pesados la aplastan más. Necesita cuerpo, sin peso.');
  if(has('keratina')&&!chem&&!sig('bien'))
   put('straightening',50,'Llevas alisado o keratina','Los sulfatos acortan la duración del alisado. Por eso necesita una limpieza sin sulfatos y reparación suave.');
+ if(!l.length&&sig('otro'))put('otro',10,'Nos contaste algo más','Lo leemos con atención. Mientras tanto, tu pelo necesita una rutina suave y constante.');
  if(!l.length)put('healthy',10,'Tu pelo está bien hoy','Es el mejor momento para cuidarlo: mantener es más fácil que reparar. Necesita una rutina suave y constante.');
  l.sort((x,y)=>y.weight-x.weight || x.key.localeCompare(y.key));
  // Su prioridad n.º 1 va primero, si tiene tarjeta.
@@ -815,7 +826,7 @@ function hallazgos(){
  return l.slice(0,3).map(x=>[x.title,x.body]);
 }
 function pintarResultado(){
- document.getElementById('tr-multi-note').hidden=(answers.signos||[]).filter(x=>x!=='bien').length<3;
+ document.getElementById('tr-multi-note').hidden=(answers.signos||[]).filter(x=>x!=='bien'&&x!=='otro').length<3;
  document.getElementById('tr-needs').innerHTML=needsVisual().map(x=>'<span class="tr-need">'+NEED_LABELS[x]+'</span>').join('');
  document.getElementById('tr-tiles').innerHTML=rutina().map((_,i)=>'<div class="tr-tile"><b>'+String(i+1).padStart(2,'0')+'</b><span></span></div>').join('');
  document.getElementById('tr-tiles').style.gridTemplateColumns='repeat('+rutina().length+',1fr)';
