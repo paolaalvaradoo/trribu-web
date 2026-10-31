@@ -738,7 +738,7 @@ function rutina(){ const {needMask,needCrema}=motor(); const r=[0,1]; if(needMas
 const NEED_LABELS = {
  proteccion:'Cuidado ante el calor', textura:'Cuidado de tu textura', canas:'Cuidado de las canas', fibra:'Cuidado de la fibra',
  reparacion:'Reparación', hidratacion:'Hidratación', suavidad:'Suavidad',
- frizz:'Control del frizz', manejo:'Manejabilidad', ondas:'Definición y movimiento',
+ frizz:'Control del frizz', frizz_calor:'Control del frizz y del calor', manejo:'Manejabilidad', ondas:'Definición y movimiento',
  brillo:'Brillo', volumen:'Cuerpo y volumen', cuero:'Cuidado del cuero cabelludo',
  mantenimiento:'Cuidado constante', desenredo:'Desenredado fácil', color:'Cuidado de la fibra teñida'
 };
@@ -750,9 +750,10 @@ function needsVisual(){
  const dry=sig('secoTodo')||sig('puntas')||poros;
  if((chem||sig('quiebre'))&&(mm.needMask||!sig('bien')))add('reparacion');
  if(dry||pri('suave'))add('hidratacion');
- if((sig('frizz')||pri('frizz')) && mm.needCrema)add('frizz');
+ const calor=answers.calor==='diario'||answers.calor==='plancha';
+ if((sig('frizz')||pri('frizz')) && mm.needCrema)add(calor?'frizz_calor':'frizz');
  if(pri('ondas')&&mm.needCrema)add('ondas');
- if(answers.calor==='diario' && mm.needCrema)add('proteccion');
+ if(calor && mm.needCrema && !n.includes('frizz_calor'))add('proteccion');
  if((sig('enredo')||pri('enredo'))&&!n.includes('hidratacion'))add('desenredo');
  if((sig('opaco')||pri('brillo'))&&!n.includes('hidratacion'))add('brillo');
  if((sig('cuerpo')||pri('cuerpo'))&&!n.includes('hidratacion'))add('volumen');
@@ -764,6 +765,10 @@ function needsVisual(){
  if(pri('color')&&n.length<3)add('color');
  if((answers.cuero==='seco'||answers.cuero==='varia')&&!n.length)add('cuero');
  if(!n.length)add('mantenimiento');
+ const MASC_N=['reparacion','hidratacion'], CREMA_N=['frizz','frizz_calor','ondas','proteccion','desenredo','brillo','textura','manejo'];
+ const asegura=(ok,k,keep)=>{ if(ok.some(x=>n.includes(x))) return; if(n.length<3){ n.push(k); return; } for(let i=n.length-1;i>=0;i--){ if(!keep.includes(n[i])){ n[i]=k; return; } } };
+ if(mm.needMask) asegura(MASC_N, (chem||sig('quiebre')||has('keratina')||pri('quiebre'))?'reparacion':'hidratacion', []);
+ if(mm.needCrema) asegura(CREMA_N, calor&&(sig('frizz')||pri('frizz'))?'frizz_calor':calor?'proteccion':(sig('frizz')||pri('frizz'))?'frizz':(pri('ondas')||answers.tipo==='rizado'||answers.tipo==='crespo')?'ondas':sig('textura')?'textura':(sig('enredo')||pri('enredo'))?'desenredo':(sig('opaco')||pri('brillo'))?'brillo':pri('pelitos')?'manejo':'frizz', mm.needMask?MASC_N:[]);
  return n;
 }
 // V33 · Tarjetas en voz TRRIBÚ: qué le pasa a su pelo → qué necesita. Primera tarjeta = su prioridad n.º 1 (P8).
@@ -792,7 +797,7 @@ function hallazgos(){
  if(pri('quiebre')&&!sig('quiebre'))
   put('brush',85,'Te preocupa el pelo que ves en el cepillo','Si son hebras cortas o partidas, sin la bolita blanca en la punta, es quiebre, y eso se puede cuidar. Si son pelos completos, con la bolita blanca de la raíz, y en cantidad, consúltalo con un dermatólogo.');
  if(poros)
-  put('poros',95,'Tu pelo pierde la suavidad rápido','Tu pelo absorbe el agua rápido, pero también la pierde rápido. Por eso necesita hidratación y reparación.');
+  put('poros',95,'Tu pelo pierde la suavidad rápido','Tu pelo absorbe el agua rápido, pero también la pierde rápido. Por eso necesita '+(motor().needMask?'hidratación y reparación.':'hidratación en cada lavado.'));
  if(sig('secoTodo'))
   put('dry',80,'Lo sientes seco en todo el largo','Tu pelo retiene menos agua y se siente rígido. Por eso necesita hidratación en cada lavado.');
  else if(sig('puntas'))
@@ -806,7 +811,7 @@ function hallazgos(){
  else if(sig('textura'))
   put('texture',67,'Notas tu pelo con otra textura','El pelo nuevo puede nacer con otra forma. No hay que corregirlo: necesita un cuidado para la textura que tiene hoy.');
  if(answers.calor==='diario'||answers.calor==='plancha')
-  put('heat',78,'Usas calor con frecuencia',motor().needMask?'El calor frecuente reseca tu pelo y lo vuelve más frágil. No tienes que dejarlo: solo necesita hidratación y reparación.':(motor().needCrema?'El calor frecuente reseca tu pelo. No tienes que dejarlo: solo necesita hidratación y un cuidado que lo ayude a proteger antes de usarlo.':'El calor frecuente reseca tu pelo. No tienes que dejarlo: solo necesita más hidratación.'));
+  put('heat',78,'Usas calor con frecuencia',motor().needMask&&motor().needCrema?'El calor frecuente reseca tu pelo y lo vuelve más frágil. No tienes que dejarlo: necesita reparación y un cuidado que lo ayude a proteger antes de usarlo.':motor().needMask?'El calor frecuente reseca tu pelo y lo vuelve más frágil. No tienes que dejarlo: solo necesita hidratación y reparación.':(motor().needCrema?'El calor frecuente reseca tu pelo. No tienes que dejarlo: solo necesita hidratación y un cuidado que lo ayude a proteger antes de usarlo.':'El calor frecuente reseca tu pelo. No tienes que dejarlo: solo necesita más hidratación.'));
  if(pri('canas')||sig('canas'))
   put('grey',63,pri('canas')?'Quieres tus canas más suaves':'Tienes canas','Las canas suelen sentirse más ásperas y brillan menos. No son un problema: solo piden suavidad y brillo.');
  if(sig('enredo')||pri('enredo'))
@@ -823,7 +828,19 @@ function hallazgos(){
  // Su prioridad n.º 1 va primero, si tiene tarjeta.
  const p0=(answers.prio||[])[0];
  if(p0&&PRIO_CARD[p0]){ const keys=PRIO_CARD[p0].split('|'); const k=l.findIndex(x=>keys.includes(x.key)); if(k>0){ const [c]=l.splice(k,1); l.unshift(c);} }
- return l.slice(0,3).map(x=>[x.title,x.body]);
+ const mo=motor(), top=l.slice(0,3), resto=l.slice(3);
+ const MASC_C=['chem','break','brush','poros','dry','straightening'].concat(mo.needMask?['heat','healthy']:[]), CREMA_C=['frizz','pelitos','ondas','texture','detangle','shine'].concat(mo.needCrema?['heat']:[]);
+ const cubre=(keys,keep)=>{ if(top.some(x=>keys.includes(x.key))) return; const c=resto.find(x=>keys.includes(x.key)); if(!c) return;
+   for(let i=top.length-1;i>=1;i--){ if(!keep.includes(top[i].key)||top.filter(x=>keep.includes(x.key)).length>1){ top[i]=c; return; } } if(top.length<3) top.push(c); };
+ if(mo.needMask) cubre(MASC_C, []);
+ if(mo.needCrema) cubre(CREMA_C, mo.needMask?MASC_C:[]);
+ // Usa plancha o calor diario y la rutina trae La Crema: si arriba no sale la protección, la tarjeta del calor entra (nunca reemplaza su prioridad n.º 1).
+ const nv=needsVisual(), hc=l.find(x=>x.key==='heat');
+ if(mo.needCrema && hc && !top.includes(hc) && !nv.includes('frizz_calor') && !nv.includes('proteccion')){
+   const ok=t=>(!mo.needMask||t.some(x=>MASC_C.includes(x.key)));
+   for(let i=top.length-1;i>=1;i--){ const t=top.slice(); t[i]=hc; if(ok(t)){ top.splice(0,top.length,...t); break; } }
+ }
+ return top.map(x=>[x.title,x.body]);
 }
 function pintarResultado(){
  document.getElementById('tr-multi-note').hidden=(answers.signos||[]).filter(x=>x!=='bien'&&x!=='otro').length<3;
