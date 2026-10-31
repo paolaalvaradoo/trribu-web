@@ -1,0 +1,871 @@
+{%- layout none -%}
+{%- comment -%}
+  PÁGINA DE PRUEBA del quiz V41 (fuente: repo trribu-quiz, public/quiz.html).
+  Envía directo a Klaviyo con la API pública, sin servidor ni Airtable. Solo para probar; no publicar.
+{%- endcomment -%}
+{% raw %}<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex"><title>TRRIBÚ · Quiz · V40</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --tinta:#2B2A2E; --tinta2:#8C887E; --linea:#E6E2DA; --linea2:#EDEAE3;
+    --papel:#fff; --papel2:#FBFAF8; --gris:#A8A49B;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--papel);color:var(--tinta);font-family:'Poppins',sans-serif;font-weight:300;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--tinta);color:#fff}
+
+  nav{display:flex;align-items:center;justify-content:space-between;padding:18px 26px;border-bottom:1px solid var(--linea2)}
+  .brand{font-family:'Poppins',sans-serif;font-weight:500;letter-spacing:.34em;font-size:14px}
+  .tagline{font-family:Georgia,serif;font-size:14px;color:var(--tinta2);font-style:italic}
+
+  .bar{height:2px;background:var(--linea2)}
+  .bar i{display:block;height:2px;background:var(--tinta);width:0;transition:width .4s ease}
+
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px}
+  .stage{display:none;animation:fade .4s ease}
+  .stage.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  h1{font-family:Georgia,serif;font-weight:300;font-size:42px;line-height:1.12;margin:0 0 16px}
+  h2{font-family:Georgia,serif;font-weight:300;font-size:30px;line-height:1.2;margin:0 0 10px}
+  h3{font-family:'Poppins',sans-serif;font-weight:500;font-size:11px;letter-spacing:.2em;color:var(--tinta2);margin:0 0 14px}
+  .lead{font-size:16px;line-height:1.7;color:var(--tinta2);margin:0 0 30px}
+  .step-label{font-family:'Poppins',sans-serif;font-size:11px;letter-spacing:.2em;color:var(--tinta2);margin-bottom:18px}
+
+  .opts{display:grid;gap:12px;margin-top:28px}
+  .opts.c2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .opts.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .opt{display:flex;gap:13px;align-items:flex-start;border:1px solid var(--linea);background:var(--papel);
+       padding:18px 20px;cursor:pointer;transition:all .2s ease}
+  .opt:hover{border-color:var(--tinta);transform:translateY(-2px)}
+  .opt.on{border-color:var(--tinta);background:var(--papel2)}
+  .mark{width:20px;height:20px;flex:none;margin-top:2px;display:flex;align-items:center;justify-content:center;
+        font-size:12px;border:1px solid #CFCAC0;color:#fff;transition:all .2s}
+  .mark.round{border-radius:50%}
+  .opt.on .mark{background:var(--tinta);border-color:var(--tinta)}
+  .opt b{display:block;font-weight:500;font-size:15px;line-height:1.35}
+  .opt em{display:block;font-style:normal;font-size:13px;line-height:1.5;color:var(--tinta2);margin-top:5px}
+
+  .nav-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:34px 0 60px;flex-wrap:wrap}
+  .btn{font-family:'Poppins',sans-serif;font-size:12.5px;letter-spacing:.14em;border:none;padding:15px 34px;cursor:pointer;transition:all .25s}
+  .btn-solid{background:var(--tinta);color:#fff}
+  .btn-solid:hover{background:#3A3630}
+  .btn-solid[disabled]{background:var(--linea);color:var(--gris);cursor:default}
+  .btn-line{background:none;border:1px solid var(--linea);color:var(--tinta2)}
+  .btn-line:hover{background:var(--tinta);color:#fff;border-color:var(--tinta)}
+  .link{background:none;border:none;font-family:'Poppins',sans-serif;font-size:12.5px;letter-spacing:.1em;color:var(--tinta2);cursor:pointer;padding:0}
+  .hint{font-size:12.5px;color:var(--gris)}
+
+  /* RESULTADO */
+  .pills{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+  .pill{border:1px solid var(--linea);padding:7px 14px;font-size:13px;color:var(--tinta2)}
+  .pill.hot{background:var(--tinta);border-color:var(--tinta);color:#fff}
+  .diag{font-size:15.5px;line-height:1.8;color:#3A3630}
+  .sec{padding:34px 0;border-top:1px solid var(--linea2)}
+
+  .nota{font-size:12px;line-height:1.7;color:var(--gris);padding:20px 0 60px}
+
+  /* CAPTURA DE CORREO */
+  .mailbox{border:1px solid var(--tinta);padding:30px}
+  .mailrow{display:flex;gap:12px;flex-wrap:wrap}
+  .mailrow input{flex:1;min-width:220px;border:1px solid var(--linea);padding:15px 16px;
+    font-family:'Poppins',sans-serif;font-size:15px;color:var(--tinta);background:var(--papel);outline:none}
+  .mailrow input:focus{border-color:var(--tinta)}
+  .check{display:flex;align-items:center;gap:10px;margin-top:16px;cursor:pointer;font-size:14px;color:var(--tinta2)}
+  .check .box{width:18px;height:18px;flex:none;border:1px solid var(--tinta);background:var(--tinta);
+    color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px}
+  .check .box.off{background:transparent;border-color:#CFCAC0;color:transparent}
+  .mailmsg{font-size:13.5px;margin-top:16px;color:var(--tinta2);min-height:18px}
+
+  .devtoggle{background:none;border:none;font-family:ui-monospace,monospace;font-size:11px;
+    color:#C9C4B8;cursor:pointer;padding:0;margin-top:30px}
+  .devbox{display:none;border:1px dashed #C9A227;background:#FFFDF5;padding:16px;margin-top:12px;
+    font-family:ui-monospace,monospace;font-size:11.5px;line-height:1.7;color:#6B5A18}
+
+  footer{border-top:1px solid var(--linea2);padding:22px;text-align:center;font-size:11.5px;color:var(--gris)}
+
+  @media(max-width:640px){
+    h1{font-size:31px}h2{font-size:25px}
+    .opts.c2,.opts.c3{grid-template-columns:1fr}
+    nav{flex-direction:column;gap:6px;text-align:center}
+  }
+
+  /* V4 · campos de captura */
+  .field{margin-top:18px}
+  .field label{display:block;font-family:'Poppins',sans-serif;font-size:10.5px;letter-spacing:.2em;color:var(--tinta2);margin-bottom:6px}
+  .field input{width:100%;border:none;border-bottom:1px solid var(--tinta);padding:10px 0;background:transparent;
+    font-family:'Poppins',sans-serif;font-size:16px;color:var(--tinta);outline:none}
+  .field input:disabled{color:var(--tinta2)}
+  .wa{display:flex;gap:10px;align-items:center;border-bottom:1px solid var(--tinta)}
+  .wa span{font-size:16px;color:var(--tinta)}
+  .wa input{border-bottom:none}
+  .chk{display:flex;gap:12px;align-items:flex-start;margin-top:14px;cursor:pointer;font-size:14px;line-height:1.5;color:#3A3630}
+  .chk .cb{width:18px;height:18px;flex:none;margin-top:2px;border:1px solid #CFCAC0;display:flex;align-items:center;justify-content:center;font-size:11px;color:transparent}
+  .chk .cb.on{background:var(--tinta);border-color:var(--tinta);color:#fff}
+  .chk a{color:var(--tinta)}
+  .founder{display:flex;gap:12px;margin-top:22px;padding-top:18px;border-top:1px solid var(--linea2);font-size:13.5px;line-height:1.6;color:var(--tinta2)}
+  .founder .flabel{display:block;font-family:'Poppins',sans-serif;font-size:10.5px;letter-spacing:.2em;color:var(--tinta);margin-bottom:4px}
+
+  /* V6 */
+  .opt.img{flex-direction:column;align-items:stretch;gap:10px;padding:14px}
+  .opt.img .pic{height:96px;background:var(--papel2);display:flex;align-items:center;justify-content:center}
+  .opt.img .pic svg{height:88px;width:100%}
+  .opt.img .mark{display:none}
+  .opts.c4{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .opts.c5{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .opt.img b{font-size:14px}
+  @media(max-width:600px){.opts.c5,.opts.c4,.opts.c3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  .eyebrow{font-family:'Poppins',sans-serif;font-size:10.5px;letter-spacing:.24em;color:var(--tinta2);margin-bottom:10px;display:block}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:6px}
+  .card{background:var(--papel2);border:1px solid var(--linea);padding:20px}
+  .card b{display:block;font-weight:500;font-size:16px;margin-bottom:8px}
+  .card p{margin:0;font-size:14px;line-height:1.65;color:#3A3630}
+  .extra{font-size:14.5px;line-height:1.7;color:#3A3630;margin:18px 0 0} .extra b{font-weight:500;color:var(--tinta)}
+  .field{margin-top:18px}
+  .field label{display:block;font-family:'Poppins',sans-serif;font-size:10.5px;letter-spacing:.2em;color:var(--tinta2);margin-bottom:6px}
+  .field input{width:100%;border:none;border-bottom:1px solid var(--tinta);padding:10px 0;background:transparent;font-family:'Poppins',sans-serif;font-size:16px;color:var(--tinta);outline:none}
+  .field input:disabled{color:var(--tinta2)}
+  .wa{display:flex;gap:10px;align-items:center;border-bottom:1px solid var(--tinta)} .wa span{font-size:16px} .wa input{border-bottom:none}
+  .chk{display:flex;gap:12px;align-items:flex-start;margin-top:14px;cursor:pointer;font-size:14px;line-height:1.5;color:#3A3630}
+  .chk .cb{width:18px;height:18px;flex:none;margin-top:2px;border:1px solid #CFCAC0;display:flex;align-items:center;justify-content:center;font-size:11px;color:transparent}
+  .chk .cb.on{background:var(--tinta);border-color:var(--tinta);color:#fff}
+  .chk a{color:var(--tinta)}
+  .legal{font-size:12px;line-height:1.6;color:var(--gris);margin-top:16px}
+  .founder{display:flex;gap:12px;margin-top:22px;padding-top:18px;border-top:1px solid var(--linea2);font-size:13.5px;line-height:1.6;color:var(--tinta2)}
+  .founder .flabel{display:block;font-family:'Poppins',sans-serif;font-size:10.5px;letter-spacing:.2em;color:var(--tinta);margin-bottom:4px}
+  .pie{font-size:12.5px;line-height:1.7;color:var(--gris);margin-top:28px}
+  /* V11 */
+  .rsec{border-top:1px solid var(--linea2);padding:26px 0}
+  .rsec h3{margin-bottom:14px}
+  .vemos{font-family:Georgia,serif;font-size:21px;line-height:1.45;color:var(--tinta);margin:0}
+  .infl{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .infl .card{background:#fff;padding:18px 20px}
+  .infl .card b{font-size:14px;font-family:'Poppins',sans-serif}
+  .infl .card p{font-size:13.5px;color:#5A564F}
+  .needbox{background:var(--papel2);padding:26px 28px}
+  .rhead{text-align:center;max-width:640px;margin:0 auto;padding:10px 0 22px}
+  .rhead h1{margin-bottom:6px}
+  .rsub{font-family:Georgia,serif;font-style:italic;font-size:22px;color:var(--tinta);margin:0 0 18px}
+  .rpar{font-size:15.5px;line-height:1.75;color:#3A3630;margin:0}
+  .needbox .tile{background:#fff;border:1px solid var(--linea)}
+  .need p{font-size:15.5px;line-height:1.65;color:var(--tinta);margin:0 0 14px}
+  .tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:14px 0 18px}
+  .tile{background:var(--papel2);padding:22px 0 18px;text-align:center}
+  .tile .n{font-family:'Poppins',sans-serif;font-size:30px;color:var(--tinta);line-height:1;filter:blur(1.2px)}
+  .tile .blur{display:block;height:9px;width:46%;margin:10px auto 0;background:#B9B4AA;border-radius:4px;filter:blur(3px)}
+  @media(max-width:600px){.tiles{grid-template-columns:repeat(2,1fr)}}
+
+  /* LANZAMIENTO V1 */
+  .ptiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0 16px}
+  .pt{all:unset;box-sizing:border-box;cursor:pointer;background:#fff;border:1px solid var(--linea);padding:16px 14px 14px;display:flex;flex-direction:column;gap:6px;opacity:.55;transition:all .2s}
+  .pt.on{opacity:1;border:2px solid var(--c);padding:15px 13px 13px}
+  .pt .pn{align-self:flex-start;background:var(--c);color:#fff;font:600 11px 'Poppins',sans-serif;padding:3px 7px}
+  .pt b{font:500 14.5px 'Poppins',sans-serif;color:var(--tinta)}
+  @media(max-width:640px){.pt b{font-size:13px}.pt{padding:14px 10px 12px}.pt.on{padding:13px 9px 11px}}
+  .pt small{font-size:12.5px;line-height:1.45;color:#5A564F;min-height:54px}
+  .pt em{font-style:normal;font-weight:500;font-size:14px}
+  .pt i{font-style:normal;font-size:11.5px;letter-spacing:.06em;color:var(--c);font-weight:600}
+  .gift{background:#F6E9E5;padding:12px 14px;font-size:14px;line-height:1.5}
+  .gift b{font-weight:600}
+  .addmsg{font-size:13.5px;color:#5C7A3A;text-align:center;min-height:18px;margin:10px 0 0}
+  @media(max-width:640px){.ptiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  .spin{width:34px;height:34px;margin:0 auto;border:2px solid var(--linea);border-top-color:var(--tinta);border-radius:50%;animation:sp 0.9s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .mailbox.gate{text-align:left}
+  #r-mailsec.solo{border-top:none;padding-top:30px;max-width:520px;margin:0 auto}
+</style>
+<style>
+.tr-panel{max-width:660px;margin:46px auto 70px;padding:36px 28px;background:#f9f7f3;color:#262521;border:1px solid #ded8cd}.tr-panel h1{font-size:clamp(29px,5vw,43px);line-height:1.14;margin:14px 0 18px}.tr-panel h2{font-family:Georgia,serif;font-size:25px;line-height:1.24;margin:0 0 18px}.tr-panel h3{font-family:Georgia,serif;font-size:23px;margin:0 0 10px}.tr-panel p{line-height:1.65}.tr-small,.tr-disclaimer{font-size:13px;color:#69645c;line-height:1.55}.tr-label,.tr-form>label:not(.tr-check){font-size:11px;letter-spacing:.11em;font-weight:700;margin:14px 0 7px;display:block}.tr-panel input[type=email],.tr-panel input:not([type]) , .tr-panel input[type=tel]{width:100%;border:1px solid #c9c3b8;padding:15px 13px;background:white;border-radius:0;font-size:16px;color:#282521;box-sizing:border-box}.tr-full{width:100%;margin-top:13px;min-height:48px}.tr-msg{font-size:13px;min-height:16px;color:#a43e32}.tr-wants{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 10px}.tr-want{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:#38352f}.tr-want::before{content:"✓";font-weight:700;color:#6e665c}.tr-needs{display:flex;flex-wrap:wrap;gap:8px;margin:25px 0}.tr-need{border-radius:25px;background:#e9e4dc;padding:10px 15px;font-size:14px;font-weight:600}.tr-rule{border:0;border-top:1px solid #d9d2c7;margin:29px 0}.tr-finding{border:1px solid #d8d1c7;margin:10px 0;background:#fff}.tr-finding summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:15px;padding:18px 15px}.tr-finding summary::-webkit-details-marker{display:none}.tr-num{font:italic 23px Georgia,serif;color:#92897d}.tr-ftitle{font-size:15px;font-weight:600;flex:1}.tr-chevron{font-size:20px;color:#8a8177}.tr-finding[open] .tr-chevron{transform:rotate(180deg)}.tr-fbody{font-size:14px;color:#514b45;line-height:1.65;padding:0 18px 18px 50px}.tr-close{background:#ede9e2;padding:25px 20px;margin-top:32px}.tr-close p{font-size:14px}.tr-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:20px 0}.tr-tile{background:#e0dbd2;border:1px solid #cfc6bb;min-height:108px;position:relative;padding:10px}.tr-tile b{font:italic 20px Georgia,serif;color:#79746c}.tr-tile span{position:absolute;left:20%;right:20%;top:40%;height:30px;background:#b7b0a6;filter:blur(13px);border-radius:12px}.tr-join{margin-top:42px}.tr-form{margin-top:16px}.tr-check{display:flex!important;align-items:flex-start;gap:10px;margin:15px 0!important;font-size:13px!important;letter-spacing:normal!important;font-weight:400!important;line-height:1.5}.tr-check input{margin-top:3px;flex:none;accent-color:#302d29}.tr-check a{color:inherit;text-decoration:underline}.tr-disclaimer{margin-top:32px}.tr-tagline{text-align:center;font:italic 18px Georgia,serif;margin:28px 0}.tr-gate{max-width:560px}.tr-gate h1{font-size:33px}@media(max-width:520px){.tr-panel{padding:24px 18px;margin:18px 0 40px}.tr-tiles{gap:5px}.tr-tile{min-height:84px;padding:7px}.tr-finding summary{gap:9px}.tr-fbody{padding-left:40px}}
+</style>
+<style>.tr-wants[hidden]{display:none!important}.tr-needs{margin:18px 0 26px}.tr-need{padding:13px 17px;font-size:15px}.tr-panel .tr-fbody{line-height:1.55}.tr-result .tr-small{line-height:1.5}</style><style>
+.tr-panel{max-width:690px;padding:31px 27px}.tr-panel h1{margin:11px 0 15px}.tr-panel h2{font-size:22px}.tr-panel p{line-height:1.48}.tr-needs{margin:14px 0 19px}.tr-need{padding:12px 16px;font-size:15px}.tr-rule{margin:24px 0}.tr-finding{margin:8px 0}.tr-finding summary{padding:14px}.tr-fbody{line-height:1.48;padding:0 18px 16px 50px}.tr-close{padding:22px 19px;margin-top:24px}.tr-close h3{margin:8px 0}.tr-close .eyebrow{font-size:11px}.tr-tiles{margin:15px 0 0}.tr-tile{min-height:80px}.tr-join{margin-top:26px}.tr-disclaimer{margin-top:23px}.tr-tagline{margin:18px 0}
+@media(max-width:520px){.tr-panel{padding:22px 17px}.tr-needs{gap:7px}.tr-need{font-size:13px;padding:9px 12px}.tr-tiles{gap:6px}.tr-tile{min-height:69px}.tr-fbody{padding-left:42px}}
+</style><style id="v33">.tr-prods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:16px 0 10px}.tr-prod{background:#fff;border:1px solid #ded8cd;border-top:3px solid var(--c);padding:14px}.tr-prod i{font:italic 13px Georgia,serif;color:var(--c)}.tr-prod b{display:block;font-weight:600;font-size:15px;margin-top:4px}.tr-prod small{color:#8C887E;font-size:12px}.tr-prod p{font-size:13.5px!important;line-height:1.45!important;margin:8px 0}.tr-prod em{font-style:normal;font-weight:600;font-size:14px}.tr-tot{text-align:right;font-size:15px}.tr-modo{font:11px ui-monospace,monospace;color:#B8B2A6;text-align:center;margin-top:18px}.tr-modo a{color:inherit}</style><style id="v36">.tr-close h3{letter-spacing:normal!important;font-family:Georgia,serif!important;font-size:23px!important;color:#262521!important;font-weight:400!important}.tr-scalp{border-left:3px solid #8A5049;background:#fff;padding:13px 16px;font-size:14px;line-height:1.5;margin:14px 0 0}.tr-psc{font-size:12.5px!important;color:#8A5049;line-height:1.4!important}</style><style id="v40">.tr-gift{background:#F6E9E5;padding:12px 14px;font-size:13.5px!important;line-height:1.5!important}</style></head>
+<body>
+
+<nav>
+  <div class="brand">TRRIBÚ</div>
+  <div class="tagline">Para el pelo que está cambiando.</div>
+</nav>
+<div class="bar"><i id="bar"></i></div>
+
+<div class="wrap">
+
+<!-- INTRO -->
+<section class="stage on" id="st-intro">
+  <div style="padding:80px 0 40px">
+    <h1>Hablemos de tu pelo. Del que tienes hoy.</h1>
+    <hr style="border:none;border-top:1px solid var(--tinta);margin:18px 0 26px">
+    <p class="lead" style="color:var(--tinta);font-size:19px;font-family:Georgia,serif;font-weight:600;line-height:1.45;margin-bottom:14px">El pelo puede cambiar. Y también puede cambiar lo que necesita.</p>
+    <p class="lead" style="color:var(--tinta);font-size:19px;font-family:Georgia,serif;font-weight:600;line-height:1.45">Cuéntanos cómo es tu pelo, qué estás notando y qué te gustaría cuidar primero. Al final te compartiremos una orientación personalizada.</p>
+    <div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn btn-solid" onclick="start()">CONVERSEMOS</button></div>
+    <p class="pie" style="text-align:right"><span class="eyebrow" style="margin:0">DIEZ PREGUNTAS · A TU RITMO</span></p>
+  </div>
+</section>
+
+<!-- QUIZ: P5 requiere fotografías reales de cinco texturas, pendientes de aprobación -->
+<section class="stage" id="st-quiz">
+  <div style="padding:56px 0 0">
+    <div class="step-label" id="steplabel"></div>
+    <span class="eyebrow" id="qsec"></span>
+    <h2 id="qtitle"></h2>
+    <p class="lead" id="qhelp" style="margin-bottom:0"></p>
+    <div class="opts" id="qopts"></div>
+    <div class="nav-row">
+      <button class="link" onclick="back()">← ATRÁS</button>
+      <span class="hint" id="qhint"></span>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button class="link" id="qskip" onclick="skip()" style="display:none">SALTAR</button>
+        <button class="btn btn-solid" id="qnext" onclick="next()">CONTINUAR</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTADO -->
+<section class="stage" id="st-result"><div class="tr-panel tr-result"><span class="eyebrow">TU RESULTADO</span><h1>Lo que necesita tu pelo</h1><div id="tr-needs" class="tr-needs"></div><p id="tr-multi-note" class="tr-small" hidden>Nos cuentas que notas varios cambios a la vez. Por eso priorizamos lo más importante.</p><hr class="tr-rule"><div id="tr-wants" class="tr-wants" hidden></div><h2>Esto es lo que identificamos</h2><div id="tr-findings"></div><p id="tr-scalp" class="tr-scalp" hidden></p><div class="tr-close"><span class="eyebrow">TU RECOMENDACIÓN ESTÁ LISTA</span><h3>Te la revelamos primero a ti.</h3><p>Entra a la lista y recibirás tu recomendación completa cuando llegue el momento de presentarla.</p><div class="tr-tiles" id="tr-tiles" aria-label="Productos reservados hasta el lanzamiento"></div></div><div class="tr-join" id="r-mailsec"><span class="eyebrow">LISTA DE ESPERA</span><h2>Quiero conocer mi recomendación</h2><div class="tr-form"><label for="nombre">NOMBRE</label><input id="nombre" autocomplete="given-name" placeholder="¿Cómo te llamas?"><label for="mail">CORREO</label><input id="mail" type="email" autocomplete="email" placeholder="tu@correo.com"><label for="wa">CELULAR / WHATSAPP (OPCIONAL)</label><input id="wa" autocomplete="tel-national" inputmode="tel" placeholder="9XX XXX XXX"><label class="tr-check"><input type="checkbox" id="c1"> <span>Acepto la <a href="#" onclick="event.preventDefault();alert('PENDIENTE: enlazar política de privacidad oficial antes de publicar.')">política de privacidad</a> y el tratamiento de mis datos para gestionar mi inscripción.</span></label><label class="tr-check"><input type="checkbox" id="c2"> <span>Quiero recibir correos de TRRIBÚ con novedades y consejos.</span></label><label class="tr-check"><input type="checkbox" id="c3"> <span>Quiero recibir mensajes de TRRIBÚ por WhatsApp.</span></label><label class="tr-check"><input type="checkbox" id="c4"> <span>Me gustaría participar en futuras pruebas de TRRIBÚ.</span></label><p class="tr-small">Los consentimientos comerciales son opcionales e independientes. GRUPO EKKA SAC tratará los datos según la política de privacidad.</p><input type="text" id="tr-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0"><button class="btn btn-solid tr-full" id="btnguardar" onclick="guardar()">ENTRAR A LA LISTA</button><p id="mailmsg" class="tr-msg" aria-live="polite"></p></div></div><p class="tr-disclaimer">Orientación basada en tus respuestas; no es un diagnóstico. Nuestros productos cuidan el largo del pelo: no tratan la caída desde la raíz ni prometen que el color dure más. Si notas pérdida importante desde la raíz, irritación o cambios bruscos, consulta con un dermatólogo.</p><button class="btn btn-line tr-full" onclick="restart()">VOLVER A EMPEZAR</button></div></section>
+<div class="devbox" id="devbox" style="display:none"></div>
+
+</div>
+<footer>TRRIBÚ · GRUPO EKKA SAC</footer>
+
+<script id="prueba-klaviyo">
+/* PÁGINA DE PRUEBA · envía directo a Klaviyo con la API pública (company_id), sin servidor.
+   En producción esto lo hace el endpoint de Vercel (repo trribu-quiz), que además escribe en Airtable. */
+(function(){
+  var KL={company:'YqAKEF', revision:'2025-10-15', listaEspera:'WQDPdj'};
+  window.TRRIBU_QUIZ_MODO='prelanzamiento';
+  var realFetch=window.fetch.bind(window);
+  function json(d,st){return Promise.resolve(new Response(JSON.stringify(d),{status:st||200,headers:{'Content-Type':'application/json'}}));}
+  function kl(path,data){
+    return realFetch('https://a.klaviyo.com/client/'+path+'/?company_id='+KL.company,{method:'POST',
+      headers:{revision:KL.revision,'content-type':'application/vnd.api+json',accept:'application/vnd.api+json'},
+      body:JSON.stringify({data:data})}).then(function(r){ if(!r.ok) return r.text().then(function(t){throw new Error('Klaviyo '+path+' '+r.status+' '+t.slice(0,200));}); });
+  }
+  function propiedades(b){
+    var mo=motor(), routine='SA'+(mo.needMask?'M':'')+(mo.needCrema?'C':''), seg=segmento();
+    var tags=seg.concat(['waitlist']); if(b.consent.panel) tags.push('panel_si');
+    var edadT=seg.find(function(t){return t.indexOf('edad_')===0;}), edad=edadT?edadT.slice(5):'';
+    return {quiz_version:'prelanzamiento_v41',quiz_modo:'prelanzamiento',quiz_fecha:new Date().toISOString(),quiz_submission_id:b.submission_id,
+      quiz_senales:answers.signos||[],quiz_porosidad:answers.porosidad||'',quiz_tratamientos:answers.tratamientos||[],quiz_calor:answers.calor||'',
+      quiz_tipo:answers.tipo||'',quiz_grosor:answers.grosor||'',quiz_cuero:answers.cuero||'',quiz_prioridades:answers.prio||[],quiz_futuros:answers.futuros||[],
+      quiz_edad:edad,quiz_edad_min:edad===''?null:(edad==='m35'?0:Number(edad)),quiz_canas:seg.find(function(t){return t.indexOf('canas_')===0;})||'',
+      quiz_eje:seg.filter(function(t){return t.indexOf('eje_')===0;}),quiz_buyer:seg.indexOf('buyer_A')>=0?'buyer_A':'',quiz_routine_code:routine,
+      quiz_recomendacion:rutina().map(function(i){return P[i].id;}),quiz_result_needs:needsVisual(),quiz_result_findings:hallazgos().map(function(x){return x[0];}),
+      quiz_score_mask:mo.m,quiz_score_crema:mo.c,quiz_panel:!!b.consent.panel,quiz_tags:tags,consent_whatsapp:!!b.consent.whatsapp,quiz_origen:'pagina_prueba_shopify'};
+  }
+  window.fetch=function(url,opts){
+    var u=String(url);
+    if(/\/api\/quiz-config$/.test(u)) return json({modo:'prelanzamiento',tienda:location.origin,privacidad_url:null,carrito_listo:false,
+      productos:{shampoo:{precio:79,variant_id:null},acond:{precio:79,variant_id:null},masc:{precio:109,variant_id:null},crema:{precio:89,variant_id:null}}});
+    if(/\/api\/quiz-submit$/.test(u)){
+      var b=JSON.parse(opts.body); if(b.website) return json({ok:true});
+      var props=propiedades(b), attrs={email:b.email,first_name:b.nombre,properties:props};
+      if(b.whatsapp) attrs.phone_number=b.whatsapp;
+      return kl('profiles',{type:'profile',attributes:attrs})
+        .then(function(){ return kl('events',{type:'event',attributes:{unique_id:b.submission_id,properties:Object.assign({modo:'prelanzamiento'},props),
+          metric:{data:{type:'metric',attributes:{name:'Quiz completado'}}},profile:{data:{type:'profile',attributes:{email:b.email}}}}}); })
+        .then(function(){ if(!b.consent.correo) return; return kl('subscriptions',{type:'subscription',attributes:{custom_source:'Quiz TRRIBÚ · página de prueba',
+          profile:{data:{type:'profile',attributes:{email:b.email,subscriptions:{email:{marketing:{consent:'SUBSCRIBED'}}}}}}},
+          relationships:{list:{data:{type:'list',id:KL.listaEspera}}}}); })
+        .then(function(){ return json({ok:true}); })
+        .catch(function(e){ console.error(e); return json({ok:false},502); });
+    }
+    return realFetch(url,opts);
+  };
+})();
+</script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   TRRIBÚ · QUIZ DE PRELANZAMIENTO · V24 · 29 oct 2026
+   Misma base que TRRIBU_Quiz_Lanzamiento_V6_20261029 (preguntas, orden, motor, textos del resultado,
+   propiedades de Klaviyo). Solo cambia el final: casillas 01-04 borrosas + lista de espera (Socia Fundadora).
+   V24 vs V23: motor V6 (la prioridad decide el producto), «Está bien» sin «protección» si no hay Crema,
+   tipografía de la web, mismas propiedades quiz_* que el lanzamiento (quiz_version = prelanzamiento_v24),
+   y se guarda quiz_recomendacion para enviarle su rutina el día del lanzamiento.
+   Fuente de copy y lógica: TRRIBU_Quiz_Prelaunch_Flujo_Copy_V23_20261020.docx
+   Historial: V1 20-ago · V2 4-oct copy · V3 14-oct calor · V4 14-oct unificada
+   con la agencia · V5 14-oct motivación · V6 14-oct revisión de copies de Pao.
+
+   V6 — DECISIONES DE PAO (14-oct):
+     · 8 preguntas, copies cortos (lo mejor de las 3 versiones: TRRIBÚ,
+       agencia, ChatGPT). Sin edad (Meta ya segmenta por edad).
+     · P1 "¿Cómo está tu pelo en este momento?": 8 señales + "está bien".
+       Seco en todo el largo ≠ solo puntas (pesan distinto). "Áspero y
+       poroso" se funde con seco (poroso no se entiende). Caída solo
+       dentro de quiebre. Canas: "ese pelo se siente distinto", pocas o
+       muchas (sirve a Buyer A y B); si se las cubre lo dice en P2.
+     · P2 sin "canas al natural" (se deduce: canas en P1 + "Ninguno" en P2).
+       "Alisado o keratina": keratina es el nombre del tratamiento que
+       ella se hace, no un claim nuestro.
+     · P3 calor con herramienta + frecuencia.
+     · P4 y P5 con ilustración (textura y grosor). P6 cuero sin fotos.
+     · P7 prioridades = espejo de las señales, en beneficio, hasta 3,
+       sin "recuperar" (verbo vetado) + "cuidarlo y prevenir".
+     · P8 etapa, opcional (SALTAR).
+     · Resultado sin la palabra "diagnóstico" (médica): "Lo que nos cuenta
+       tu pelo". Una tarjeta por prioridad con la línea de "por qué pasa"
+       (Signos_Web_V4) + una línea de químico/calor/cuero si aplica.
+     · Captura después del resultado; nota legal dice que SÍ guardamos
+       las respuestas (son los tags de Klaviyo). Nunca prometer lo contrario.
+   V7 (14-oct, noche) — segunda revisión de Pao:
+     · Entrada = pantalla de la agencia («Queremos hablar contigo…»).
+     · P1 «¿Qué has notado en tu pelo últimamente?» + señal nueva «Cambió
+       de textura» (salió en el focus). Canas: «Tengo canas», sin más.
+     · P3 «¿Cómo secas y peinas tu pelo?» (la herramienta en la respuesta).
+     · P4 cinco texturas (ondas suaves entre lacio y ondulado).
+     · P7 canas: «…las pinte o no».
+     · RESULTADO con diagnóstico real: cada tarjeta elige su explicación
+       según la causa que aplique en su caso (químico > calor > canas >
+       textura > base). Cuero cabelludo siempre dice algo. Línea de etapa.
+   V8 (15-oct) — dos prioridades nuevas de Pao:
+     · «Que los pelitos cortos no se paren» (frizz de raíz y coronilla:
+       hebras nuevas sin peso + hebras partidas). P1 frizz pasa a
+       «Se esponja o se me paran pelitos».
+     · «Que mis ondas o rizos se vean definidos, con movimiento» — solo
+       se muestra si en P4 no marcó lacio. Onda suave, no rizo fijado.
+   V9 (19-oct) — estructura del diagnóstico, decisión de Pao:
+     · Cada tarjeta explica el MECANISMO de lo que quiere resolver (texto
+       universal, no cambia con sus respuestas).
+     · Debajo, un bloque aparte «LO QUE PESA MÁS EN TU CASO»: las capas
+       de causa que aplican, en orden químico > calor > alisado > canas >
+       textura > etapa. Una sola vez, no repetidas por tarjeta.
+     · MODO: 'prelaunch' (hoy) no nombra producto ni ritual. 'launch'
+       agrega a cada tarjeta y a cada capa la frase de qué paso del
+       ritual lo resuelve (textos en LAUNCH, ya escritos, apagados).
+     · P1: «Se ve más fino y con menos volumen» (antes «menos cuerpo»).
+   V10 (19-oct, noche) — registro y autoridad, decisión de Pao:
+     · Copies de preguntas en registro descriptivo (adjetivo + subtítulo
+       neutro), como el Hair Quiz de lanzamiento. Nada en primera persona
+       coloquial («se me paran», «sin pelear»).
+     · Resultado en 3 bloques: LO QUE ESTÁS NOTANDO (solo sus señales) ·
+       LO QUE NOS CUENTAN TUS RESPUESTAS (párrafo armado + mecanismo en
+       tono «suele pasar cuando») · QUÉ PUEDE ESTAR INFLUYENDO («nos
+       contaste que…», «puede sumar»; nunca «causa»).
+     · En el resultado NO se nombra perimenopausia, menopausia, hormonal
+       ni transición. La P8 se queda (segmenta en Klaviyo) pero no vuelve
+       a pantalla. La etapa se dice como «el pelo que está cambiando».
+   V11 (19-oct, noche) — formato del resultado, referencia de Pao:
+     · Resultado corto y visual: pills (notas) · 2 líneas (vemos) ·
+       tarjetas (puede influir) · pills (te importa) · bloque «Lo que
+       necesita tu pelo» con 4 casillas difuminadas 01-04 y «Tu rutina te
+       la mandamos» → ENTRAR A LA LISTA (baja a la captura).
+     · Fuera las frases de mecanismo. Nada de etapa en pantalla.
+   V12 (19-oct, noche) — decisión de Pao:
+     · Vuelve P2 porosidad («Si solo usaras shampoo…»), +6 al eje de
+       reparación, pill «porosidad alta».
+     · Entra P9 «¿Algo de esto te está pasando también?» (futuros):
+       pestañas/cejas · densidad coronilla · puntas al final del día ·
+       cuero que pica · nada. Sin pelitos ni rizo (ya son prioridades
+       actuales en P1/P7). No afecta el resultado; solo tags.
+     · Pills del resultado: «SEÑALES QUE VAMOS A TRABAJAR» con etiquetas
+       interpretativas (porosidad alta, daño químico por mechas, color que
+       se apaga, daño por calor…), como el quiz de lanzamiento.
+     · 10 preguntas. Entrada: «Diez preguntas · un minuto».
+   V13 (19-oct, noche) — decisión de Pao:
+     · Sale la pregunta de etapa (peri/meno). Entra EDAD como P10, opcional,
+       8 tramos de 5 años (<35 · 35-39 · 40-44 · 45-49 · 50-54 · 55-59 ·
+       60-64 · 65+), alineados con los rangos de pauta de Meta.
+     · «Vengo de un tratamiento médico y prefiero evitar ciertos
+       ingredientes» pasa a checkbox 5 de la captura → tag sensible.
+   V14 (19-oct, noche) — cierre «Lo que nos cuentan tus respuestas», referencia de Pao:
+     · Caja gris: frase armada (frentes de estrés + qué priorizar, derivado
+       de los ejes del motor sin nombrar producto) · «TU RECOMENDACIÓN ESTÁ
+       LISTA» · 4 casillas difuminadas · «Te la revelamos primero a ti…» ·
+       ENTRAR A LA LISTA.
+   V15 (19-oct, noche): pills vuelven a «LO QUE ESTÁS NOTANDO» con solo
+     sus señales de P1 (y «porosidad» si marcó «muy reseco» en P2, porque
+     eso también lo nota ella). Las etiquetas interpretativas se quedan
+     únicamente en las tarjetas de «qué puede estar influyendo».
+   V16 (19-oct, noche): «Lo que nos cuentan tus respuestas» nombra el frente (el
+     color / el calor frecuente / el alisado / la porosidad) en vez de
+     «un frente concreto». Si marcó «está bastante bien», nunca dice
+     «reparación»: pasa a «mantener» con protección y limpieza.
+   V17 (19-oct, noche): perfil «está bien + química» = reparación como
+     prevención («Se nota que lo cuidas…»). Decisión de Pao.
+   V18 (19-oct, noche): tercera frase en «Lo que nos cuentan tus respuestas» según
+     la señal dominante (la primera prioridad que marcó; si no, la
+     primera señal de P1). 9 textos, mismo tono, sin producto.
+   V19 (19-oct, noche) — ajustes por encuesta (n=101, 36+) y focus:
+     · P8 suma «Color protegido, que dure más» (deseo #1 en la encuesta;
+       84% lleva color o mechas).
+     · P1 quiebre: «Se quiebra y veo más pelo en el cepillo» (así lo dice
+       ella; caída es prioridad #2 y #1 en 55+).
+     · ORDEN: las opciones más marcadas (frizz, canas, textura, seco,
+       brillo / hidratación, brillo, color) ya no abren la lista, y P1 y
+       P8 se barajan por sesión (shuffle:true) con las excluyentes fijas
+       al final. Evita el sesgo de posición y permite medir después.
+     · Calor rebajado en textos: 62% casi nunca lo usa; el frizz en Lima es
+       por humedad. Tarjeta de calor solo con plancha/diario, tono suave.
+     · Tarjeta «Cambio de textura» apunta a definir sin fijar (el 66% tiene
+       ondas; 14 de 15 con keratina eran onduladas antes).
+   V20 (20-oct) — por TRRIBU_Quiz_Resultados_36mas_V1_20261019:
+     · P8: «ondas» pasa a hot (66% la elige como resultado).
+     · P8: «Menos pelo en el cepillo» · que se quiebre menos (marcan la
+       palabra caída: 52%, 62% en 55+; el subtítulo reencuadra).
+     · P8: «Hidratación y suavidad» (es la palabra que marcan, 82%).
+     · Frase dominante del cierre termina en ESCENA de la encuesta:
+       «aunque llueva» (67%), «color protegido y brillante» (81%),
+       «ondas naturales y definidas» (66%).
+     · Etapa sigue fuera; queda edad (decisión de Pao, 20-oct).
+   V21 (20-oct): fuera «Lima», «aunque llueva» y la afirmación de que el
+     frizz viene de la humedad. No sabemos que todas sean de Lima, y el
+     esponjamiento también es de la fibra (cutícula abierta), no solo del
+     clima. Decisión de Pao.
+   V22 (20-oct): resultado en el formato del quiz de lanzamiento, más
+     corto: TU RESULTADO · título · línea con sus prioridades · UN
+     párrafo (necesidad de su señal dominante + la capa que más pesa) ·
+     pills «lo que estás notando» · casillas 01-04 · ENTRAR A LA LISTA.
+     El texto dice lo que su pelo NECESITA, nunca lo que hacemos (eso
+     sería producto). Salen los bloques «estamos viendo», «puede estar
+     influyendo» y «te importa». Decisión de Pao.
+   ⚠️ enviarAKlaviyo() sigue siendo STUB. Quitar "panel interno" al publicar.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── ILUSTRACIONES TEMPORALES (SVG propios). FLAMA: reemplazar P5 por fotos reales comparables. ── */
+const SV = {
+  lacio:  '<svg viewBox="0 0 80 88"><g fill="none" stroke="#191813" stroke-width="2.2" stroke-linecap="round"><path d="M28 6v76M36 6v76M44 6v76M52 6v76"/></g></svg>',
+  suaves: '<svg viewBox="0 0 80 88"><g fill="none" stroke="#191813" stroke-width="2.2" stroke-linecap="round"><path d="M28 6c3 20-3 36 0 56s-2 14 0 20M36 6c3 20-3 36 0 56s-2 14 0 20M44 6c3 20-3 36 0 56s-2 14 0 20M52 6c3 20-3 36 0 56s-2 14 0 20"/></g></svg>',
+  ondas:  '<svg viewBox="0 0 80 88"><g fill="none" stroke="#191813" stroke-width="2.2" stroke-linecap="round"><path d="M28 6c6 14-6 26 0 40s-6 26 0 36M36 6c6 14-6 26 0 40s-6 26 0 36M44 6c6 14-6 26 0 40s-6 26 0 36M52 6c6 14-6 26 0 40s-6 26 0 36"/></g></svg>',
+  rizado: '<svg viewBox="0 0 80 88"><g fill="none" stroke="#191813" stroke-width="2.2" stroke-linecap="round"><path d="M28 6c10 8-10 16 0 24s-10 16 0 24-10 16 0 24M40 6c10 8-10 16 0 24s-10 16 0 24-10 16 0 24M52 6c10 8-10 16 0 24s-10 16 0 24-10 16 0 24"/></g></svg>',
+  crespo: '<svg viewBox="0 0 80 88"><g fill="none" stroke="#191813" stroke-width="2.2" stroke-linecap="round"><path d="M26 6c8 4-8 8 0 12s-8 8 0 12-8 8 0 12-8 8 0 12-8 8 0 12-8 8 0 12M40 6c8 4-8 8 0 12s-8 8 0 12-8 8 0 12-8 8 0 12-8 8 0 12-8 8 0 12M54 6c8 4-8 8 0 12s-8 8 0 12-8 8 0 12-8 8 0 12-8 8 0 12-8 8 0 12"/></g></svg>',
+  hebra: w => `<svg viewBox="0 0 80 88"><path d="M40 4v60" stroke="#191813" stroke-width="${w}" stroke-linecap="round"/><path d="M10 72h60" stroke="#8C887E" stroke-width="5" stroke-linecap="round"/><ellipse cx="40" cy="72" rx="7" ry="3.2" fill="#F7F5F1" stroke="#8C887E" stroke-width="1.5"/></svg>`
+};
+
+/* ── PREGUNTAS ── */
+const QS = [
+  {id:'signos', sec:'TU PELO', multi:true, cols:2, shuffle:true,
+   title:'¿Qué has notado en tu pelo últimamente?', help:'Elige todo lo que aplique.',
+   options:[
+     {v:'enredo',     l:'Difícil de desenredar',         s:'Se enreda más, cuesta peinar'},
+     {v:'quiebre',    l:'Veo hebras cortas o partidas', s:'No solo pelo completo que queda en el cepillo'},
+     {v:'puntas',     l:'Puntas secas',                  s:'El largo está bien, las puntas no'},
+     {v:'cuerpo',     l:'Con menos volumen',   s:'Lo noto más plano o con menos cuerpo'},
+     {v:'opaco', hot:true,      l:'Opaco o sin brillo',            s:'Apagado, sin luminosidad'},
+     {v:'secoTodo', hot:true,   l:'Seco en todo el largo',         s:'Áspero, rígido, sin flexibilidad'},
+     {v:'textura', hot:true,    l:'Con otra textura',              s:'Más ondulado, o más lacio, que antes'},
+     {v:'canas', hot:true,      l:'Con canas', s:'Ese pelo se siente distinto al resto'},
+     {v:'frizz', hot:true,      l:'Con frizz',                     s:'Se esponja o se levantan pelitos cortos'},
+     {v:'bien',       l:'Está bastante bien',            s:'Quiero cuidarlo y prevenir', solo:true}
+   ]},
+  {id:'porosidad', sec:'TU PELO', multi:false, cols:3,
+   title:'Si solo usaras shampoo y nada más, ¿cómo quedaría tu pelo?', help:'Sin acondicionador ni ningún otro producto. Piensa en cómo queda recién lavado, antes de secarlo.',
+   options:[
+     {v:'alta',  l:'Muy reseco y áspero',      s:'Casi imposible de peinar'},
+     {v:'media', l:'Algo seco pero manejable', s:'Necesita acondicionador'},
+     {v:'baja',  l:'Bastante bien',            s:'Suave, no le hace falta mucho'}
+   ]},
+  {id:'tratamientos', sec:'TUS TRATAMIENTOS', multi:true, cols:2,
+   title:'¿Llevas color o algún tratamiento?', help:'Puedes marcar más de uno.',
+   options:[
+     {v:'ninguno',     l:'Ninguno', solo:true},
+     {v:'tinteRaices', l:'Tinte en las raíces',               s:'Para cubrir canas'},
+     {v:'tinteTodo',   l:'Tinte en todo el largo'},
+     {v:'mechas',      l:'Mechas, balayage o decoloración'},
+     {v:'keratina',    l:'Alisado o keratina'}
+   ]},
+  {id:'calor', sec:'TU RUTINA', multi:false, cols:2,
+   title:'¿Cómo secas y peinas tu pelo?', help:'Piensa en una semana normal.',
+   options:[
+     {v:'natural',  l:'Al aire',                s:'Calor casi nunca'},
+     {v:'secadora', l:'Secadora, ocasional',    s:'Sin plancha'},
+     {v:'plancha',  l:'Plancha o rizador',      s:'Algunas veces por semana'},
+     {v:'diario',   l:'Calor casi a diario',    s:'Secadora, plancha o ambas'}
+   ]},
+  {id:'tipo', sec:'TU PELO', multi:false, cols:5, img:true,
+   title:'¿Cómo es tu pelo de forma natural?', help:'Si tienes alisado, piensa en cómo era antes.',
+   options:[
+     {v:'lacio',  l:'Lacio',        pic:SV.lacio},
+     {v:'suaves', l:'Ondas suaves', pic:SV.suaves},
+     {v:'ondas',  l:'Ondulado',     pic:SV.ondas},
+     {v:'rizado', l:'Rizado',   pic:SV.rizado},
+     {v:'crespo', l:'Crespo',   pic:SV.crespo}
+   ]},
+  {id:'grosor', sec:'TU PELO', multi:false, cols:4, img:true,
+   title:'¿Cómo sientes el grosor de una hebra?', help:'Una sola hebra, no cuánto pelo tienes.',
+   options:[
+     {v:'fino',   l:'Fina',   s:'Casi no la siento', pic:SV.hebra(1)},
+     {v:'medio',  l:'Media',  s:'La siento entre los dedos', pic:SV.hebra(2.6)},
+     {v:'grueso', l:'Gruesa', s:'Con peso propio', pic:SV.hebra(5)},
+     {v:'nose',   l:'No estoy segura', pic:'<svg viewBox="0 0 80 88"><text x="40" y="52" text-anchor="middle" font-family="Georgia,serif" font-size="40" fill="#8C887E">?</text></svg>'}
+   ]},
+  {id:'cuero', sec:'TU CUERO CABELLUDO', multi:false, cols:2,
+   title:'Al día siguiente de lavarlo, ¿cómo sientes tu cuero cabelludo?', help:'',
+   options:[
+     {v:'graso',       l:'Ya con grasa',    s:'Necesita lavado casi a diario'},
+     {v:'equilibrado', l:'Equilibrado',     s:'Aguanta dos o tres días'},
+     {v:'seco',        l:'Seco o tirante'},
+     {v:'varia',       l:'Variable',        s:'Cambia de un día a otro'}
+   ]},
+  {id:'prio', sec:'TUS PRIORIDADES', multi:true, max:3, cols:2, shuffle:true,
+   title:'¿Qué te gustaría trabajar primero?', help:'Elige hasta tres.',
+   options:[
+     {v:'enredo',  l:'Desenredado fácil'},
+     {v:'quiebre', l:'Menos pelo en el cepillo',        s:'Me preocupa cuánto pelo encuentro al peinarme'},
+     {v:'cuerpo',  l:'Cuerpo y volumen'},
+     {v:'pelitos', l:'Pelitos cortos que no se levanten', s:'En la raíz y la coronilla'},
+     {v:'canas',   l:'Canas más suaves',               s:'Con o sin tinte'},
+     {v:'ondas',   hot:true, l:'Realzar mi textura natural',     s:'Con su forma, sin frizz y sin fijar'},
+     {v:'frizz', hot:true,   l:'Control del frizz'},
+     {v:'suave', hot:true,   l:'Hidratación y suavidad'},
+     {v:'brillo', hot:true,  l:'Brillo'},
+     {v:'color', hot:true,   l:'Cuidar mi pelo teñido',   showIf:()=>has('tinteTodo')||has('tinteRaices')||has('mechas')},
+     {v:'prevenir',l:'Cuidarlo y prevenir',                     s:'Cuidarlo antes de que cambie más', solo:true}
+   ]},
+  {id:'futuros', sec:'TU PELO', multi:true, cols:2,
+   title:'¿Algo de esto te está pasando también?', help:'Marca lo que reconozcas. No cambia tu recomendación actual; nos ayuda a conocer otras necesidades.',
+   options:[
+     {v:'cejas',     l:'Mis pestañas y cejas están más ralas',             s:'Se ven más cortas, más finas o con menos pelo que antes'},
+     {v:'densidad',  l:'Veo menos densidad en la coronilla o las entradas', s:'Se ve más el cuero cabelludo al peinarme o con cierta luz'},
+     {v:'puntasDia', l:'Al final del día mis puntas se ven secas',          s:'Y no quiero lavarme otra vez para que vuelva el brillo'},
+     {v:'cueroPica', l:'Me pica o se me descama el cuero',                  s:'Molestia, tirantez o escamas cada cierto tiempo'},
+     {v:'nada',      l:'Nada de esto por ahora', solo:true}
+   ]},
+  {id:'edad', sec:'TU TRIBU', multi:false, cols:4, optional:true,
+   title:'¿En qué rango de edad estás?', help:'Opcional. Solo nos ayuda a entender mejor a nuestra tribu.',
+   options:[
+     {v:'m35', l:'Menos de 35'},{v:'35', l:'35 a 39'},{v:'40', l:'40 a 44'},{v:'45', l:'45 a 49'},
+     {v:'50', l:'50 a 54'},{v:'55', l:'55 a 59'},{v:'60', l:'60 a 64'},{v:'65', l:'65 o más'}
+   ]}
+];
+
+let step = 0, answers = {};
+const ORDEN = {};  // orden barajado por sesión (excluyentes al final)
+function ordenar(q, opts){
+  if(!q.shuffle) return opts;
+  if(!ORDEN[q.id]){
+    const sh=arr=>{ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; };
+    const frias=sh(q.options.filter(o=>!o.solo && !o.hot).map(o=>o.v));
+    const calientes=sh(q.options.filter(o=>!o.solo && o.hot).map(o=>o.v));
+    /* las más marcadas (hot) nunca ocupan las dos primeras posiciones */
+    ORDEN[q.id]=frias.slice(0,2).concat(sh(frias.slice(2).concat(calientes)));
+  }
+  const pos=v=>{ const i=ORDEN[q.id].indexOf(v); return i<0?999:i; };
+  return opts.slice().sort((x,y)=>(x.solo?1:0)-(y.solo?1:0) || pos(x.v)-pos(y.v));
+}
+const has = v => (answers.tratamientos||[]).indexOf(v) >= 0;
+const sig = v => (answers.signos||[]).indexOf(v) >= 0;
+const pri = v => (answers.prio||[]).indexOf(v) >= 0;
+
+/* ══ MOTOR (interno, no se muestra) ══ Umbral 6 por eje. */
+function motor(){
+  let m=0,c=0;
+  /* V35 · Auditoría de puntajes (31-oct). m = La Mascarilla · c = La Crema · umbral 6. */
+  // REPARACIÓN
+  if(sig('quiebre'))m+=6; if(has('mechas'))m+=6; if(has('tinteTodo'))m+=6; if(has('tinteRaices'))m+=6;
+  if(has('keratina'))m+=6;                 // alisado = química + plancha >200 °C
+  if(sig('secoTodo'))m+=6;                 // señal héroe de La Mascarilla
+  if(sig('puntas'))m+=2; if(sig('opaco'))m+=2;
+  if(answers.porosidad==='alta'){m+=6;c+=3;}
+  if(answers.calor==='diario')m+=3; else if(answers.calor==='plancha')m+=2;
+  if(pri('suave'))m+=3; if(pri('quiebre'))m+=3;   // deseos: suman, pero no deciden solos
+  // CUIDADO SIN ENJUAGUE
+  if(['frizz','pelitos','ondas','enredo','brillo'].some(pri))c+=6;
+  if(pri('canas'))c+=3;
+  if(sig('frizz'))c+=6; if(sig('textura'))c+=6; if(sig('enredo'))c+=6; if(sig('opaco'))c+=6;   // V38: lo que nota pesa igual que lo que desea
+  if(sig('quiebre'))c+=3; if(pri('quiebre'))c+=3;
+  if(answers.calor==='diario'||answers.calor==='plancha')c+=6;   // La Crema se aplica antes del calor
+  if(answers.tipo==='rizado'||answers.tipo==='crespo')c+=6; else if(answers.tipo==='ondas')c+=2;
+  let needMask=m>=6, needCrema=c>=6;
+  // V38: si marcó «Está bastante bien», máximo UN producto extra.
+  // Gana lo que ella pidió: si eligió frizz, pelitos, textura, desenredo o brillo como prioridad → La Crema; si no → La Mascarilla (prevención).
+  if(sig('bien') && needMask && needCrema){
+    if(['frizz','pelitos','ondas','enredo','brillo'].some(pri)) needMask=false; else needCrema=false;
+  }
+  return {m,c,needMask,needCrema};
+}
+
+/* ══ TAGS KLAVIYO ══ */
+function segmento(){
+  const t = [];
+  const {needMask, needCrema} = motor();
+  if(needMask)  t.push('eje_reparacion');
+  if(needCrema) t.push('eje_proteccion');
+  (answers.signos||[]).forEach(s=>t.push('signo_'+s));
+  (answers.tratamientos||[]).forEach(s=>t.push('quim_'+s));
+  if(sig('canas')) t.push(has('tinteRaices')||has('tinteTodo') ? 'canas_cubre' : 'canas_natural');
+  if(answers.porosidad) t.push('poros_'+answers.porosidad);
+  (answers.futuros||[]).forEach(f=>{ if(f!=='nada') t.push('futuro_'+f); });
+  if(answers.calor)  t.push('calor_'+answers.calor);
+  if(answers.tipo)   t.push('tipo_'+answers.tipo);
+  if(answers.grosor && answers.grosor!=='nose') t.push('grosor_'+answers.grosor);
+  if(answers.cuero)  t.push('cuero_'+answers.cuero);
+  (answers.prio||[]).forEach(p=>t.push('prio_'+p));
+  if(pri('prevenir')||sig('bien')) t.push('buyer_A');
+  if(answers.edad) t.push('edad_'+answers.edad);
+  t.push('rutina_'+('SA'+(needMask?'M':'')+(needCrema?'C':'')));
+  t.push(MODO==='launch'?'quiz_lanzamiento':'quiz_prelanzamiento');
+  return t;
+}
+
+/* ══ RENDER ══ */
+function start(){ step=0; show('quiz'); render(); }
+function restart(){ submissionId='';
+  step=0; answers={}; for(const k in ORDEN) delete ORDEN[k];
+  ['nombre','mail','wa'].forEach(id=>{ const el=document.getElementById(id); if(el){ el.value=''; el.disabled=false; }});
+  ['c1','c2','c3','c4'].forEach(id=>{const el=document.getElementById(id);if(el)el.checked=false;});
+  const m=document.getElementById('mailmsg'); if(m) m.textContent='';
+  const b=document.getElementById('btnguardar'); if(b) b.disabled=false;
+  
+  show('intro'); bar(0);
+}
+function show(s){ ['intro','quiz','result'].forEach(x=>document.getElementById('st-'+x).classList.toggle('on', x===s)); window.scrollTo({top:0,behavior:'smooth'}); }
+function bar(p){ document.getElementById('bar').style.width = p+'%'; }
+
+function render(){
+  const q = QS[step], a = answers[q.id];
+  bar(Math.round(step/QS.length*100));
+  document.getElementById('steplabel').textContent = (step+1)+' / '+QS.length;
+  document.getElementById('qsec').textContent = q.sec || '';
+  document.getElementById('qtitle').textContent = q.title;
+  document.getElementById('qhelp').textContent = q.help || '';
+  document.getElementById('qhint').textContent = q.multi ? (q.max ? 'Hasta '+q.max : 'Puedes elegir varias') : '';
+  document.getElementById('qnext').textContent = step===QS.length-1 ? 'VER MI RESULTADO' : 'CONTINUAR';
+  document.getElementById('qskip').style.display = q.optional ? 'inline' : 'none';
+  const box = document.getElementById('qopts');
+  box.className = 'opts c'+q.cols;
+  if(q.id==='tipo') document.getElementById('qhelp').textContent += ' · Imágenes ilustrativas provisionales.';
+  const opts = ordenar(q, q.options.filter(o=>!o.showIf || o.showIf()));
+  box.innerHTML = opts.map(o=>{
+    const on = q.multi ? (Array.isArray(a)&&a.indexOf(o.v)>=0) : a===o.v;
+    return `<div class="opt${on?' on':''}${q.img?' img':''}" data-v="${o.v}">
+      ${q.img ? `<div class="pic">${o.pic}</div>` : `<div class="mark${q.multi?'':' round'}">${on?'✓':''}</div>`}
+      <div><b>${o.l}</b>${o.s?`<em>${o.s}</em>`:''}</div></div>`;
+  }).join('');
+  box.querySelectorAll('.opt').forEach(el=> el.onclick = ()=>pick(q, el.dataset.v));
+  chk();
+}
+function pick(q, v){
+  if(q.multi){
+    let arr = Array.isArray(answers[q.id]) ? answers[q.id].slice() : [];
+    const opt = q.options.find(o=>o.v===v);
+    const i = arr.indexOf(v);
+    if(i>=0) arr.splice(i,1);
+    else if(opt.solo) arr = [v];
+    else {
+      arr = arr.filter(x=>{ const o=q.options.find(oo=>oo.v===x); return !(o&&o.solo); });
+      if(q.max && arr.length>=q.max) return;
+      arr = arr.concat(v);
+    }
+    answers[q.id] = arr; render();
+  } else { answers[q.id] = v; render(); }
+}
+function chk(){ const q = QS[step], a = answers[q.id]; document.getElementById('qnext').disabled = q.multi ? !(a&&a.length) : !a; }
+function back(){ if(step===0){ show('intro'); bar(0); return; } step--; render(); }
+function advance(){ if(step >= QS.length-1){ resultado(); return; } step++; render(); }
+function next(){ const q = QS[step], a = answers[q.id]; if(q.multi ? !(a&&a.length) : !a) return; advance(); }
+function skip(){ delete answers[QS[step].id]; advance(); }
+
+/* ══ CAPTURA ══ */
+function setCb(id,on){ const el=document.getElementById(id); if(el)el.checked=on; }
+function cb(id){ return !!document.getElementById(id)?.checked; }
+function tg(e,id){ e.preventDefault(); setCb(id, !cb(id)); }
+function guardar(){
+  const msg = document.getElementById('mailmsg');
+  const nombre = document.getElementById('nombre').value.trim();
+  const mail   = document.getElementById('mail').value.trim();
+  const wa     = document.getElementById('wa').value.replace(/\s+/g,'');
+  const err = t => { msg.textContent = t; msg.style.color = '#A8451F'; };
+  if(!nombre){ err('Cuéntanos tu nombre.'); return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail)){ err('Revisa el correo. Parece que falta algo.'); return; }
+  if(wa && !/^9\d{8}$/.test(wa)){ err('El WhatsApp debe tener 9 dígitos y empezar en 9.'); return; }
+  if(!cb('c1')){ err('Para inscribirte, necesitamos que aceptes la política de privacidad.'); return; }
+  if(!cb('c2')&&!cb('c3')){ err('Para recibir novedades, autoriza al menos un canal: correo o WhatsApp.'); return; }
+  if(cb('c3') && !wa){ err('Para escribirte por WhatsApp necesitamos tu número.'); return; }
+  document.getElementById('btnguardar').disabled=true; msg.textContent='Estamos guardando tu inscripción…'; msg.style.color='#5A564F';
+  const tags = segmento().concat(MODO==='launch'?[]:['waitlist']); if(cb('c4')) tags.push('panel_si');
+  const canas = sig('canas') ? (has('tinteRaices')||has('tinteTodo') ? 'canas_cubre' : 'canas_natural') : '';
+  const {needMask, needCrema} = motor();
+  const payload = { evento:'Quiz completado', nombre, email: mail, whatsapp: wa ? '+51'+wa : null, consent:{datos:true, correo:cb('c2'), whatsapp:cb('c3'), panel:cb('c4')}, answers, submission_id:quizSubmissionId(), modo:(MODO==='launch'?'lanzamiento':'prelanzamiento'), website:(document.getElementById('tr-website')||{}).value||'',
+    propiedades:{ quiz_version:(MODO==='launch'?'lanzamiento_v41':'prelanzamiento_v41'), quiz_fecha:new Date().toISOString(), quiz_submission_id:quizSubmissionId(), quiz_schema_version:'v33_10preguntas', quiz_scoring_version:'v38', quiz_result_needs:needsVisual(), quiz_result_findings:hallazgos(), quiz_score_mask:motor().m, quiz_score_crema:motor().c, quiz_routine_code:(!needMask&&!needCrema?'SA':needMask&&!needCrema?'SAM':!needMask&&needCrema?'SAC':'SAMC'),
+      quiz_senales:answers.signos||[], quiz_porosidad:answers.porosidad||'', quiz_tratamientos:answers.tratamientos||[],
+      quiz_calor:answers.calor||'', quiz_tipo:answers.tipo||'', quiz_grosor:answers.grosor||'', quiz_cuero:answers.cuero||'',
+      quiz_prioridades:answers.prio||[], quiz_futuros:answers.futuros||[], quiz_edad:answers.edad||'', quiz_edad_min:({m35:0,'35':35,'40':40,'45':45,'50':50,'55':55,'60':60,'65':65})[answers.edad]??null, quiz_modo:(MODO==='launch'?'lanzamiento':'prelanzamiento'), quiz_canas:canas,
+      quiz_eje:[needMask?'eje_reparacion':null, needCrema?'eje_proteccion':null].filter(Boolean),
+      quiz_buyer:(pri('prevenir')||sig('bien'))?'buyer_A':'', quiz_recomendacion:rutina().map(i=>P[i].id),
+      quiz_panel:cb('c4'), quiz_tags:tags } };
+  return enviarAKlaviyo(payload).then(()=>{ msg.textContent = 'Tu solicitud fue recibida. Te escribiremos cuando tengamos novedades.'; msg.style.color = '#5C7A3A';
+  ['nombre','mail','wa'].forEach(id=>document.getElementById(id).disabled=true);
+  document.getElementById('btnguardar').disabled = true;
+  }).catch(e=>{ err(e.message || 'No pudimos guardar tu inscripción. Intenta nuevamente.'); document.getElementById('btnguardar').disabled=false; });
+}
+/* Flama: configurar endpoint HTTPS en el MISMO origen; jamás colocar API privada en HTML. */
+const TRRIBU_API_BASE = window.TRRIBU_API_BASE || ''; // vacío = mismo origen (Vercel); si se embebe en Shopify, la URL de Vercel
+const TRRIBU_ENDPOINT = TRRIBU_API_BASE + '/api/quiz-submit';
+async function enviarAKlaviyo(payload){
+  if(!TRRIBU_ENDPOINT) {
+    console.info('[TRRIBÚ · PROTOTIPO] Vista previa del payload:', payload);
+    throw new Error('Prototipo de prueba: la inscripción todavía no está conectada a Klaviyo. Flama debe configurar el endpoint.');
+  }
+  const r=await fetch(TRRIBU_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  if(!r.ok) throw new Error('No pudimos guardar tu inscripción. Intenta nuevamente.');
+  const data=await r.json();
+  if(data && data.ok===true) return data;
+  throw new Error('No se pudo confirmar la inscripción. Intenta nuevamente.');
+}
+function verPanel(){ const d = document.getElementById('devbox'); d.style.display = d.style.display==='block' ? 'none' : 'block'; }
+
+
+/* Solo identificadores internos; NO se revelan nombres, precios ni fórmulas en pantalla. */
+var MODO=(window.TRRIBU_QUIZ_MODO==='lanzamiento')?'launch':'prelaunch'; // Integración: lo fija /api/quiz-config (QUIZ_MODO en Vercel)
+const P=[{id:'shampoo',n:'01',name:'El Shampoo',size:'300 ml',price:79,why:'Limpia sin resecar y cuida tu color.',c:'#BB7B73'},
+ {id:'acond',n:'02',name:'El Acondicionador',size:'300 ml',price:79,why:'Desenreda y reduce el quiebre.',c:'#C29E7C'},
+ {id:'masc',n:'03',name:'La Mascarilla',size:'300 ml',price:109,why:'Repara a fondo el pelo seco y quebradizo.',c:'#8A2F3B'},
+ {id:'crema',n:'04',name:'La Crema (El Acondicionador Sin Enjuague)',size:'150 ml',price:89,why:'Controla el frizz y respeta tu textura natural.',c:'#7E5148'}];
+function rutina(){ const {needMask,needCrema}=motor(); const r=[0,1]; if(needMask) r.push(2); if(needCrema) r.push(3); return r; }
+
+/* ══ RESULTADO V31 · COPY RECONCILIADO · AÚN NO APROBADO PARA PUBLICACIÓN ══
+   La puntuación de productos viene de motor(); las necesidades mostradas NO son diagnóstico.
+   Hallazgos: señal → significado probable → prioridad concreta (máximo dos frases).
+*/
+const NEED_LABELS = {
+ proteccion:'Cuidado ante el calor', textura:'Cuidado de tu textura', canas:'Cuidado de las canas', fibra:'Cuidado de la fibra',
+ reparacion:'Reparación', hidratacion:'Hidratación', suavidad:'Suavidad',
+ frizz:'Control del frizz', manejo:'Manejabilidad', ondas:'Definición y movimiento',
+ brillo:'Brillo', volumen:'Cuerpo y volumen', cuero:'Cuidado del cuero cabelludo',
+ mantenimiento:'Cuidado constante', desenredo:'Desenredado fácil', color:'Cuidado de la fibra teñida'
+};
+function needsVisual(){
+ // Hasta tres necesidades distintas. P8 es objetivo, no prueba de síntoma.
+ const n=[], poros=answers.porosidad==='alta', mm=motor();
+ const add=(k)=>{if(!n.includes(k)&&n.length<3)n.push(k);};
+ const chem=has('mechas')||has('tinteTodo')||has('tinteRaices');
+ const dry=sig('secoTodo')||sig('puntas')||poros;
+ if((chem||sig('quiebre'))&&(mm.needMask||!sig('bien')))add('reparacion');
+ if(dry||pri('suave'))add('hidratacion');
+ if((sig('frizz')||pri('frizz')) && mm.needCrema)add('frizz');
+ if(pri('ondas')&&mm.needCrema)add('ondas');
+ if(answers.calor==='diario' && mm.needCrema)add('proteccion');
+ if((sig('enredo')||pri('enredo'))&&!n.includes('hidratacion'))add('desenredo');
+ if((sig('opaco')||pri('brillo'))&&!n.includes('hidratacion'))add('brillo');
+ if((sig('cuerpo')||pri('cuerpo'))&&!n.includes('hidratacion'))add('volumen');
+ if((poros||pri('suave')||sig('enredo')||pri('canas'))&&n.length<3 && !n.includes('hidratacion') && !n.includes('desenredo'))add('suavidad');
+ if(pri('pelitos')&&n.length<3)add('manejo');
+ if(sig('textura')&&n.length<3)add('textura');
+ if(sig('canas')&&n.length<3)add('canas');
+ if(pri('quiebre')&&!sig('quiebre')&&n.length<3)add('fibra');
+ if(pri('color')&&n.length<3)add('color');
+ if((answers.cuero==='seco'||answers.cuero==='varia')&&!n.length)add('cuero');
+ if(!n.length)add('mantenimiento');
+ return n;
+}
+// V33 · Tarjetas en voz TRRIBÚ: qué le pasa a su pelo → qué necesita. Primera tarjeta = su prioridad n.º 1 (P8).
+const PRIO_CARD={frizz:'frizz',pelitos:'pelitos',ondas:'ondas',suave:'poros|dry|tips',brillo:'shine',cuerpo:'body',quiebre:'break|brush',enredo:'detangle',canas:'grey',color:'chem',prevenir:'healthy'};
+function hallazgos(){
+ const l=[], poros=answers.porosidad==='alta';
+ const put=(key,weight,title,body)=>l.push({key,weight,title,body});
+ const chem=has('mechas')||has('tinteTodo')||has('tinteRaices');
+ if(sig('bien')){
+  if(chem||has('keratina')) put('healthy',100,'Tu pelo está bien hoy, y lo cuidas','Aunque hoy no se note, '+(has('mechas')?'las mechas le siguen':(chem?'el color le sigue':'el alisado le sigue'))+' sumando desgaste. Por eso necesita '+(motor().needMask?'reparación como prevención.':'un cuidado suave y constante en cada lavado.'));
+  else put('healthy',100,'Tu pelo está bien hoy','Es el mejor momento para cuidarlo: mantener es más fácil que reparar. Necesita una rutina suave y constante.');
+ }
+ if(!sig('bien')){ /* con pelo «bien», el color ya va en su tarjeta */ }
+ if(sig('bien')){} else if(has('mechas') && has('tinteTodo'))
+  put('chem',100,'Llevas mechas y tinte','Las mechas y el tinte dejan tu pelo más frágil con cada aplicación. Por eso necesita reparación en cada lavado.');
+ else if(has('mechas') && has('tinteRaices'))
+  put('chem',100,'Llevas mechas y retocas tus raíces','Las mechas dejan el largo más frágil. Por eso necesita reparación en el largo y suavidad en todo el pelo.');
+ else if(has('mechas'))
+  put('chem',100,'Tus mechas dejan el pelo más frágil','Las mechas dejan tu pelo más frágil y áspero. Por eso necesita reparación en cada lavado.');
+ else if(has('tinteTodo'))
+  put('chem',93,'Llevas tinte en todo el largo','Cada aplicación de tinte reseca un poco más tu pelo, sobre todo las puntas. Por eso necesita reparación y un lavado que cuide el color.');
+ else if(has('tinteRaices'))
+  put('chem',85,'Retocas tus raíces','Cada retoque también toca parte del largo y lo va resecando. Por eso necesita reparación suave y un lavado que cuide el color.');
+ if(sig('quiebre'))
+  put('break',98,'Ves hebras cortas o partidas','Tu pelo está más frágil y se quiebra a media hebra. Por eso necesita fuerza y reparación.');
+ if(pri('quiebre')&&!sig('quiebre'))
+  put('brush',85,'Te preocupa el pelo que ves en el cepillo','Si son hebras cortas o partidas, es quiebre, y eso se puede cuidar. Si salen pelos completos y en cantidad, consúltalo con un dermatólogo.');
+ if(poros)
+  put('poros',95,'Tu pelo pierde la suavidad rápido','Tu pelo absorbe el agua rápido, pero también la pierde rápido. Por eso necesita hidratación y reparación.');
+ if(sig('secoTodo'))
+  put('dry',80,'Lo sientes seco en todo el largo','Tu pelo retiene menos agua y se siente rígido. Por eso necesita hidratación en cada lavado.');
+ else if(sig('puntas'))
+  put('tips',80,'Tus puntas están secas','Las puntas son la parte más antigua de tu pelo y la más gastada. Por eso necesitan hidratación extra.');
+ if(sig('frizz')||pri('frizz'))
+  put('frizz',74,sig('frizz')?'Notas frizz':'Quieres controlar el frizz','Tu pelo está deshidratado y por eso se esponja con la humedad. Necesita hidratación y un cuidado que se quede en el pelo.');
+ if(pri('pelitos')&&!sig('frizz'))
+  put('pelitos',71,'Quieres que los pelitos cortos no se levanten','Pueden ser pelo nuevo o hebras que se quebraron. Necesitan hidratación y un poco de peso, sin aplastar el resto.');
+ if(pri('ondas'))
+  put('ondas',72,'Quieres realzar tu textura natural',answers.tipo==='lacio'?'El pelo lacio se ve mejor con movimiento y sin peso. Necesita un cuidado ligero que no lo aplaste.':'Tus ondas se definen solas cuando el pelo está hidratado y sin frizz. Necesitan un cuidado que no las endurezca.');
+ else if(sig('textura'))
+  put('texture',67,'Notas tu pelo con otra textura','El pelo nuevo puede nacer con otra forma. No hay que corregirlo: necesita un cuidado para la textura que tiene hoy.');
+ if(answers.calor==='diario'||answers.calor==='plancha')
+  put('heat',78,'Usas calor con frecuencia',motor().needMask?'El calor frecuente reseca tu pelo y lo vuelve más frágil. No tienes que dejarlo: solo necesita hidratación y reparación.':(motor().needCrema?'El calor frecuente reseca tu pelo. No tienes que dejarlo: solo necesita hidratación y un cuidado que lo ayude a proteger antes de usarlo.':'El calor frecuente reseca tu pelo. No tienes que dejarlo: solo necesita más hidratación.'));
+ if(pri('canas')||sig('canas'))
+  put('grey',63,pri('canas')?'Quieres tus canas más suaves':'Tienes canas','Las canas suelen sentirse más ásperas y brillan menos. No son un problema: solo piden suavidad y brillo.');
+ if(sig('enredo')||pri('enredo'))
+  put('detangle',69,sig('enredo')?'Te cuesta desenredar':'Quieres desenredar fácil','Cuando el pelo está áspero, las hebras se enganchan y se quiebran al peinarte. Necesita que el peine pase sin tirar.');
+ if(sig('opaco')||pri('brillo'))
+  put('shine',61,sig('opaco')?'Notas tu pelo opaco':'Buscas más brillo','Tu pelo brilla menos cuando su capa externa se abre. Necesita hidratación y un cuidado que la selle.');
+ if(sig('cuerpo')||pri('cuerpo'))
+  put('body',60,sig('cuerpo')?'Notas menos volumen':'Quieres más cuerpo','Cada hebra puede nacer más delgada, y los productos pesados la aplastan más. Necesita cuerpo, sin peso.');
+ if(has('keratina')&&!chem&&!sig('bien'))
+  put('straightening',50,'Llevas alisado o keratina','Los sulfatos acortan la duración del alisado. Por eso necesita una limpieza sin sulfatos y reparación suave.');
+ if(!l.length)put('healthy',10,'Tu pelo está bien hoy','Es el mejor momento para cuidarlo: mantener es más fácil que reparar. Necesita una rutina suave y constante.');
+ l.sort((x,y)=>y.weight-x.weight || x.key.localeCompare(y.key));
+ // Su prioridad n.º 1 va primero, si tiene tarjeta.
+ const p0=(answers.prio||[])[0];
+ if(p0&&PRIO_CARD[p0]){ const keys=PRIO_CARD[p0].split('|'); const k=l.findIndex(x=>keys.includes(x.key)); if(k>0){ const [c]=l.splice(k,1); l.unshift(c);} }
+ return l.slice(0,3).map(x=>[x.title,x.body]);
+}
+function pintarResultado(){
+ document.getElementById('tr-multi-note').hidden=(answers.signos||[]).filter(x=>x!=='bien').length<3;
+ document.getElementById('tr-needs').innerHTML=needsVisual().map(x=>'<span class="tr-need">'+NEED_LABELS[x]+'</span>').join('');
+ document.getElementById('tr-tiles').innerHTML=rutina().map((_,i)=>'<div class="tr-tile"><b>'+String(i+1).padStart(2,'0')+'</b><span></span></div>').join('');
+ document.getElementById('tr-tiles').style.gridTemplateColumns='repeat('+rutina().length+',1fr)';
+ document.getElementById('tr-findings').innerHTML=hallazgos().map(([title,body],i)=>'<details class="tr-finding" '+(i===0?'open':'')+'><summary><span class="tr-num">'+String(i+1).padStart(2,'0')+'</span><span class="tr-ftitle">'+title+'</span><span class="tr-chevron">⌄</span></summary><div class="tr-fbody">'+body+'</div></details>').join('');
+}
+const SCALP={graso:'Tu cuero cabelludo se engrasa rápido: necesitas una limpieza suave que no reseque las puntas.',seco:'Tu cuero cabelludo se siente seco: necesita una limpieza suave, sin cargar la raíz.',varia:'Tu cuero cabelludo cambia de un día a otro: necesita una limpieza suave y constante.'};
+function pintarCierre(){
+ const sc=SCALP[answers.cuero]||'', el=document.getElementById('tr-scalp');
+ el.textContent=sc; el.hidden=!sc||MODO==='launch';
+ const r=rutina(), close=document.querySelector('.tr-close'), form=document.getElementById('r-mailsec');
+ if(MODO!=='launch'){ close.querySelector('p').textContent='Entra a la lista y te la mandamos antes que a nadie, el día del lanzamiento.'; return; }
+ const tot=r.reduce((a,i)=>a+P[i].price,0);
+ close.innerHTML='<span class="eyebrow">TU RUTINA TRRIBÚ</span><h3>Esto es lo que necesita tu pelo hoy.</h3><div class="tr-prods">'+r.map(i=>{const p=P[i];return '<div class="tr-prod" style="--c:'+p.c+'"><i>'+p.n+'</i><b>'+p.name+'</b><small>'+p.size+'</small><p>'+p.why+'</p>'+(i===0&&sc?'<p class="tr-psc">'+sc+'</p>':'')+'<em>S/ '+p.price+'</em></div>';}).join('')+'</div><p class="tr-tot">Tu rutina: <b>S/ '+tot+'</b></p><p class="tr-gift"><b>De regalo:</b> La Mascarilla (100 ml) y La Crema (El Acondicionador Sin Enjuague) (50 ml) en tamaño viaje'+(r.length===4?', y La Toalla':'')+'.</p><button class="btn btn-solid tr-full" data-rutina="'+r.map(i=>P[i].id).join(',')+'" onclick="agregarAlCarrito(this)">AGREGAR MI RUTINA AL CARRITO</button>';
+ form.querySelector('.eyebrow').textContent='TU RUTINA POR CORREO';
+ form.querySelector('h2').textContent='¿Te la mandamos para tenerla a mano?';
+ document.getElementById('btnguardar').textContent='ENVIARME MI RUTINA';
+}
+function resultado(){pintarResultado();pintarCierre();show('result');bar(100);}
+let submissionId='';function quizSubmissionId(){if(!submissionId)submissionId='quiz_'+Date.now()+'_'+Math.random().toString(36).slice(2,10);return submissionId;}
+
+
+/* ══ INTEGRACIÓN (repo trribu-quiz) · sin textos nuevos ══
+   Lee /api/quiz-config: modo, precios y variantes de Shopify, URL de la política de privacidad. */
+var TRRIBU_CFG=null;
+function aplicarConfig(cfg){
+  TRRIBU_CFG=cfg; if(!cfg) return;
+  MODO=cfg.modo==='lanzamiento'?'launch':'prelaunch';
+  (cfg.productos?Object.keys(cfg.productos):[]).forEach(function(k){ var p=P.find(function(x){return x.id===k;}); if(p&&typeof cfg.productos[k].precio==='number') p.price=cfg.productos[k].precio; });
+  if(cfg.privacidad_url){ var a=document.querySelector('label.tr-check a'); if(a){ a.href=cfg.privacidad_url; a.target='_blank'; a.rel='noopener'; a.onclick=null; a.removeAttribute('onclick'); } }
+}
+if(typeof fetch==='function' && typeof location!=='undefined' && location.protocol!=='file:'){
+  fetch(TRRIBU_API_BASE+'/api/quiz-config').then(function(r){return r.ok?r.json():null;}).then(aplicarConfig).catch(function(){});
+}
+function agregarAlCarrito(btn){
+  var ids=(btn.getAttribute('data-rutina')||'').split(',').filter(Boolean);
+  var cfg=TRRIBU_CFG, faltan=!cfg||!cfg.carrito_listo||ids.some(function(k){return !cfg.productos[k]||!cfg.productos[k].variant_id;});
+  if(faltan){ alert('PENDIENTE FLAMA: agregar al carrito '+ids.map(function(k){return P.find(function(p){return p.id===k;}).name;}).join(' + ')); return; }
+  var vars=ids.map(function(k){return cfg.productos[k].variant_id;});
+  var sid=quizSubmissionId();
+  var tienda=cfg.tienda;
+  if(location.origin===tienda){
+    // El quiz vive dentro del tema de Shopify: /cart/add.js y luego al carrito.
+    fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:vars.map(function(v){return {id:Number(v),quantity:1};})})})
+      .then(function(){return fetch('/cart/update.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({attributes:{quiz_submission_id:sid}})});})
+      .then(function(){location.href='/cart';});
+  } else {
+    // El quiz vive fuera (Vercel): permalink de carrito con el submission_id como atributo.
+    location.href=tienda+'/cart/'+vars.map(function(v){return v+':1';}).join(',')+'?attributes[quiz_submission_id]='+encodeURIComponent(sid);
+  }
+}
+</script>
+</body>
+</html>{% endraw %}
