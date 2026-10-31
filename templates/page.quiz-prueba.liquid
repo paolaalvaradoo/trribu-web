@@ -867,5 +867,72 @@ function agregarAlCarrito(btn){
   }
 }
 </script>
+<style id="gate-prueba">
+#st-result.gated .tr-result>*:not(#r-mailsec){display:none!important}
+#st-result.gated #r-mailsec{border-top:none;margin-top:0;padding-top:6px}
+.tr-ver{display:block;margin:16px auto 0;background:none;border:0;color:#8C887E;font-size:13px;text-decoration:underline;cursor:pointer}
+.tr-ok{background:#EEF2E6;color:#4F6B33;padding:12px 14px;font-size:14px;margin:0 0 18px}
+</style>
+<script>
+/* ══ PÁGINA DE PRUEBA · correo antes del resultado (decisión de Pao, 31-oct) ══
+   ?origen=lista → viene de los correos (ya está en la lista).
+   Sin parámetro → llega directo (bio, anuncios).
+   Los textos de esta pantalla son una PROPUESTA para que Pao los apruebe. */
+(function(){
+  var ORIGEN=(new URLSearchParams(location.search).get('origen')||'directo').toLowerCase();
+  var TXT={
+    lista:{eyebrow:'TU RESULTADO ESTÁ LISTO', h2:'¿A qué correo te enviamos tu resultado?'},
+    directo:{eyebrow:'TU RESULTADO ESTÁ LISTO', h2:'Te enviamos tu resultado por correo'}
+  }[ORIGEN==='lista'?'lista':'directo'];
+  var BOTON='ENVIARME MI RESULTADO', VER='Prefiero verlo en pantalla';
+  var sec=document.getElementById('r-mailsec'), st=document.getElementById('st-result');
+  var eb=sec.querySelector('.eyebrow'), h2=sec.querySelector('h2'), btn=document.getElementById('btnguardar');
+  var ORIG={eyebrow:eb.textContent, h2:h2.textContent, boton:btn.textContent};
+  var ver=document.createElement('button'); ver.type='button'; ver.className='tr-ver'; ver.textContent=VER;
+  btn.insertAdjacentElement('afterend', ver);
+  var enviado=false;
+
+  function abrirGate(){
+    st.classList.add('gated'); ver.hidden=false;
+    eb.textContent=TXT.eyebrow; h2.textContent=TXT.h2; btn.textContent=BOTON;
+  }
+  function mostrarResultado(conCorreo){
+    st.classList.remove('gated'); ver.hidden=true;
+    if(conCorreo){
+      sec.hidden=true;
+      var ok=document.getElementById('tr-ok')||document.createElement('p');
+      ok.id='tr-ok'; ok.className='tr-ok';
+      ok.textContent='Listo. También te lo enviamos a tu correo.';
+      st.querySelector('.tr-result').insertBefore(ok, st.querySelector('.tr-result').firstChild);
+    } else {
+      // Vio el resultado sin dejar correo: abajo queda la inscripción normal.
+      eb.textContent=ORIG.eyebrow; h2.textContent=ORIG.h2; btn.textContent=ORIG.boton;
+    }
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  ver.onclick=function(){ mostrarResultado(false); };
+
+  var _resultado=window.resultado;
+  window.resultado=resultado=function(){ _resultado(); if(!enviado) abrirGate(); };
+
+  var _guardar=window.guardar;
+  window.guardar=guardar=function(){
+    var gated=st.classList.contains('gated');
+    var r=_guardar();
+    if(r&&r.then) r.then(function(){
+      if(document.getElementById('mail').disabled){ enviado=true; if(gated) mostrarResultado(true); }
+    });
+    return r;
+  };
+
+  var _restart=window.restart;
+  window.restart=restart=function(){
+    enviado=false; sec.hidden=false; ver.hidden=false;
+    var ok=document.getElementById('tr-ok'); if(ok) ok.remove();
+    eb.textContent=ORIG.eyebrow; h2.textContent=ORIG.h2; btn.textContent=ORIG.boton;
+    _restart();
+  };
+})();
+</script>
 </body>
 </html>{% endraw %}
