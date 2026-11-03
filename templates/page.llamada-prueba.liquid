@@ -1,6 +1,6 @@
 {%- layout none -%}
 {%- comment -%}
-  PÁGINA DE PRUEBA · La llamada (diseño y transición de Flama, trribu-lista.vercel.app) con el guion de Pao (3-nov)
+  PÁGINA DE PRUEBA · La llamada (diseño y transición de Flama, trribu-lista.vercel.app) con el guion final de Pao (3-nov)
   y el formulario conectado a la Lista de espera de Klaviyo. No indexar. En producción la publica Flama.
 {%- endcomment -%}
 {% raw %}<!doctype html>
@@ -1014,9 +1014,9 @@ q('.xp-dev').addEventListener('click',function(){ev('llamada_devuelta');contesta
 /* 3 · la llamada se vive como un audio: dos mensajes de voz, cada uno con dos respuestas tocables */
 var seg=0,tint=null,tEl=q('.xp-t'),sub=q('.xp-sub'),habla=false,resp=q('.xp-resp'),call=q('.xp-call');
 /* 01-11 · UN solo audio con las frases de la clienta y UNA sola respuesta */
-var FR=[{t:['Hola. Tenemos algo que contarte.','El pelo cambia. Y el cuidado que necesita, también.','Por eso pensamos en algo diferente.','Te lo contamos por mensaje.'],o:[]}];
+var FR=[{t:['Hola. Tenemos algo que contarte.','Tú sabes lo que quieres. ¿Y tu pelo?','Estamos preparando algo diferente…','Te seguimos contando por mensaje.'],o:[]}];
 /* Guion de Pao (3-nov): segundo de la llamada en que empieza cada frase */
-var AT=[4,9,13,18],t0=0;
+var AT=[4,8,13,18],t0=0;
 function cron(){return z(Math.floor(seg/60))+':'+z(seg%60)}
 var bars=qa('.xp-onda i'),oint=null;
 function ondas(on){clearInterval(oint);if(!on||rm){bars.forEach(function(b,k){b.style.height=(on?4+((k*7)%15):4)+'px'});return}
