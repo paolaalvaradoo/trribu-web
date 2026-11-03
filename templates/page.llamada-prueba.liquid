@@ -1053,7 +1053,7 @@ function alChat(dur){hilo.innerHTML='<p class="xp-pill">Hoy</p><p class="xp-pill
   luego(chat1,2000)}
 
 /* 4 · chat (01-11): los cuatro mensajes de la clienta llegan solos, con «escribiendo…» entre uno y otro; el 3.º lleva los cuatro sobres sellados. UNA sola acción al final */
-var MS=['Hola, seguimos por aquí. 😉','Son cuatro productos que se complementan, pensados para el pelo que está cambiando.','Por ahora, siguen sellados. 🤫','¿Quieres ser de las primeras en descubrirlos?'],elegidas=[];
+var MS=['Hola, seguimos por aquí. 😉','Es algo pensado para el pelo que está cambiando.','Son cuatro productos que se complementan.','¿Quieres ser de las primeras en descubrirlos?'],elegidas=[];
 var COL=['#BB7B73','#BA9772','#7A2230','#795448'];
 function baja(){hilo.scrollTop=hilo.scrollHeight}
 function burbuja(html,yo){var m=document.createElement('div');m.className='xp-m'+(yo?' yo':'');m.innerHTML='<span class="tx">'+html+'</span><time>'+hm()+(yo?' <i class="tk" aria-label="enviado">✓</i>':'')+'</time>';hilo.appendChild(m);baja();return m}
